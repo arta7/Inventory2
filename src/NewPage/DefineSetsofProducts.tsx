@@ -23,7 +23,6 @@ interface DefinePostData {
 
 }
 interface DataType {
-  KeySearch:React.Key,
   columns: []
 }
 
@@ -32,7 +31,7 @@ type DataIndex = keyof DataType;
  const DefineSetsofProducts: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [SetsData, setSetsData] = useState([]);
@@ -207,7 +206,7 @@ type DataIndex = keyof DataType;
     }, 1000);
   };
 
-  const onSelectChange = (newSelectedRowKeys:React.Key[]) => {
+  const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };

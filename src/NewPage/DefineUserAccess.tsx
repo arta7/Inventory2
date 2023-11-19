@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -9,38 +9,279 @@ import * as S from './SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import { Space } from 'antd';
+import { Space, Button, Table, InputRef, Input } from 'antd';
 import CheckBoxTables from './CheckBoxTables';
+import type { ColumnsType } from 'antd/es/table';
+import axios from 'axios';
+import { Config } from './../Database/Config';
+import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { SearchOutlined } from '@ant-design/icons';
+import { Checkbox } from 'antd';
+import type { CheckboxValueType } from 'antd/es/checkbox/Group';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+
 interface DefinePostData {
   Title: string;
   Code: string;
 
 }
+interface DataType {
+  columns: []
+}
+
+type DataIndex = keyof DataType;
 
 
- const DefineUserAccess: React.FC = () => {
+const options = [
+  { label: 'همه', value: '0' },
+  { label: 'افزودن ', value: '1' },
+  { label: 'حذف ', value: '2' },
+  { label: 'ویرایش', value: '3' },
+  { label: 'پرینت', value: '4' },
+];
+
+const DefineSetsofProducts: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isLoading, setLoading] = useState(false);
-
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
+  const [PostData, setPostData] = useState([]);
+  const [AllData, setAllData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef<InputRef>(null);
   const { t } = useTranslation();
-
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
   const handleSubmit = (values: DefinePostData) => {
-    // setLoading(true);
-    // dispatch(doSignUp(values))
-    //   .unwrap()
-    //   .then(() => {
-    //     notificationController.success({
-    //       message: t('auth.signUpSuccessMessage'),
-    //       description: t('auth.signUpSuccessDescription'),
-    //     });
-    //     navigate('/auth/login');
-    //   })
-    //   .catch((err) => {
-    //     notificationController.error({ message: err.message });
-    //     setLoading(false);
-    //   });
+
   };
+
+  const onChange = (checkedValues: CheckboxValueType[]) => {
+    console.log('checked = ', checkedValues.filter(item=>item == 0).length.toString());
+     if(checkedValues.filter(item=>item == 0).length>0)
+     {
+      for(let i=1;i<options.length;i++)
+      {
+        setCheckedList(options[i].value);
+      }
+    
+     }
+     else
+    setCheckedList(checkedValues);
+  };
+
+
+
+
+  const handleSearch = (
+    selectedKeys: string[],
+    confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex,
+  ) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            جستجو
+          </Button>
+          <Button
+            onClick={() =>
+              clearFilters && handleReset(clearFilters)
+            }
+            size="small"
+            style={{ width: 90 }}
+          >
+            بازیابی
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            بستن
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        // <Highlighter
+        //   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        //   searchWords={[searchText]}
+        //   autoEscape
+        //   textToHighlight={text ? text.toString() : ''}
+        // />
+        text
+      ) : (
+        text
+      ),
+  });
+
+
+
+  const columns: ColumnsType<DataType> = [
+    {
+
+      title: 'عنوان',
+      dataIndex: 'Title',
+      key: 'Title',
+      width: '25%',
+      hidden: false,
+
+      ...getColumnSearchProps('Title'),
+
+
+    },
+    {
+      title: 'کد ',
+      dataIndex: 'Code',
+      key: 'Code',
+      width: '10%',
+      hidden: false,
+      ...getColumnSearchProps('Code'),
+    },
+    {
+      title: 'نوع ',
+      dataIndex: 'Active',
+      key: 'Active',
+      width: '0%',
+      hidden: true,
+      // ...getColumnSearchProps('StateType'),
+    },
+    {
+      title: 'Id',
+      dataIndex: 'Id',
+      key: 'Id',
+      width: '0%',
+      hidden: true
+      // ...getColumnSearchProps('age'),
+    },
+    {
+      title: 'دسترسی ها',
+      dataIndex: 'Access',
+      key: 'Access',
+      width: '60%',
+      hidden: false,
+      render: (text, record, index) =>
+       
+          <Checkbox.Group options={options} defaultValue={['Pear']} onChange={onChange} />
+
+
+
+
+
+
+
+
+
+    }
+  ];
+
+
+
+  const start = () => {
+    setLoading(true);
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setLoading(false);
+    }, 1000);
+  };
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
+
+  let GetPosts = () => {
+
+    axios.post(Config.URL +
+      Config.Defination.GetPosts)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        setPostData(response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+
+
+  }
+
+  let GetParts = () => {
+
+
+    axios.post(Config.URL +
+      Config.Defination.GetParts)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        var data1 = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+          data1.push({
+            KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code, Active: response.data.data[i].Active
+          })
+        }
+        console.log('data1 : ', data1)
+        setAllData(data1)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  useEffect(() => {
+    GetParts()
+    GetPosts()
+  }, [])
 
   return (
     <div >
@@ -49,52 +290,49 @@ interface DefinePostData {
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-    <Auth.FormWrapper >
-      <BaseForm layout="vertical" onFinish={handleSubmit}  >
-        <S.Title>دسترسی کاربران</S.Title>
-      
-        <BaseButtonsForm.Item name="Users" label="کاربران"
-           rules={[{ required: true}]}
-        >
-      <Select>
-        <Option value="1">
-          <Space align="center">
-            {/* <ManOutlined /> */}
-            کاربر1
-          </Space>
-        </Option>
-        <Option value="2">
-          <Space align="center">
-            {/* <WomanOutlined /> */}
-             کاربر 2 
-          </Space>
-        </Option>
-        <Option value="3">
-          <Space align="center">
-            {/* <WomanOutlined /> */}
-             کاربر 3 
-          </Space>
-        </Option>
-      </Select>
+        <Auth.FormWrapper >
+          <BaseForm layout="vertical" onFinish={handleSubmit}  >
+            <S.Title>دسترسی گروه به بخش ها</S.Title>
 
-      
-    </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item name="Groups" label="گروه کاربری"
+              rules={[{ required: true }]}
+            >
+              <Select>
+
+                {
+                  PostData.map((item, index) => (
+
+                    <Option value={item.Id.toString()}>
+                      <Space align="center">
+                        {item.Title}
+                      </Space>
+                    </Option>
+
+                  ))
+                }
+
+              </Select>
 
 
-    <BaseForm.Item noStyle>
-          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
-           ثبت
-          </Auth.SubmitButton>
-        </BaseForm.Item>
-        
-      </BaseForm>
-    </Auth.FormWrapper>
+            </BaseButtonsForm.Item>
+
+
+            <BaseForm.Item noStyle>
+              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
+                ثبت
+              </Auth.SubmitButton>
+            </BaseForm.Item>
+
+          </BaseForm>
+        </Auth.FormWrapper>
+      </div>
+      <CheckBoxTables DataSource={AllData.filter(item => item.Active == 1)} columns={columns.filter(item => !item.hidden)}
+        rowSelections={rowSelection}
+      />
+
+
     </div>
-     <CheckBoxTables />
-
-     
-     </div>
   );
 };
 
-export default DefineUserAccess;
+export default DefineSetsofProducts;

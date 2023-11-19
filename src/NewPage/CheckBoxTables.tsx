@@ -5,7 +5,7 @@ import type { ColumnsType } from 'antd/es/table';
 interface DataType {
   DataSource : [],
   columns :[],
-  rowSelections: React.Key[]
+  rowSelections: []
  }
 
 
@@ -24,7 +24,7 @@ const CheckBoxTables: React.FC<DataType> = ({ DataSource=[],columns=[],rowSelect
           {/* {hasSelected ? ` ${selectedRowKeys.length} ` : ''} */}
         </span>
       </div>
-      <Table rowSelection={rowSelections} columns={columns} dataSource={DataSource} style={{marginTop:20}} />
+      <Table rowSelection={rowSelections} columns={columns} dataSource={DataSource} style={{marginTop:20}}  rowKey="KeySearch"/>
     </div>
   );
 };
