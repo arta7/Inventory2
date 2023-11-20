@@ -17,7 +17,6 @@ import { Config } from './../Database/Config';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
-import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 interface DefinePostData {
@@ -29,11 +28,12 @@ interface DataType {
   columns: []
 }
 
+let PostDataAccess=[]
+
 type DataIndex = keyof DataType;
 
 
 const options = [
-  { label: 'همه', value: '0' },
   { label: 'افزودن ', value: '1' },
   { label: 'حذف ', value: '2' },
   { label: 'ویرایش', value: '3' },
@@ -48,27 +48,19 @@ const DefineSetsofProducts: React.FC = () => {
   const [isLoading, setisLoading] = useState(false);
   const [PostData, setPostData] = useState([]);
   const [AllData, setAllData] = useState([]);
+  const [UserAccessPart, setUserAccessPart] = useState([]);
+
+  const [AccessPost, setAccessPost] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const { t } = useTranslation();
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
   const handleSubmit = (values: DefinePostData) => {
 
   };
 
-  const onChange = (checkedValues: CheckboxValueType[]) => {
-    console.log('checked = ', checkedValues.filter(item=>item == 0).length.toString());
-     if(checkedValues.filter(item=>item == 0).length>0)
-     {
-      for(let i=1;i<options.length;i++)
-      {
-        setCheckedList(options[i].value);
-      }
-    
-     }
-     else
-    setCheckedList(checkedValues);
+  const onChange = (e: CheckboxChangeEvent) => {
+    console.log(`checked = ${e.target.value}`);
   };
 
 
@@ -205,16 +197,21 @@ const DefineSetsofProducts: React.FC = () => {
       width: '60%',
       hidden: false,
       render: (text, record, index) =>
-       
-          <Checkbox.Group options={options} defaultValue={['Pear']} onChange={onChange} />
-
-
-
-
-
-
-
-
+        options.map((item, index) => (
+          <Checkbox onChange={(ee) => {
+            if (ee.target.checked)
+            {
+              PostDataAccess.push({"PostRef":record.Id.toString(),"AccessPost":item.value})
+               console.log('record', PostDataAccess)
+                
+            }
+            else
+            {
+             console.log("Postdata :",PostDataAccess.filter(item=> item.PostRef == record.Id.toString() && item.AccessPost == item.value)) 
+            }
+           
+          }} value={item.value}>{item.label}</Checkbox>
+        ))
 
     }
   ];
@@ -233,6 +230,8 @@ const DefineSetsofProducts: React.FC = () => {
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+
+
   };
 
   const rowSelection = {
@@ -278,6 +277,24 @@ const DefineSetsofProducts: React.FC = () => {
       })
   }
 
+
+  let GetPostsAccessParts = (_userRef) => {
+
+
+    var data = {
+      "UserRef": _userRef
+    }
+    axios.post(Config.URL +
+      Config.Defination.GetPostsAccessParts, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        setUserAccessPart(response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
   useEffect(() => {
     GetParts()
     GetPosts()
@@ -296,8 +313,12 @@ const DefineSetsofProducts: React.FC = () => {
 
             <BaseButtonsForm.Item name="Groups" label="گروه کاربری"
               rules={[{ required: true }]}
+
             >
-              <Select>
+              <Select onChange={(v) => {
+                console.log('v : ', v)
+                GetPostsAccessParts(v)
+              }}>
 
                 {
                   PostData.map((item, index) => (
@@ -327,7 +348,8 @@ const DefineSetsofProducts: React.FC = () => {
         </Auth.FormWrapper>
       </div>
       <CheckBoxTables DataSource={AllData.filter(item => item.Active == 1)} columns={columns.filter(item => !item.hidden)}
-        rowSelections={rowSelection}
+        rowSelections={rowSelection} key={"table"}
+
       />
 
 
