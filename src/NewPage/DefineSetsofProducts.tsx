@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import * as S from './SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import { Space,Button, Table,InputRef,Input  } from 'antd';
+import { Space, Button, Table, InputRef, Input } from 'antd';
 import CheckBoxTables from './CheckBoxTables';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
@@ -26,20 +26,24 @@ interface DataType {
   columns: []
 }
 
+let DataProduct =[];
+
 type DataIndex = keyof DataType;
 
- const DefineSetsofProducts: React.FC = () => {
+const DefineSetsofProducts: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [SetsData, setSetsData] = useState([]);
+  const [SetsSelectedItem, setSetsSelectedItem] = useState('');
   const [AllData, setAllData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const { t } = useTranslation();
+  const [form] = BaseForm.useForm();
 
   const handleSubmit = (values: DefinePostData) => {
 
@@ -116,12 +120,6 @@ type DataIndex = keyof DataType;
     },
     render: (text) =>
       searchedColumn === dataIndex ? (
-        // <Highlighter
-        //   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        //   searchWords={[searchText]}
-        //   autoEscape
-        //   textToHighlight={text ? text.toString() : ''}
-        // />
         text
       ) : (
         text
@@ -132,13 +130,13 @@ type DataIndex = keyof DataType;
 
   const columns: ColumnsType<DataType> = [
     {
-      
+
       title: 'عنوان',
       dataIndex: 'Title',
       key: 'Title',
       width: '30%',
       hidden: false,
-      
+
       ...getColumnSearchProps('Title'),
 
 
@@ -186,16 +184,37 @@ type DataIndex = keyof DataType;
           {
             width: "100px",
           }
-        } >   <Auth.FormInput  placeholder=""
-        style={{textAlign:'center'}}
-        // value={Code} onChange={(e) => { setCode(e.target.value) }}
+        } >   <Auth.FormInput placeholder="عدد"
+        type="number"
+          style={{ textAlign: 'center' }}
+           value={text}  onChange={(v)=>{
+            if(DataProduct.filter(item1=>item1.SetsRef == SetsSelectedItem && item1.ProductRef ==record.Id  ).length ==0)
+            {
+               DataProduct.push({"SetsRef":SetsSelectedItem,"ProductRef":record.Id,"Counts":v.target.value.toString()})
+               console.log('text : ',DataProduct)
+            }
+           
+          else
+          {
+            DataProduct = DataProduct.map(item1 => {
+              if (item1.SetsRef == SetsSelectedItem && item1.ProductRef ==record.Id) {
+                return {...item1, "Counts": v.target.value.toString()};
+              }
+              return item1;
+            })
+            console.log('text : ',DataProduct)
+
+          }
+        
+           
+          }}
         />
 
       </div >
     }
   ];
-  
- 
+
+
 
   const start = () => {
     setLoading(true);
@@ -208,7 +227,10 @@ type DataIndex = keyof DataType;
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    if(SetsSelectedItem !="")
     setSelectedRowKeys(newSelectedRowKeys);
+  else
+  alert('Error')
   };
 
   const rowSelection = {
@@ -234,16 +256,18 @@ type DataIndex = keyof DataType;
 
   let GetProducts = () => {
 
- 
+
     axios.post(Config.URL +
       Config.Defination.GetProducts)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({KeySearch : response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,UnitRef:response.data.data[i].UnitRef,
-             UnitTitle: response.data.data[i].UnitTitle})
+          data1.push({
+            KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code, UnitRef: response.data.data[i].UnitRef,
+            UnitTitle: response.data.data[i].UnitTitle
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -253,10 +277,52 @@ type DataIndex = keyof DataType;
       })
   }
 
-  useEffect(()=>{
+
+
+
+    let AddSetsOfProduct=()=>{
+
+      console.log('DataProduct',JSON.stringify(DataProduct))
+      var data = {
+        'jsonData': JSON.stringify(DataProduct)
+      }
+     // console.log('@jsonData : ',data)
+      axios.post(Config.URL +
+        Config.Defination.AddSetsOfProduct, data)
+        .then((response) => {
+          console.log('response data product : ', response.data.data)
+        })
+        .catch((error) => {
+          console.log('Error : ', error)
+        })
+
+
+    }
+
+
+
+    let DeleteSetsOfProduct = () => {
+
+      var data = {
+        'SetsRef': SetsSelectedItem
+      }
+      axios.post(Config.URL +
+        Config.Defination.DeleteSetsOfProduct, data)
+        .then((response) => {
+          console.log('response data : ', response.data.data)
+          AddSetsOfProduct()
+        })
+        .catch((error) => {
+          console.log('Error : ', error)
+        })
+    }
+
+
+
+  useEffect(() => {
     GetSets()
     GetProducts()
-  },[])
+  }, [])
 
   return (
     <div >
@@ -265,48 +331,71 @@ type DataIndex = keyof DataType;
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-    <Auth.FormWrapper >
-      <BaseForm layout="vertical" onFinish={handleSubmit}  >
-        <S.Title>محصولات هر سِت </S.Title>
-      
-        <BaseButtonsForm.Item name="Sets" label="نام ست"
-           rules={[{ required: true}]}
-        >
-      <Select>
+        <Auth.FormWrapper >
+          <BaseForm layout="vertical" onFinish={handleSubmit}  form={form}>
+            <S.Title>محصولات هر سِت </S.Title>
 
-        {
-          SetsData.map((item,index)=>(
-           
-        <Option value={item.Id.toString()}>
-          <Space align="center">
-            {item.Title}
-          </Space>
-        </Option>
-            
-          ))
-        }
+            <BaseButtonsForm.Item name="Sets" label="نام ست"
+              rules={[{ required: true }]}
+            >
+              <Select
+              onChange={(v) => {
+                console.log('v : ', v)
+                setSetsSelectedItem(v)
+               
+              }}
+              >
 
-      </Select>
+                {
+                  SetsData.map((item, index) => (
 
-      
-    </BaseButtonsForm.Item>
+                    <Option value={item.Id.toString()}>
+                      <Space align="center">
+                        {item.Title}
+                      </Space>
+                    </Option>
+
+                  ))
+                }
+
+              </Select>
 
 
-    <BaseForm.Item noStyle>
-          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
-           ثبت
-          </Auth.SubmitButton>
-        </BaseForm.Item>
-        
-      </BaseForm>
-    </Auth.FormWrapper>
-    </div>
-     <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
-     rowSelections={rowSelection}
+            </BaseButtonsForm.Item>
+
+
+            <BaseForm.Item noStyle>
+              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+              
+              onClick={() => {
+                console.log('test')
+                if (SetsSelectedItem != '')
+                {
+                  // DeleteSetsOfProduct()
+                  AddSetsOfProduct()
+                
+                alert('sucess')
+                }
+                
+                else
+                {
+
+                }
+              }}
+              >
+                ثبت
+              </Auth.SubmitButton>
+            </BaseForm.Item>
+
+          </BaseForm>
+        </Auth.FormWrapper>
+      </div>
+      <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
+        rowSelections={rowSelection}
       />
 
-     
-     </div>
+
+    </div>
   );
 };
 

@@ -38,6 +38,7 @@ const options = [
   { label: 'حذف ', value: '2' },
   { label: 'ویرایش', value: '3' },
   { label: 'پرینت', value: '4' },
+  { label: 'نمایش', value: '5' },
 ];
 
 const DefineSetsofProducts: React.FC = () => {
@@ -48,6 +49,7 @@ const DefineSetsofProducts: React.FC = () => {
   const [isLoading, setisLoading] = useState(false);
   const [PostData, setPostData] = useState([]);
   const [AllData, setAllData] = useState([]);
+  const [PostSelected,setPostSelected] = useState('')
   const [UserAccessPart, setUserAccessPart] = useState([]);
 
   const [AccessPost, setAccessPost] = useState([]);
@@ -198,16 +200,25 @@ const DefineSetsofProducts: React.FC = () => {
       hidden: false,
       render: (text, record, index) =>
         options.map((item, index) => (
-          <Checkbox onChange={(ee) => {
+          <Checkbox  onChange={(ee) => {
             if (ee.target.checked)
             {
-              PostDataAccess.push({"PostRef":record.Id.toString(),"AccessPost":item.value})
-               console.log('record', PostDataAccess)
-                
+              PostDataAccess.push({"PostRef":PostSelected,"PartRef":record.Id,"TypeAccess":item.value})
+               console.log('PostDataAccess : ', PostDataAccess)    
             }
             else
             {
-             console.log("Postdata :",PostDataAccess.filter(item=> item.PostRef == record.Id.toString() && item.AccessPost == item.value)) 
+                for(let j=0;j<PostDataAccess.length;j++)
+                {
+                  if( PostDataAccess[j].PartRef == record.Id && PostDataAccess[j].TypeAccess == item.value)
+                  {
+                    var xx =  PostDataAccess.splice(j,1)
+
+                    console.log('xx : ', xx)
+                  }
+                }
+
+              console.log('x : ', PostDataAccess)
             }
            
           }} value={item.value}>{item.label}</Checkbox>
@@ -278,17 +289,57 @@ const DefineSetsofProducts: React.FC = () => {
   }
 
 
-  let GetPostsAccessParts = (_userRef) => {
+  let GetPostsAccessParts = (_PostRef) => {
 
 
     var data = {
-      "UserRef": _userRef
+      "PostRef": _PostRef
     }
     axios.post(Config.URL +
       Config.Defination.GetPostsAccessParts, data)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        console.log('response data post access : ', response.data.data)
         setUserAccessPart(response.data.data)
+        for(let i =0;i<response.data.data.length;i++)
+        {
+          setSelectedRowKeys(response.data.data[i].PostRef.toString())
+        }
+       
+
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+  let AddUsersAccessParts = () => {
+
+    // var data = JSON.stringify(PostDataAccess)
+    var data = {
+      'jsonData': JSON.stringify(PostDataAccess)
+    }
+   // console.log('@jsonData : ',data)
+    axios.post(Config.URL +
+      Config.Defination.AddUsersAccessParts, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  let DeleteUsersAccessParts = () => {
+
+    var data = {
+      'PostRef': PostSelected
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteUsersAccessParts, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        AddUsersAccessParts()
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -317,7 +368,9 @@ const DefineSetsofProducts: React.FC = () => {
             >
               <Select onChange={(v) => {
                 console.log('v : ', v)
+                setPostSelected(v)
                 GetPostsAccessParts(v)
+               
               }}>
 
                 {
@@ -339,7 +392,23 @@ const DefineSetsofProducts: React.FC = () => {
 
 
             <BaseForm.Item noStyle>
-              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
+              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+                onClick={() => {
+                  console.log('test')
+                  if (PostSelected != '')
+                  {
+                    
+                      DeleteUsersAccessParts()
+                  
+                  alert('sucess')
+                  }
+                  
+                  else
+                  {
+  
+                  }
+                }}
+              >
                 ثبت
               </Auth.SubmitButton>
             </BaseForm.Item>
