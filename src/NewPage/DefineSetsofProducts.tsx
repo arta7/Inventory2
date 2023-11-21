@@ -371,10 +371,10 @@ const DefineSetsofProducts: React.FC = () => {
                 console.log('test')
                 if (SetsSelectedItem != '')
                 {
-                  // DeleteSetsOfProduct()
-                  AddSetsOfProduct()
+                    DeleteSetsOfProduct()
+              
                 
-                alert('sucess')
+                // alert('sucess')
                 }
                 
                 else
