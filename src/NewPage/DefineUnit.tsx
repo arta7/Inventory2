@@ -194,6 +194,8 @@ const DefineUnit: React.FC = () => {
 
               })
               setId(record.Id.toString())
+              setTitles(record.Title.toString())
+              setCode(record.Code.toString())
 
             }
           } > ویرایش

@@ -314,6 +314,8 @@ const DefineProduct: React.FC = () => {
                 State:record.UnitTitle.toString()
 
               })
+              setTitles(record.Title.toString())
+              setCode(record.Code.toString())
               setId(record.Id.toString())
                 console.log('record.StateType : ',record.UnitRef)        
               setSelectedItem(record.UnitRef.toString())

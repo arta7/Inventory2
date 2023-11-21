@@ -308,7 +308,9 @@ const DefineStates: React.FC = () => {
 
               })
               setId(record.Id.toString())
-                console.log('record.StateType : ',record.StateType)        
+              setTitles(record.Title.toString())
+              setCode(record.Code.toString())
+              //  console.log('record.StateType : ',record.StateType)        
               setSelectedItem(record.StateType.toString())
             }
           } > ویرایش

@@ -263,22 +263,22 @@ const DefineParts: React.FC = () => {
       hidden: false,
       ...getColumnSearchProps('Code'),
     },
-    // {
-    //   title: 'ُنوع ',
-    //   dataIndex: 'Active',
-    //   key: 'Active',
-    //   width: '20%',
-    //   hidden: true,
-    //   // ...getColumnSearchProps('StateType'),
-    // },
-    // {
-    //   title: 'وضعیت ',
-    //   dataIndex: 'ActiveValue',
-    //   key: 'ActiveValue',
-    //   width: '20%',
-    //   hidden: false,
-    //   // ...getColumnSearchProps('StateType'),
-    // },
+    {
+      title: 'نوع ',
+      dataIndex: 'Active',
+      key: 'Active',
+      width: '20%',
+      hidden: true,
+      // ...getColumnSearchProps('StateType'),
+    },
+    {
+      title: 'وضعیت ',
+      dataIndex: 'ActiveValue',
+      key: 'ActiveValue',
+      width: '20%',
+      hidden: false,
+      // ...getColumnSearchProps('StateType'),
+    },
     {
       title: 'Id',
       dataIndex: 'Id',
@@ -304,13 +304,15 @@ const DefineParts: React.FC = () => {
             (e) => {
               form.setFieldsValue({
                 Title: record.Title.toString(),
-                Code: record.Code.toString()
-                // Active:record.Active.toString()
+                Code: record.Code.toString(),
+                 State:record.Active.toString()
 
               })
+              setTitles(record.Title.toString())
+              setCode(record.Code.toString())
               setId(record.Id.toString())
-              //   console.log('record.StateType : ',record.Active)        
-              // setSelectedItem(record.Active.toString())
+              console.log('record.StateType : ',record.Active)        
+               setSelectedItem(record.Active)
             }
           } > ویرایش
         </Button>
@@ -334,7 +336,7 @@ const DefineParts: React.FC = () => {
 
 
   let AddParts = () => {
-    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
+    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code,'Active : ',SelectedItem)
 
     var data = {
 
@@ -453,9 +455,9 @@ const DefineParts: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput readOnly={true} placeholder="کد "
+              <Auth.FormInput  placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' />
+               />
             </Auth.FormItem>
 
             <BaseButtonsForm.Item name="State" label="وضعیت"
@@ -493,7 +495,7 @@ const DefineParts: React.FC = () => {
                 AddParts()
                 else
                 {
-
+                  alert('error')
                 }
               }}>
                 ثبت
