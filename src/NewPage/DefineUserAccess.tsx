@@ -300,11 +300,12 @@ const DefineSetsofProducts: React.FC = () => {
       .then((response) => {
         console.log('response data post access : ', response.data.data)
         setUserAccessPart(response.data.data)
+        var x = []
         for(let i =0;i<response.data.data.length;i++)
         {
-          setSelectedRowKeys(response.data.data[i].PostRef.toString())
+          x.push(response.data.data[i].PostRef.toString())
         }
-       
+        setSelectedRowKeys(x)
 
       })
       .catch((error) => {

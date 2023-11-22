@@ -128,6 +128,7 @@ interface DataType {
   columns: []
 }
 
+let DataProduct = [];
 type DataIndex = keyof DataType;
 
  const DefineGroupsofSets: React.FC = () => {
@@ -137,6 +138,7 @@ type DataIndex = keyof DataType;
   const [loading, setLoading] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [GroupsData, setGroupsData] = useState([]);
+  const [GroupsSelectedItem, setGroupsSelectedItem] = useState('');
   const [AllData, setAllData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -272,10 +274,31 @@ type DataIndex = keyof DataType;
           {
             width: "100px",
           }
-        } >   <Auth.FormInput  placeholder=""
-        style={{textAlign:'center'}}
-        // value={Code} onChange={(e) => { setCode(e.target.value) }}
-        />
+        } >     <Auth.FormInput placeholder="عدد"
+        type="number"
+        // value={text}
+        style={{ textAlign: 'center' }}
+
+        onChange={(v) => {
+          if (DataProduct.filter(item1 => item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem ).length == 0) {
+            DataProduct.push({ "SetsRef": record.Id, "GroupRef":GroupsSelectedItem  , "Count": v.target.value.toString() })
+            console.log('text : ', DataProduct)
+          }
+
+          else {
+            DataProduct = DataProduct.map(item1 => {
+              if (item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem) {
+                return { ...item1, "Count": v.target.value.toString() };
+              }
+              return item1;
+            })
+            console.log('text : ', DataProduct)
+
+          }
+
+
+        }}
+      />
 
       </div >
     }
@@ -328,7 +351,7 @@ type DataIndex = keyof DataType;
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({KeySearch : response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code})
+             Code: response.data.data[i].Code,Count:0})
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -337,6 +360,84 @@ type DataIndex = keyof DataType;
         console.log('Error : ', error)
       })
   }
+
+
+  let AddGroupOfSets = () => {
+
+    console.log('DataProduct', JSON.stringify(DataProduct))
+    var data = {
+      'jsonData': JSON.stringify(DataProduct)
+    }
+    // console.log('@jsonData : ',data)
+    axios.post(Config.URL +
+      Config.Defination.AddGroupOfSets, data)
+      .then((response) => {
+        console.log('response data product : ', response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  let DeleteGroupOfSets = () => {
+
+    var data = {
+      'GroupRef': GroupsSelectedItem
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteGroupOfSets, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        AddGroupOfSets()
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  let GetGroupOfS = (_v) => {
+
+
+    var data = {
+      "GroupRef": _v
+    }
+    axios.post(Config.URL +
+      Config.Defination.GetGroupOfSets, data)
+      .then((response) => {
+        console.log('response data Groups : ', response.data.data)
+        // setGroupsData(response.data.data)
+        var x = [];
+         DataProduct = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+
+          x.push(response.data.data[i].SetsRef.toString())
+          DataProduct.push({ "SetsRef": response.data.data[i].SetsRef.toString(), 
+          "GroupRef": response.data.data[i].GroupRef.toString(), "Count": response.data.data[i].Count.toString() })
+          //  for(let j=0;j<AllData.length;j++)
+          //  {
+            //  if(AllData.filter(item1=>item1.Id ==response.data.data[i].GroupRef).length >0)
+            //  {
+            //   console.log('GroupRef : ',response.data.data[i].GroupRef.toString(),
+            //   'Counts : ',response.data.data[i].Count.toString() )
+            //  }
+            // }
+          console.log('x : ', x)
+        }
+        // console.log('newdata : ',newdata)
+        setSelectedRowKeys(x)
+        // setCounter(Counter+1)
+       
+
+
+
+
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
 
   useEffect(()=>{
     GetSets()
@@ -357,7 +458,13 @@ type DataIndex = keyof DataType;
         <BaseButtonsForm.Item name="Groups" label="نام گروه"
            rules={[{ required: true}]}
         >
-      <Select>
+      <Select
+       onChange={(v) => {
+        console.log('v : ', v)
+        setGroupsSelectedItem(v)
+        GetGroupOfS(v)
+      }}
+      >
 
         {
           GroupsData.map((item,index)=>(
@@ -378,7 +485,19 @@ type DataIndex = keyof DataType;
 
 
     <BaseForm.Item noStyle>
-          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
+          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+          
+          onClick={() => {
+            console.log('test')
+            if (GroupsSelectedItem != '') {
+              DeleteGroupOfSets()
+            }
+
+            else {
+
+            }
+          }}
+          >
            ثبت
           </Auth.SubmitButton>
         </BaseForm.Item>

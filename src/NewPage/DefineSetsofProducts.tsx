@@ -26,7 +26,7 @@ interface DataType {
   columns: []
 }
 
-let DataProduct =[];
+let DataProduct = [];
 
 type DataIndex = keyof DataType;
 
@@ -34,11 +34,13 @@ const DefineSetsofProducts: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [Counter, setCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [SetsData, setSetsData] = useState([]);
   const [SetsSelectedItem, setSetsSelectedItem] = useState('');
   const [AllData, setAllData] = useState([]);
+  const [SetofProductData, setSetofProductData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -184,29 +186,31 @@ const DefineSetsofProducts: React.FC = () => {
           {
             width: "100px",
           }
-        } >   <Auth.FormInput placeholder="عدد"
-        type="number"
+        } >
+        <Auth.FormInput placeholder="عدد"
+          type="number"
+           value={record.Counts}
           style={{ textAlign: 'center' }}
-           value={text}  onChange={(v)=>{
-            if(DataProduct.filter(item1=>item1.SetsRef == SetsSelectedItem && item1.ProductRef ==record.Id  ).length ==0)
-            {
-               DataProduct.push({"SetsRef":SetsSelectedItem,"ProductRef":record.Id,"Counts":v.target.value.toString()})
-               console.log('text : ',DataProduct)
-            }
-           
-          else
-          {
-            DataProduct = DataProduct.map(item1 => {
-              if (item1.SetsRef == SetsSelectedItem && item1.ProductRef ==record.Id) {
-                return {...item1, "Counts": v.target.value.toString()};
-              }
-              return item1;
-            })
-            console.log('text : ',DataProduct)
 
-          }
-        
-           
+          onChange={(v) => {
+            if (DataProduct.filter(item1 => item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id).length == 0) {
+              DataProduct.push({ "SetsRef": SetsSelectedItem, "ProductRef": record.Id, "Counts": v.target.value.toString() })
+              console.log('text : ', DataProduct)
+            }
+
+            else {
+              DataProduct = DataProduct.map(item1 => {
+                if (item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id) {
+                  return { ...item1, "Counts": v.target.value.toString() };
+                }
+                return item1;
+              })
+             
+              console.log('text : ', DataProduct)
+
+            }
+         
+            setCounter(Counter+1)
           }}
         />
 
@@ -227,10 +231,10 @@ const DefineSetsofProducts: React.FC = () => {
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    if(SetsSelectedItem !="")
-    setSelectedRowKeys(newSelectedRowKeys);
-  else
-  alert('Error')
+    if (SetsSelectedItem != "")
+      setSelectedRowKeys(newSelectedRowKeys);
+    else
+      alert('Error')
   };
 
   const rowSelection = {
@@ -250,8 +254,54 @@ const DefineSetsofProducts: React.FC = () => {
       .catch((error) => {
         console.log('Error : ', error)
       })
+  }
+
+  let GetSetsofP = (_v) => {
 
 
+    var data = {
+      "SetsRef": _v
+    }
+    axios.post(Config.URL +
+      Config.Defination.GetSetsOfProducts, data)
+      .then((response) => {
+        console.log('response data Sets : ', response.data.data)
+        // setSetofProductData(response.data.data)
+        var x = [];
+         DataProduct = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+
+          x.push(response.data.data[i].ProductRef.toString())
+          DataProduct.push({ "SetsRef": response.data.data[i].SetsRef.toString(), 
+          "ProductRef": response.data.data[i].ProductRef.toString(), "Counts": response.data.data[i].Counts.toString() })
+          //  for(let j=0;j<AllData.length;j++)
+          //  {
+             if(AllData.filter(item1=>item1.Id ==response.data.data[i].ProductRef).length >0)
+             {
+              console.log('ProductRef : ',response.data.data[i].ProductRef.toString(),
+              'Counts : ',response.data.data[i].Counts.toString() )
+
+              // setAllData((oldState) => ({
+              //   ...oldState,
+              //   Counts: response.data.data[i].Counts.toString()
+              // }));
+              // newdata.push({"Counts":response.data.data[i].Counts.toString()})
+             }
+            // }
+          console.log('x : ', x)
+        }
+        // console.log('newdata : ',newdata)
+        setSelectedRowKeys(x)
+        setCounter(Counter+1)
+       
+
+
+
+
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
   }
 
   let GetProducts = () => {
@@ -266,7 +316,7 @@ const DefineSetsofProducts: React.FC = () => {
           data1.push({
             KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
             Code: response.data.data[i].Code, UnitRef: response.data.data[i].UnitRef,
-            UnitTitle: response.data.data[i].UnitTitle
+            UnitTitle: response.data.data[i].UnitTitle, Counts: 0
           })
         }
         console.log('data1 : ', data1)
@@ -280,49 +330,49 @@ const DefineSetsofProducts: React.FC = () => {
 
 
 
-    let AddSetsOfProduct=()=>{
+  let AddSetsOfProduct = () => {
 
-      console.log('DataProduct',JSON.stringify(DataProduct))
-      var data = {
-        'jsonData': JSON.stringify(DataProduct)
-      }
-     // console.log('@jsonData : ',data)
-      axios.post(Config.URL +
-        Config.Defination.AddSetsOfProduct, data)
-        .then((response) => {
-          console.log('response data product : ', response.data.data)
-        })
-        .catch((error) => {
-          console.log('Error : ', error)
-        })
-
-
+    console.log('DataProduct', JSON.stringify(DataProduct))
+    var data = {
+      'jsonData': JSON.stringify(DataProduct)
     }
+    // console.log('@jsonData : ',data)
+    axios.post(Config.URL +
+      Config.Defination.AddSetsOfProduct, data)
+      .then((response) => {
+        console.log('response data product : ', response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+
+
+  }
 
 
 
-    let DeleteSetsOfProduct = () => {
+  let DeleteSetsOfProduct = () => {
 
-      var data = {
-        'SetsRef': SetsSelectedItem
-      }
-      axios.post(Config.URL +
-        Config.Defination.DeleteSetsOfProduct, data)
-        .then((response) => {
-          console.log('response data : ', response.data.data)
-          AddSetsOfProduct()
-        })
-        .catch((error) => {
-          console.log('Error : ', error)
-        })
+    var data = {
+      'SetsRef': SetsSelectedItem
     }
+    axios.post(Config.URL +
+      Config.Defination.DeleteSetsOfProduct, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        AddSetsOfProduct()
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
 
 
 
   useEffect(() => {
     GetSets()
     GetProducts()
-  }, [])
+  }, [Counter])
 
   return (
     <div >
@@ -332,18 +382,19 @@ const DefineSetsofProducts: React.FC = () => {
         justifyContent: 'center'
       }}>
         <Auth.FormWrapper >
-          <BaseForm layout="vertical" onFinish={handleSubmit}  form={form}>
+          <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
             <S.Title>محصولات هر سِت </S.Title>
 
             <BaseButtonsForm.Item name="Sets" label="نام ست"
               rules={[{ required: true }]}
             >
               <Select
-              onChange={(v) => {
-                console.log('v : ', v)
-                setSetsSelectedItem(v)
-               
-              }}
+                onChange={(v) => {
+                  setSetsSelectedItem(v)
+                  console.log('v : ', v)
+                 
+                  GetSetsofP(v)
+                }}
               >
 
                 {
@@ -366,22 +417,17 @@ const DefineSetsofProducts: React.FC = () => {
 
             <BaseForm.Item noStyle>
               <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
-              
-              onClick={() => {
-                console.log('test')
-                if (SetsSelectedItem != '')
-                {
-                    DeleteSetsOfProduct()
-              
-                
-                // alert('sucess')
-                }
-                
-                else
-                {
 
-                }
-              }}
+                onClick={() => {
+                  console.log('test')
+                  if (SetsSelectedItem != '') {
+                    DeleteSetsOfProduct()
+                  }
+
+                  else {
+
+                  }
+                }}
               >
                 ثبت
               </Auth.SubmitButton>
@@ -392,6 +438,7 @@ const DefineSetsofProducts: React.FC = () => {
       </div>
       <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
         rowSelections={rowSelection}
+        
       />
 
 
