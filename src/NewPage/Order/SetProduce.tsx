@@ -28,7 +28,11 @@ interface DefinePostData {
   Code: string;
 }
 
+interface DataType {
+  columns: []
+}
 
+type DataIndex = keyof DataType;
 
 export interface CategoryComponents {
   category: CategoryType;
@@ -60,6 +64,46 @@ const SetProduce: React.FC = () => {
     : null;
 
   const { t } = useTranslation();
+
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'عنوان',
+      dataIndex: 'Title',
+      key: 'Title',
+      width: '30%',
+      hidden: false,
+    },
+    {
+      title: 'کد ',
+      dataIndex: 'Code',
+      key: 'Code',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'نوع ',
+      dataIndex: 'Active',
+      key: 'Active',
+      width: '20%',
+      hidden: true,
+    },
+    {
+      title: 'وضعیت ',
+      dataIndex: 'ActiveValue',
+      key: 'ActiveValue',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'Id',
+      dataIndex: 'Id',
+      key: 'Id',
+      width: '0%',
+      hidden: true
+    }
+  ]
+
 
   const handleSubmit = (values: DefinePostData) => {
   };
@@ -177,6 +221,13 @@ const SetProduce: React.FC = () => {
 
        
       </div>
+      <div style={{width:'100px',marginTop:20,textAlign:'center'}}>
+      <Auth.SubmitButton loading={isLoading}>
+                افزودن
+              </Auth.SubmitButton>
+      </div>
+      
+ 
       {/* <Tables /> */}
     </div>
   );
