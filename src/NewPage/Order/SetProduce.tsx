@@ -9,26 +9,31 @@ import * as S from './../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import { Space } from 'antd';
 import { categoriesList, CategoryType } from '@app/constants/categoriesList';
 import { SearchDropdown } from '@app/components/header/components/searchDropdown/SearchDropdown';
 import { components as configComponents, Component } from '@app/constants/config/components';
 import { Btn, InputSearch } from '@app/components/header/components/HeaderSearch/HeaderSearch.styles';
 import { BirthdayItem } from '@app/components/profile/profileCard/profileFormNav/nav/PersonalInfo/BirthdayItem/BirthdayItem';
-import { Col, Row } from 'antd';
 
 import {
   DatePicker
 } from "react-advance-jalaali-datepicker";
+import Tables from './../Tables';
+import axios from 'axios';
+import type { ColumnType, ColumnsType } from 'antd/es/table';
+import { Button, Input, Space, Table, InputRef, Popconfirm,Col, Row } from 'antd';
 
-// import { Calendar, DatePicker } from 'react-persian-datepicker';
-// import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
+
 interface DefinePostData {
   Title: string;
   Code: string;
 }
 
+interface DataType {
+  columns: []
+}
 
+type DataIndex = keyof DataType;
 
 export interface CategoryComponents {
   category: CategoryType;
@@ -39,7 +44,7 @@ const SetProduce: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
-
+  const [AllData, setAllData] = useState([]);
   const [query, setQuery] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString('fa-IR'));
   const [components] = useState<Component[]>(configComponents);
@@ -61,6 +66,82 @@ const SetProduce: React.FC = () => {
 
   const { t } = useTranslation();
 
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'کد کالا',
+      dataIndex: 'Code',
+      key: 'Code',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'نام کالا ',
+      dataIndex: 'Name',
+      key: 'Name',
+      width: '30%',
+      hidden: false,
+    },
+    {
+      title: 'ProductId',
+      dataIndex: 'ProductId',
+      key: 'ProductId',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'واحد کالا ',
+      dataIndex: 'Units',
+      key: 'Units',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'واحد کالا ',
+      dataIndex: 'UnitsRef',
+      key: 'UnitsRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'تعداد',
+      dataIndex: 'Counts',
+      key: 'Counts',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'توضیحات',
+      dataIndex: 'Details',
+      key: 'Details',
+      width: '30%',
+      hidden: false
+    },
+    {
+      title: 'وضعیت',
+      dataIndex: '',
+      key: 'Action',
+      width: '20%',
+      hidden: false,
+      render: (text, record, index) => < div className="btn-wrap"
+        style={
+          {
+            width: "100px",
+          }
+        } > 
+
+        < Button
+          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+          onClick={()=>
+            console.log('')
+          } > حذف
+        </Button>
+      </div >
+    }
+
+  ]
+
+
   const handleSubmit = (values: DefinePostData) => {
   };
 
@@ -81,9 +162,10 @@ const SetProduce: React.FC = () => {
           label="شماره سند "
           name="Number"
           rules={[{ required: true, message: t('common.requiredField') }]}
+          
         >
 
-         <Auth.FormInput placeholder="شمار سند " />
+         <Auth.FormInput placeholder="شمار سند " readOnly={true}/>
           </Auth.FormItem>
           </Col>
        
@@ -177,7 +259,19 @@ const SetProduce: React.FC = () => {
 
        
       </div>
-      {/* <Tables /> */}
+      <div style={{width:'100px',marginTop:20,textAlign:'center'}}>
+      <Auth.SubmitButton loading={isLoading}>
+                افزودن
+              </Auth.SubmitButton>
+      </div>
+     
+        
+      {columns.length > 0 &&
+        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+      }
+      
+      
+
     </div>
   );
 };
