@@ -265,8 +265,8 @@ type DataIndex = keyof DataType;
     },
     {
       title: 'تعداد',
-      dataIndex: 'Counts',
-      key: 'Counts',
+      dataIndex: 'Count',
+      key: 'Count',
       width: '20%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
@@ -276,10 +276,19 @@ type DataIndex = keyof DataType;
           }
         } >     <Auth.FormInput placeholder="عدد"
         type="number"
-        // value={text}
+         value={record.Count}
         style={{ textAlign: 'center' }}
 
         onChange={(v) => {
+
+          const myNextList = [...AllData];
+          const artwork = myNextList.find(
+            a => a.Id === record.Id
+          );
+          artwork.Count = v.target.value;
+          setAllData(myNextList);
+
+
           if (DataProduct.filter(item1 => item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem ).length == 0) {
             DataProduct.push({ "SetsRef": record.Id, "GroupRef":GroupsSelectedItem  , "Count": v.target.value.toString() })
             console.log('text : ', DataProduct)
@@ -351,9 +360,9 @@ type DataIndex = keyof DataType;
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({KeySearch : response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,Count:0})
+             Code: response.data.data[i].Code,"Count":""})
         }
-        console.log('data1 : ', data1)
+        console.log('data1 sets : ', data1)
         setAllData(data1)
       })
       .catch((error) => {
@@ -413,14 +422,17 @@ type DataIndex = keyof DataType;
           x.push(response.data.data[i].SetsRef.toString())
           DataProduct.push({ "SetsRef": response.data.data[i].SetsRef.toString(), 
           "GroupRef": response.data.data[i].GroupRef.toString(), "Count": response.data.data[i].Count.toString() })
-          //  for(let j=0;j<AllData.length;j++)
-          //  {
-            //  if(AllData.filter(item1=>item1.Id ==response.data.data[i].GroupRef).length >0)
-            //  {
-            //   console.log('GroupRef : ',response.data.data[i].GroupRef.toString(),
-            //   'Counts : ',response.data.data[i].Count.toString() )
-            //  }
-            // }
+         
+          const myNextList = [...AllData];
+          const artwork = myNextList.find(
+            a => a.Id == response.data.data[i].SetsRef.toString()
+          );
+
+            console.log('artwork : ',artwork)
+          artwork.Count = response.data.data[i].Count.toString();
+          setAllData(myNextList);
+
+
           console.log('x : ', x)
         }
         // console.log('newdata : ',newdata)
