@@ -12,10 +12,10 @@ import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 
 interface DataType {
     list: [],
-    PlaceHolder:"",value:"",onChange:null
+    PlaceHolder:"",value:"",onChange:null,setAllData:[],AllData:[],CurrentId:""
   }
 
-const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChange }) =>{
+const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChange,setAllData,AllData,CurrentId }) =>{
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
@@ -43,7 +43,15 @@ const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChan
   };
 
   const selectItem = item => {
-    setSearchValue(item.Title);
+    console.log('item : ',AllData)
+    const myNextList = [...AllData];
+    const artwork = myNextList.find(
+      a => a.Id == CurrentId
+    );
+    console.log('AllData : ',AllData)
+    artwork.Name = item.Title;
+    setAllData(myNextList);
+    // setSearchValue(item.Title);
     // setSelectedItem(item.id);
     setVisible(false);
   };
@@ -96,7 +104,7 @@ const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChan
             {list &&
               searchFilter(searchValue, list).map(x => (
                 <li
-                  key={x.id}
+                  key={x.Id}
                   onClick={() => selectItem(x)}
                   className="dropdown_item"
                 >
