@@ -10,7 +10,7 @@ const LinkedinIcon = S.withStyles(LinkedinOutlined);
 export const References: React.FC = () => {
   return (
     <S.ReferencesWrapper>
-      <S.Text>
+      {/* <S.Text>
         Made by{' '}
         <a href="https://altence.com" target="_blank" rel="noreferrer">
           Altence{' '}
@@ -19,7 +19,7 @@ export const References: React.FC = () => {
         <a href="https://ant.design/" target="_blank" rel="noreferrer">
           Ant-design.
         </a>
-      </S.Text>
+      </S.Text> */}
       {/* <S.Icons>
         <a href="https://github.com/altence/lightence-admin" target="_blank" rel="noreferrer">
           <GithubIcon />

@@ -193,6 +193,17 @@ const DefineSetsofProducts: React.FC = () => {
           style={{ textAlign: 'center' }}
 
           onChange={(v) => {
+
+
+            const myNextList = [...AllData];
+            const artwork = myNextList.find(
+              a => a.Id == record.Id.toString()
+            );
+            artwork.Counts = v.target.value;
+            setAllData(myNextList);
+
+
+
             if (DataProduct.filter(item1 => item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id).length == 0) {
               DataProduct.push({ "SetsRef": SetsSelectedItem, "ProductRef": record.Id, "Counts": v.target.value.toString() })
               console.log('text : ', DataProduct)
@@ -210,7 +221,7 @@ const DefineSetsofProducts: React.FC = () => {
 
             }
          
-            setCounter(Counter+1)
+           // setCounter(Counter+1)
           }}
         />
 
@@ -281,18 +292,20 @@ const DefineSetsofProducts: React.FC = () => {
               console.log('ProductRef : ',response.data.data[i].ProductRef.toString(),
               'Counts : ',response.data.data[i].Counts.toString() )
 
-              // setAllData((oldState) => ({
-              //   ...oldState,
-              //   Counts: response.data.data[i].Counts.toString()
-              // }));
-              // newdata.push({"Counts":response.data.data[i].Counts.toString()})
+              const myNextList = [...AllData];
+              const artwork = myNextList.find(
+                a => a.Id == response.data.data[i].ProductRef.toString()
+              );
+    
+                console.log('artwork : ',artwork)
+              artwork.Counts = response.data.data[i].Counts.toString();
+              setAllData(myNextList);
              }
             // }
           console.log('x : ', x)
         }
         // console.log('newdata : ',newdata)
         setSelectedRowKeys(x)
-        setCounter(Counter+1)
        
 
 
@@ -316,7 +329,7 @@ const DefineSetsofProducts: React.FC = () => {
           data1.push({
             KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
             Code: response.data.data[i].Code, UnitRef: response.data.data[i].UnitRef,
-            UnitTitle: response.data.data[i].UnitTitle, Counts: 0
+            UnitTitle: response.data.data[i].UnitTitle, Counts: ""
           })
         }
         console.log('data1 : ', data1)
@@ -370,8 +383,9 @@ const DefineSetsofProducts: React.FC = () => {
 
 
   useEffect(() => {
-    GetSets()
     GetProducts()
+    GetSets()
+   
   }, [Counter])
 
   return (

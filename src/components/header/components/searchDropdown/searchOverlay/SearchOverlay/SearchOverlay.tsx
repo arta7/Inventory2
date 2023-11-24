@@ -14,7 +14,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ data, isFilterVisi
   return (
     <S.Menu>
       <SearchFilter data={data} isVisible={isFilterVisible}>
-        {(filteredResults) => (filteredResults.length > 0 ? <SearchResults results={filteredResults} /> : <NotFound />)}
+        {(filteredResults) => (filteredResults.length > 0 ? <SearchResults results={filteredResults} /> : null)}
       </SearchFilter>
     </S.Menu>
   );

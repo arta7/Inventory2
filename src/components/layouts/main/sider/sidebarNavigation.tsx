@@ -104,40 +104,30 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     ],
   },
   {
-    title: 'common.authPages',
+    title: 'ثبت اطلاعات',
     key: 'auth',
     icon: <UserOutlined />,
     children: [
       {
-        title: 'common.login',
+        title: 'ثبت سند محصول',
         key: 'login',
         url: '/auth/login',
       },
       {
-        title: 'common.signUp',
+        title: 'ثبت سند ست محصول',
         key: 'singUp',
         url: '/auth/sign-up',
       },
       {
-        title: 'common.lock',
+        title: 'لیست سند محصولات ',
         key: 'lock',
         url: '/auth/lock',
       },
       {
-        title: 'common.forgotPass',
+        title: 'لیست سند ست محصولات',
         key: 'forgotPass',
         url: '/auth/forgot-password',
-      },
-      {
-        title: 'common.securityCode',
-        key: 'securityCode',
-        url: '/auth/security-code',
-      },
-      {
-        title: 'common.newPassword',
-        key: 'newPass',
-        url: '/auth/new-password',
-      },
+      }
     ],
   },
   {

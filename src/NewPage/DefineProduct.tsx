@@ -476,9 +476,10 @@ const DefineProduct: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput readOnly={true} placeholder="کد "
+              <Auth.FormInput  placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' />
+                // style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' 
+                />
             </Auth.FormItem>
 
             <BaseButtonsForm.Item name="State" label="واحد کالا"

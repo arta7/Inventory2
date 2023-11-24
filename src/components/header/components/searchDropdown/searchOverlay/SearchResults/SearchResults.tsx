@@ -17,16 +17,16 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
     () =>
       results.map((result) => (
         <List
-          key={result.category}
+          key={result.Id}
           split={false}
           header={t(`common.${camelize(result.category)}`)}
           dataSource={result.components}
           renderItem={(item) => (
-            <HashLink to={item.url}>
+       
               <List.Item>
-                <S.Text>{item.name}</S.Text>
+                <S.Text>{item.Title}</S.Text>
               </List.Item>
-            </HashLink>
+      
           )}
         />
       )),
