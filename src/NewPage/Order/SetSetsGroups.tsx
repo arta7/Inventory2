@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './../SForm.styles';
+import * as S from '../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
@@ -14,15 +14,16 @@ import { SearchDropdown } from '@app/components/header/components/searchDropdown
 import { components as configComponents, Component } from '@app/constants/config/components';
 import { Btn, InputSearch } from '@app/components/header/components/HeaderSearch/HeaderSearch.styles';
 import { BirthdayItem } from '@app/components/profile/profileCard/profileFormNav/nav/PersonalInfo/BirthdayItem/BirthdayItem';
-import { Config } from './../../Database/Config';
+import { Config } from '../../Database/Config';
 import {
   DatePicker
 } from "react-advance-jalaali-datepicker";
-import Tables from './../Tables';
+import Tables from '../Tables';
 import axios from 'axios';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm, Col, Row } from 'antd';
 import Searchinput from '../Searchinput';
+import SearchinputSets from '../SearchinputSets';
 // import { SearchFilter } from '@app/components/header/components/searchDropdown/searchOverlay/SearchFilter/SearchFilter';
 // import { SearchResults } from '@app/components/header/components/searchDropdown/searchOverlay/SearchResults/SearchResults';
 // import { CategoryComponents } from '@app/components/header/components/HeaderSearch/HeaderSearch';
@@ -53,7 +54,7 @@ const SetProduce: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
   const [AllData, setAllData] = useState([]);
-  const [ProductData, setProductData] = useState([]);
+  const [SetsData, setSetsData] = useState([]);
   const [StatesData, setStatesData] = useState([]);
   const [GroupsData, setGroupsData] = useState([])
   const [query, setQuery] = useState('');
@@ -83,7 +84,7 @@ const SetProduce: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'نام کالا ',
+      title: 'نام ست ',
       dataIndex: 'Name',
       key: 'Name',
       width: '30%',
@@ -95,7 +96,7 @@ const SetProduce: React.FC = () => {
           }
         } >
 
-        <Searchinput list={ProductData} PlaceHolder="نام کالا" value={record.Name}
+        <SearchinputSets list={SetsData} PlaceHolder="نام ست" value={record.Name}
           CurrentId={record.Id}
           setAllData={setAllData}
           AllData={AllData}
@@ -104,7 +105,7 @@ const SetProduce: React.FC = () => {
       </div>
     },
     {
-      title: 'کد کالا',
+      title: 'کد ست',
       dataIndex: 'Code',
       key: 'Code',
       width: '20%',
@@ -115,7 +116,7 @@ const SetProduce: React.FC = () => {
             width: "100%",
           }
         } >
-        <Auth.FormInput placeholder="کد کالا"
+        <Auth.FormInput placeholder="کد ست"
           value={record.Code}
           readOnly={true}
           style={{ textAlign: 'center' }}
@@ -140,53 +141,53 @@ const SetProduce: React.FC = () => {
       </div>
     },
     {
-      title: 'ProductId',
-      dataIndex: 'ProductId',
-      key: 'ProductId',
+      title: 'SetsId',
+      dataIndex: 'SetsId',
+      key: 'SetsId',
       width: '0%',
       hidden: true,
     },
 
-    {
-      title: 'واحد کالا ',
-      dataIndex: 'Units',
-      key: 'Units',
-      width: '15%',
-      hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
-        style={
-          {
-            width: "100%",
-          }
-        } >
-        <Auth.FormInput placeholder="واحد کالا"
-          value={record.Units}
-          style={{ textAlign: 'center' }}
+    // {
+    //   title: 'واحد کالا ',
+    //   dataIndex: 'Units',
+    //   key: 'Units',
+    //   width: '15%',
+    //   hidden: false,
+    //   render: (text, record, index) => < div className="btn-wrap"
+    //     style={
+    //       {
+    //         width: "100%",
+    //       }
+    //     } >
+    //     <Auth.FormInput placeholder="واحد کالا"
+    //       value={record.Units}
+    //       style={{ textAlign: 'center' }}
 
-          onChange={(v) => {
+    //       onChange={(v) => {
 
-            console.log('v', v)
+    //         console.log('v', v)
 
-          }
+    //       }
 
 
-          }
-          readOnly={true}
-        />
+    //       }
+    //       readOnly={true}
+    //     />
 
-      </div>
-    },
-    {
-      title: 'واحد کالا ',
-      dataIndex: 'UnitsRef',
-      key: 'UnitsRef',
-      width: '0%',
-      hidden: true,
-    },
+    //   </div>
+    // },
+    // {
+    //   title: 'واحد کالا ',
+    //   dataIndex: 'UnitsRef',
+    //   key: 'UnitsRef',
+    //   width: '0%',
+    //   hidden: true,
+    // },
     {
       title: 'تعداد',
-      dataIndex: 'Counts',
-      key: 'Counts',
+      dataIndex: 'Count',
+      key: 'Count',
       width: '15%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
@@ -196,7 +197,7 @@ const SetProduce: React.FC = () => {
           }
         } >
         <Auth.FormInput placeholder="عدد"
-          value={record.Counts}
+          value={record.Count}
           style={{ textAlign: 'center' }}
 
           onChange={(v) => {
@@ -205,7 +206,7 @@ const SetProduce: React.FC = () => {
             const artwork = myNextList.find(
               a => a.Id === record.Id
             );
-            artwork.Counts = v.target.value;
+            artwork.Count = v.target.value;
             setAllData(myNextList);
 
           }
@@ -280,7 +281,7 @@ const SetProduce: React.FC = () => {
   ]
 
   useEffect(() => {
-    GetProducts()
+    GetSets()
     GetStates()
     GetGroups()
   }, [])
@@ -324,7 +325,7 @@ const SetProduce: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
         console.log('result Id : ', response.data.data)
-        AddProductDocuments(response.data.data[0].Id)
+        AddSetsDocuments(response.data.data[0].Id)
       
       })
       .catch((error) => {
@@ -332,13 +333,13 @@ const SetProduce: React.FC = () => {
       })
   }
 
-  let AddProductDocuments = (_id) => {
+  let AddSetsDocuments = (_id) => {
 
 
     var dataPush = [];
     for (let i = 0; i < AllData.length; i++) {
 
-      dataPush.push({"ProductRef":AllData[i].ProductId.toString(),"Counts":AllData[i].Counts.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
+      dataPush.push({"SetsRef":AllData[i].SetsId.toString(),"Counts":AllData[i].Count.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
     }
 
 
@@ -348,7 +349,7 @@ const SetProduce: React.FC = () => {
 
     }
     axios.post(Config.URL +
-      Config.Defination.AddProductDocuments, data)
+      Config.Defination.AddSetsDocuments, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
 
@@ -382,13 +383,13 @@ const SetProduce: React.FC = () => {
 
 
 
-  let GetProducts = () => {
+  let GetSets = () => {
 
     axios.post(Config.URL +
-      Config.Defination.GetProducts)
+      Config.Defination.GetSets)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setProductData(response.data.data)
+        setSetsData(response.data.data)
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -517,9 +518,9 @@ const SetProduce: React.FC = () => {
               onClick={() => {
                 if (date != '' && selectedGroups != "" && selectedStates != "")
                 {
-                  console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString())
-                  if(AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  AddDocumentControls("", "1", 1, 1)
+                  console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString())
+                  if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
+                  AddDocumentControls("", "2", 1, 1)
                 else
                 alert('لطفا داده ها پایین صفحه را کامل پر کنید')
                 }
@@ -542,7 +543,7 @@ const SetProduce: React.FC = () => {
         <Auth.SubmitButton loading={isLoading}
           onClick={() => {
             // setAllData([{Code:"",Name:"",ProductId:"",Units:"",UnitsRef:"",Counts:"",Details:""}])
-            setAllData([...AllData, { Code: "", Name: "", ProductId: "", Units: "", UnitsRef: "", Counts: "", Details: "", Id: ControlId }]);
+            setAllData([...AllData, { Code: "", Name: "", SetsId: "", Count: "", Details: "", Id: ControlId }]);
             setControlId(ControlId + 1)
           }}
         >

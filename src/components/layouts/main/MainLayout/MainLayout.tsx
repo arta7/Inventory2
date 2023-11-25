@@ -25,9 +25,9 @@ const MainLayout: React.FC = () => {
     <S.LayoutMaster>
       <MainSider isCollapsed={siderCollapsed} setCollapsed={setSiderCollapsed} />
       <S.LayoutMain>
-        <MainHeader isTwoColumnsLayout={isTwoColumnsLayout}>
+        {/* <MainHeader isTwoColumnsLayout={isTwoColumnsLayout}>
           <Header toggleSider={toggleSider} isSiderOpened={!siderCollapsed} isTwoColumnsLayout={isTwoColumnsLayout} />
-        </MainHeader>
+        </MainHeader> */}
         <MainContent id="main-content" $isTwoColumnsLayout={isTwoColumnsLayout}>
           <div>
             <Outlet />

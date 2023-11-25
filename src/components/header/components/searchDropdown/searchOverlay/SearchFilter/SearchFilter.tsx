@@ -43,13 +43,13 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({ data, isVisible, chi
 
   return (
     <>
-      <S.FilterWrapper isVisible={isVisible}>
+      {/* <S.FilterWrapper isVisible={isVisible}>
         <S.CheckboxGroup onChange={(checkedValues) => setSelectedFilter(checkedValues as CategoryType[])}>
           <Row>{filterElements}</Row>
         </S.CheckboxGroup>
       </S.FilterWrapper>
 
-      {filteredResults && children(filteredResults)}
+      {filteredResults && children(filteredResults)} */}
     </>
   );
 };

@@ -402,8 +402,6 @@ const DefineStates: React.FC = () => {
       .catch((error) => {
         console.log('Error : ', error)
       })
-
-
   }
 
   useEffect(() => {

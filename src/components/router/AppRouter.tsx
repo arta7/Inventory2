@@ -79,6 +79,7 @@ const DefineGroupsofSets = React.lazy(() => import('@app/NewPage/DefineGroupsofS
 
 
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
+const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
 
 // export const NFT_DASHBOARD_PATH = '/';
@@ -154,6 +155,7 @@ const DefineUnitFallback = withLoading(DefineUnit)
 const DefineGroupsofSetsFallback = withLoading(DefineGroupsofSets)
 const DefineSetsofProductsFallback = withLoading(DefineSetsofProducts)
 const SetProduceFallback = withLoading(SetProduce)
+const SetSetsGroupsFallback = withLoading(SetSetsGroups)
 
 
 export const AppRouter: React.FC = () => {
@@ -195,7 +197,7 @@ export const AppRouter: React.FC = () => {
 
           <Route path="SetProduce" element={<SetProduceFallback />} />
 
-
+          <Route path="SetSetsGroups" element={<SetSetsGroupsFallback />} />
 
           
           <Route path="charts" element={<Charts />} />

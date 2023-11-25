@@ -9,17 +9,21 @@ import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
 import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import * as S from './LoginForm.styles';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
+import { Config } from './../../../Database/Config';
+import bcrypt from 'bcryptjs';
 
+import axios from 'axios';
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 export const initValues: LoginFormData = {
-  email: 'hello@altence.com',
-  password: 'some-test-pass',
+  username: '',
+  password: '',
 };
-
+const salt = bcrypt.genSaltSync(10)
+// const hashedPassword = bcrypt.hashSync("123", '$2a$10$CwTycUXWue0Thq9StjUM0u')
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -28,24 +32,54 @@ export const LoginForm: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = (values: LoginFormData) => {
-    setLoading(true);
-    dispatch(doLogin(values))
-      .unwrap()
-      .then(() => navigate('/'))
-      .catch((err) => {
-        notificationController.error({ message: err.message });
-        setLoading(false);
-      });
+    console.log('data',values.username)
+    // setLoading(true);
+    // dispatch(doLogin(values))
+    //   .unwrap()
+    //   .then(() => GetLoginData(values.username,values.password))
+    //   .catch((err) => {
+    //     notificationController.error({ message: err.message });
+    //     setLoading(false);
+    //   });
+    GetLoginData(values.username,values.password)
   };
+
+
+
+   let GetLoginData=(_username,_pass)=>{
+    
+   var pass = bcrypt.hashSync(_pass.toString(), '$2a$10$CwTycUXWue0Thq9StjUM0u')
+    var data={
+      "Username":_username,
+      "Password": pass
+    }
+
+    console.log('data var : ',data)
+    axios.post(Config.URL +
+      Config.Defination.GetUsersWithUsernameandPass)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  // let removeData = (_id) => {
+  //   console.log("Id : ", _id)
+  //   let filteredArray = AllData.filter(item => item.Id !== _id)
+  //   console.log("filteredArray : ", filteredArray)
+  //   setAllData(filteredArray)
+  //  }
 
   return (
     <Auth.FormWrapper >
-      <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional" initialValues={initValues}  >
+      <BaseForm layout="vertical" onFinish={handleSubmit}  initialValues={initValues}  >
         <Auth.FormTitle >صفحه ورود</Auth.FormTitle>
         {/* <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription> */}
         <Auth.FormItem
         
-          name="email"
+          name="username"
           label="نام کاربری"
           rules={[
             { required: true, message: t('common.requiredField') },
@@ -73,7 +107,9 @@ export const LoginForm: React.FC = () => {
           </Link> */}
         </Auth.ActionsWrapper>
         <BaseForm.Item noStyle>
-          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
+          <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+          onClick={()=>GetLoginData}
+          >
           ورود
           </Auth.SubmitButton>
         </BaseForm.Item>

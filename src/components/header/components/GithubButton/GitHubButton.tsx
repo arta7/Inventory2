@@ -9,16 +9,17 @@ export const GitHubButton: React.FC = (props) => {
   const theme = useAppSelector((state) => state.theme.theme);
 
   return (
-    <Button
-      type="link"
-      href=""
-      icon={<GithubIcon />}
-      target="_blank"
-      $isDark={theme === 'dark'}
-      {...props}
-    >
-      GitHub
-    </Button>
+    // <Button
+    //   type="link"
+    //   href=""
+    //   icon={<GithubIcon />}
+    //   target="_blank"
+    //   $isDark={theme === 'dark'}
+    //   {...props}
+    // >
+    //   GitHub
+    // </Button>
+    null
   );
 };
 

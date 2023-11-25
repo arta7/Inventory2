@@ -9,7 +9,7 @@ interface DataType {
     PlaceHolder:"",value:"",onChange:null,setAllData:[],AllData:[],CurrentId:""
   }
 
-const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChange,setAllData,AllData,CurrentId }) =>{
+const SearchinputSets  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChange,setAllData,AllData,CurrentId }) =>{
   const [visible, setVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -54,9 +54,7 @@ const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChan
     console.log('AllData : ',AllData)
     artwork.Name = item.Title;
     artwork.Code = item.Code;
-    artwork.UnitsRef = item.UnitRef;
-    artwork.Units = item.UnitTitle;
-    artwork.ProductId = item.Id
+    artwork.SetsId = item.Id;
     setAllData(myNextList);
     setVisible(false);
   };
@@ -111,4 +109,4 @@ const Searchinput  : React.FC<DataType> = ({ list,PlaceHolder="",value="",onChan
   );
 };
 
-export default Searchinput;
+export default SearchinputSets;
