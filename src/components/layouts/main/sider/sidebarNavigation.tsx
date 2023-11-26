@@ -110,18 +110,18 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     children: [
       {
         title: 'ثبت سند محصول',
-        key: 'login',
-        url: '/auth/login',
+        key: 'setproduce',
+        url: '/setproduce',
       },
       {
         title: 'ثبت سند ست محصول',
-        key: 'singUp',
-        url: '/auth/sign-up',
+        key: 'SetSetsGroups',
+        url: '/SetSetsGroups',
       },
       {
         title: 'لیست سند محصولات ',
-        key: 'lock',
-        url: '/auth/lock',
+        key: 'SetProduceList',
+        url: '/SetProduceList',
       },
       {
         title: 'لیست سند ست محصولات',

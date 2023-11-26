@@ -23,14 +23,9 @@ import axios from 'axios';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm, Col, Row } from 'antd';
 import Searchinput from '../Searchinput';
-// import { SearchFilter } from '@app/components/header/components/searchDropdown/searchOverlay/SearchFilter/SearchFilter';
-// import { SearchResults } from '@app/components/header/components/searchDropdown/searchOverlay/SearchResults/SearchResults';
-// import { CategoryComponents } from '@app/components/header/components/HeaderSearch/HeaderSearch';
+import { DataUsers } from '../DataUsers';
+import UserContext from './../UserContext';
 
-// interface DefinePostData {
-//   Title: string;
-//   Code: string;
-// }
 
 interface DataType {
   columns: []
@@ -65,6 +60,7 @@ const SetProduce: React.FC = () => {
   const [ProductName, setProductName] = useState({})
   const [isModalVisible, setModalVisible] = useState(false);
   const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const { userData,setUserData } = React.useContext(UserContext);
   var moment = require('jalali-moment');
   const sortedResults = query
     ? categoriesList.reduce((acc, current) => {
@@ -279,10 +275,17 @@ const SetProduce: React.FC = () => {
 
   ]
 
+
+    let  GetDataUser=()=>{
+      console.log('UserData test : ',userData[0].UserId.toString())
+    }
+
   useEffect(() => {
     GetProducts()
     GetStates()
     GetGroups()
+    GetDataUser()
+
   }, [])
 
 
@@ -519,7 +522,7 @@ const SetProduce: React.FC = () => {
                 {
                   console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString())
                   if(AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  AddDocumentControls("", "1", 1, 1)
+                  AddDocumentControls("", "1", userData[0].UserId.toString(), 1)
                 else
                 alert('لطفا داده ها پایین صفحه را کامل پر کنید')
                 }

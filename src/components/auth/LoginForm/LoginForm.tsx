@@ -11,8 +11,9 @@ import * as S from './LoginForm.styles';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import { Config } from './../../../Database/Config';
 import bcrypt from 'bcryptjs';
-
+import UserContext from './../../../NewPage/UserContext';
 import axios from 'axios';
+import { DataUsers } from '@app/NewPage/DataUsers';
 interface LoginFormData {
   username: string;
   password: string;
@@ -28,20 +29,20 @@ export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
+  const { userData,setUserData } = React.useContext(UserContext);
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = (values: LoginFormData) => {
-    console.log('data',values.username)
-    // setLoading(true);
-    // dispatch(doLogin(values))
+    // console.log('data START : ',values.username.toString(),values.password.toString())
+     setLoading(true);
+    // dispatch(GetLoginData(values.username.toString(),values.password.toString()))
     //   .unwrap()
-    //   .then(() => GetLoginData(values.username,values.password))
+    //   .then(() => navigate('/'))
     //   .catch((err) => {
     //     notificationController.error({ message: err.message });
     //     setLoading(false);
     //   });
-    GetLoginData(values.username,values.password)
+     GetLoginData(values.username.toString(),values.password.toString())
   };
 
 
@@ -50,18 +51,36 @@ export const LoginForm: React.FC = () => {
     
    var pass = bcrypt.hashSync(_pass.toString(), '$2a$10$CwTycUXWue0Thq9StjUM0u')
     var data={
-      "Username":_username,
-      "Password": pass
+      "Username":_username.toString(),
+      "PassWord": pass.toString()
     }
 
     console.log('data var : ',data)
     axios.post(Config.URL +
-      Config.Defination.GetUsersWithUsernameandPass)
+      Config.Defination.GetUsersWithUsernameandPass,data)
       .then((response) => {
+        if(response.data.data.length>0)
+        {
+          DataUsers.UserId = response.data.data[0].Id.toString();
+          DataUsers.Username = response.data.data[0].Username.toString();
+          localStorage.setItem('Username', response.data.data[0].Username);
+          localStorage.setItem('UserId', response.data.data[0].Id);
+          setUserData([{UserId:response.data.data[0].Id.toString(),
+          Username:response.data.data[0].Username
+          }])
+        
+          navigate('/')
+        }
+        else
+        {
+          navigate('/')
+        }
+        setLoading(false);
         console.log('response data : ', response.data.data)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false);
       })
   }
 

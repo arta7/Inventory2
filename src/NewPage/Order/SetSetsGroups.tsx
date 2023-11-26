@@ -24,13 +24,7 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm, Col, Row } from 'antd';
 import Searchinput from '../Searchinput';
 import SearchinputSets from '../SearchinputSets';
-// import { SearchFilter } from '@app/components/header/components/searchDropdown/searchOverlay/SearchFilter/SearchFilter';
-// import { SearchResults } from '@app/components/header/components/searchDropdown/searchOverlay/SearchResults/SearchResults';
-// import { CategoryComponents } from '@app/components/header/components/HeaderSearch/HeaderSearch';
-
-// interface DefinePostData {
-//   Title: string;
-//   Code: string;
+import UserContext from './../UserContext';
 // }
 
 interface DataType {
@@ -66,6 +60,7 @@ const SetProduce: React.FC = () => {
   const [ProductName, setProductName] = useState({})
   const [isModalVisible, setModalVisible] = useState(false);
   const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const { userData,setUserData } = React.useContext(UserContext);
   var moment = require('jalali-moment');
   const sortedResults = query
     ? categoriesList.reduce((acc, current) => {
@@ -284,10 +279,14 @@ const SetProduce: React.FC = () => {
     GetSets()
     GetStates()
     GetGroups()
+    GetDataUser()
   }, [])
 
 
-
+  let  GetDataUser=()=>{
+    console.log('UserData test : ',userData[0].UserId.toString())
+  }
+  
   let GetStates = () => {
 
 
@@ -520,9 +519,9 @@ const SetProduce: React.FC = () => {
                 {
                   console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString())
                   if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  AddDocumentControls("", "2", 1, 1)
+                  AddDocumentControls("", "2", userData[0].UserId.toString(), 1)
                 else
-                alert('لطفا داده ها پایین صفحه را کامل پر کنید')
+                alert('لطفا داده ها  را کامل پر کنید')
                 }
                 
               }}
