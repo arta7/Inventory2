@@ -348,18 +348,15 @@ const DefinePost: React.FC = () => {
           } > ویرایش
         </Button>
 
-        < Button
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeletePost(record.Id)}>
+            < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
-             DeletePost(record.Id)
-            // (e) => {
-            //   <Popconfirm title="Sure to delete?" onConfirm={() => DeleteUnits(record.Id)}>
-            //     <a></a>
-            //   </Popconfirm>
-
-            // }
-          } > حذف
-        </Button>
+            console.log('')
+          }
+          >حذف
+          </Button>
+          </Popconfirm>
       </div >
     }
 

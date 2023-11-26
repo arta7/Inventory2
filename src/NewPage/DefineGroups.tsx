@@ -421,18 +421,15 @@ const DefineGroups: React.FC = () => {
           } > ویرایش
         </Button>
 
-        < Button
+         <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteGroups(record.Id)}>
+            < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
-             DeleteGroups(record.Id)
-            // (e) => {
-            //   <Popconfirm title="Sure to delete?" onConfirm={() => DeleteUnits(record.Id)}>
-            //     <a></a>
-            //   </Popconfirm>
-
-            // }
-          } > حذف
-        </Button>
+            console.log('')
+          }
+          >حذف
+          </Button>
+          </Popconfirm>
       </div >
     }
 

@@ -323,18 +323,16 @@ const DefineProduct: React.FC = () => {
           } > ویرایش
         </Button>
 
-        < Button
+
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteStates(record.Id)}>
+            < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
-            DeleteStates(record.Id)
-            // (e) => {
-            //   <Popconfirm title="Sure to delete?" onConfirm={() => DeleteUnits(record.Id)}>
-            //     <a></a>
-            //   </Popconfirm>
-
-            // }
-          } > حذف
-        </Button>
+            console.log('')
+          }
+          >حذف
+          </Button>
+          </Popconfirm>
       </div >
     }
 

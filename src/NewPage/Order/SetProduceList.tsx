@@ -141,7 +141,7 @@ const SetProduceList: React.FC = () => {
       title: 'نوع سند',
       dataIndex: 'StatesTitle',
       key: 'StatesTitle',
-      width: '20%',
+      width: '15%',
       hidden: false,
       
       ...getColumnSearchProps('StatesTitle'),
@@ -150,20 +150,6 @@ const SetProduceList: React.FC = () => {
       title: 'StatesRef ',
       dataIndex: 'StatesRef',
       key: 'StatesRef',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'ثبت کننده ',
-      dataIndex: 'Username',
-      key: 'Username',
-      width: '20%',
-      hidden: false,
-    },
-    {
-      title: 'UserRef ',
-      dataIndex: 'UserRef',
-      key: 'UserRef',
       width: '0%',
       hidden: true,
     },
@@ -185,7 +171,7 @@ const SetProduceList: React.FC = () => {
       title: 'سال مالی',
       dataIndex: 'FiscalTitle',
       key: 'FiscalTitle',
-      width: '20%',
+      width: '10%',
       hidden: false,
     },
     {
@@ -208,6 +194,20 @@ const SetProduceList: React.FC = () => {
       key: 'Id',
       width: '0%',
       hidden: true
+    },
+    {
+      title: 'ثبت کننده ',
+      dataIndex: 'Username',
+      key: 'Username',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'UserRef ',
+      dataIndex: 'UserRef',
+      key: 'UserRef',
+      width: '0%',
+      hidden: true,
     },
     {
       title: '',
@@ -239,12 +239,18 @@ const SetProduceList: React.FC = () => {
           } > ویرایش
         </Button>
 
-        < Button
+     
+            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
+            < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
-            DeleteParts(record.Id)
-          } > حذف
-        </Button>
+            console.log('')
+          }
+          >حذف
+          </Button>
+          </Popconfirm>
+           
+      
       </div >
     }
 
@@ -255,21 +261,7 @@ const SetProduceList: React.FC = () => {
 
   let DeleteParts = (_id) => {
 
-    var data = {
-
-      "Id": _id
-
-    }
-
-    axios.post(Config.URL +
-      Config.Defination.DeleteParts, data)
-      .then((response) => {
-        console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-      })
+   
 
 
   }
