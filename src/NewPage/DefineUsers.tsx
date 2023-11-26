@@ -229,19 +229,27 @@ const DefineUsers: React.FC = () => {
           } > ویرایش
         </Button>
 
-        < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={() =>
-            DeleteUsersWithUsername(record.Username.toString())
-          } > حذف
-        </Button>
 
-        < Button
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>     DeleteUsersWithUsername(record.Username.toString())}>
+            < Button
+          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+          onClick={()=>
+            console.log('')
+          }
+          >حذف
+          </Button>
+          </Popconfirm>
+
+
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>       ResetPassword(record.Username.toString(),hashedPassword)}>
+            < Button
           style={{ marginRight: 20, backgroundColor: 'yellow', color: 'black' }}
-          onClick={() =>
-            ResetPassword(record.Username.toString(),hashedPassword)
-          } > بازیابی رمز عبور
-        </Button>
+          onClick={()=>
+            console.log('')
+          }
+          >بازیابی رمز عبور
+          </Button>
+          </Popconfirm>
       </div >
     }
 

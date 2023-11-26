@@ -194,8 +194,8 @@ const DefineSetsofProducts: React.FC = () => {
     },
     {
       title: 'دسترسی ها',
-      dataIndex: 'Access',
-      key: 'Access',
+      dataIndex: 'TypeAccess',
+      key: 'TypeAccess',
       width: '60%',
       hidden: false,
       render: (text, record, index) =>
@@ -221,7 +221,7 @@ const DefineSetsofProducts: React.FC = () => {
               console.log('x : ', PostDataAccess)
             }
            
-          }} value={item.value}>{item.label}</Checkbox>
+          }} value={item.value} >{item.label}</Checkbox>
         ))
 
     }
@@ -277,7 +277,7 @@ const DefineSetsofProducts: React.FC = () => {
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({
             KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-            Code: response.data.data[i].Code, Active: response.data.data[i].Active
+            Code: response.data.data[i].Code, Active: response.data.data[i].Active,Shower:0,Edit:0,Adds:0,Prints:0,Deletes:0
           })
         }
         console.log('data1 : ', data1)

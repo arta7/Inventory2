@@ -9,7 +9,7 @@ import ForgotPasswordPage from '@app/pages/ForgotPasswordPage';
 import SecurityCodePage from '@app/pages/SecurityCodePage';
 import NewPasswordPage from '@app/pages/NewPasswordPage';
 import LockPage from '@app/pages/LockPage';
-
+// import { FirstScreen } from '@app/NewPage/FirstScreen';
 import MainLayout from '@app/components/layouts/main/MainLayout/MainLayout';
 import ProfileLayout from '@app/components/profile/ProfileLayout';
 import RequireAuth from '@app/components/router/RequireAuth';
@@ -77,8 +77,13 @@ const DefineParts = React.lazy(() => import('@app/NewPage/DefineParts'));
 const DefineSetsofProducts = React.lazy(() => import('@app/NewPage/DefineSetsofProducts'));
 const DefineGroupsofSets = React.lazy(() => import('@app/NewPage/DefineGroupsofSets'));
 
+const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
+
 
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
+const SetProduceList = React.lazy(() => import('@app/NewPage/Order/SetProduceList'));
+const SetsetsGroupsList = React.lazy(() => import('@app/NewPage/Order/SetsetsGroupsList'));
+const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
 
 // export const NFT_DASHBOARD_PATH = '/';
@@ -154,6 +159,10 @@ const DefineUnitFallback = withLoading(DefineUnit)
 const DefineGroupsofSetsFallback = withLoading(DefineGroupsofSets)
 const DefineSetsofProductsFallback = withLoading(DefineSetsofProducts)
 const SetProduceFallback = withLoading(SetProduce)
+const SetSetsGroupsFallback = withLoading(SetSetsGroups)
+const FirstScreenFallback = withLoading(FirstScreen)
+const SetProduceListFallback = withLoading(SetProduceList)
+const SetsetsGroupsListFallback = withLoading(SetsetsGroupsList)
 
 
 export const AppRouter: React.FC = () => {
@@ -168,7 +177,7 @@ export const AppRouter: React.FC = () => {
       <Routes>
         <Route path={MEDICAL_DASHBOARD_PATH} element={protectedLayout}>
           {/* <Route index element={<NftDashboard />} /> */}
-          <Route path={MEDICAL_DASHBOARD_PATH} element={<MedicalDashboard />} />
+          <Route path={MEDICAL_DASHBOARD_PATH} element={<FirstScreenFallback />} />
           <Route path="apps">
             <Route path="feed" element={<NewsFeed />} />
             <Route path="kanban" element={<Kanban />} />
@@ -181,6 +190,9 @@ export const AppRouter: React.FC = () => {
           
 
           <Route path="DefineUsers" element={<DefineUsersFallback />} />
+          <Route path="SetProduceList" element={<SetProduceListFallback />} />
+          <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />
+
           <Route path="DefineStates" element={<DefineStatesFallback />} />
           <Route path="DefinePost" element={<DefinePostFallback />} />
           <Route path="DefineProduct" element={<DefineProductFallback/>} />
@@ -195,7 +207,7 @@ export const AppRouter: React.FC = () => {
 
           <Route path="SetProduce" element={<SetProduceFallback />} />
 
-
+          <Route path="SetSetsGroups" element={<SetSetsGroupsFallback />} />
 
           
           <Route path="charts" element={<Charts />} />
@@ -243,6 +255,7 @@ export const AppRouter: React.FC = () => {
             <Route path="skeleton" element={<Skeletons />} />
           </Route> */}
         </Route>
+        <Route path="FirstScreen" element={<FirstScreenFallback />} />
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="sign-up" element={<SignUpPage />} />
