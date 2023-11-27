@@ -66,7 +66,8 @@ export const LoginForm: React.FC = () => {
           localStorage.setItem('Username', response.data.data[0].Username);
           localStorage.setItem('UserId', response.data.data[0].Id);
           setUserData([{UserId:response.data.data[0].Id.toString(),
-          Username:response.data.data[0].Username
+          Username:response.data.data[0].Username,selectedProductId:'',
+          selectedSetsId:''
           }])
         
           navigate('/')

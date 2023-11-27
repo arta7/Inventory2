@@ -125,20 +125,20 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       },
       {
         title: 'لیست سند ست محصولات',
-        key: 'forgotPass',
-        url: '/auth/forgot-password',
+        key: 'SetsetsGroupsList',
+        url: '/SetsetsGroupsList',
       }
     ],
   },
   {
-    title: 'common.forms',
-    key: 'forms',
+    title: 'دسترسی مدیریت',
+    key: 'Dashboard',
     icon: <FormOutlined />,
     children: [
       {
-        title: 'common.advancedForms',
-        key: 'advanced-forms',
-        url: '/forms/advanced-forms',
+        title: 'کاردکس تعدادی',
+        key: 'kardex',
+        url: '/kardex',
       },
     ],
   },

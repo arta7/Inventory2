@@ -233,9 +233,7 @@ const DefineUsers: React.FC = () => {
         <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>     DeleteUsersWithUsername(record.Username.toString())}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
-          }
+         
           >حذف
           </Button>
           </Popconfirm>
@@ -244,9 +242,7 @@ const DefineUsers: React.FC = () => {
         <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>       ResetPassword(record.Username.toString(),hashedPassword)}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'yellow', color: 'black' }}
-          onClick={()=>
-            console.log('')
-          }
+         
           >بازیابی رمز عبور
           </Button>
           </Popconfirm>

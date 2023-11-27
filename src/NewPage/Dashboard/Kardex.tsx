@@ -32,7 +32,7 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const SetProduceList: React.FC = () => {
+const Kardex: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -164,7 +164,7 @@ const SetProduceList: React.FC = () => {
       title: 'درخواست کننده',
       dataIndex: 'SecondUsername',
       key: 'SecondUsername',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -178,7 +178,7 @@ const SetProduceList: React.FC = () => {
       title: 'سال مالی',
       dataIndex: 'FiscalTitle',
       key: 'FiscalTitle',
-      width: '10%',
+      width: '0%',
       hidden: true,
     },
     {
@@ -199,72 +199,59 @@ const SetProduceList: React.FC = () => {
       title: 'تاریخ سند',
       dataIndex: 'Datevalue',
       key: 'Datevalue',
-      width: '20%',
-      hidden: true,
-    },
-    {
-      title: 'ثبت کننده ',
-      dataIndex: 'Username',
-      key: 'Username',
-      width: '20%',
-      hidden: false,
-    },
-    {
-      title: 'UserRef ',
-      dataIndex: 'UserRef',
-      key: 'UserRef',
       width: '0%',
       hidden: true,
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'Action',
-      width: '40%',
-      hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
+        title: 'سند ورودی',
+        dataIndex: 'InsertValue',
+        key: 'InsertValue',
+        width: '15%',
+        hidden: false,
+      },
+      {
+        title: 'سند خروجی',
+        dataIndex: 'ExitValue',
+        key: 'ExitValue',
+        width: '15%',
+        hidden: false,
+      },
+
+      {
+        title: 'مانده موجودی',
+        dataIndex: 'Deposit',
+        key: 'Deposit',
+        width: '15%',
+        hidden: false,
+        render: (text, record, index) => 
+        
+        < div className="btn-wrap"
         style={
           {
-            width: "200px",
+            width: "100px",
           }
-        } > < Button
-          style={{ backgroundColor: 'green', color: 'white' }}
-          onClick={
-            (e) => {
-              // form.setFieldsValue({
-              //   Title: record.Title.toString(),
-              //   Code: record.Code.toString(),
-              //    State:record.Active.toString()
+        } >
 
-              // })
-              // setTitles(record.Title.toString())
-              // setCode(record.Code.toString())
-              // setId(record.Id.toString())
-              // console.log('record.StateType : ',record.Active)        
-              //  setSelectedItem(record.Active)
-            }
-          } > ویرایش
-        </Button>
-
-     
-            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
-          }
-          >حذف
-          </Button>
-          </Popconfirm>
-           
-      
+          {
+             index > 0  ? record.InsertValue - record.ExitValue + SumData(index,AllData) : record.InsertValue - record.ExitValue
+          } 
       </div >
-    }
+      ,
+      
+      },
+
 
   ];
 
 
-
+  let SumData=(index,Data)=>{
+     var datasum = 0;
+    for(let i=0;i<index;i++)
+    {
+          datasum += Data[i].InsertValue - Data[i].ExitValue
+    }
+    return datasum;
+  }
 
   let DeleteParts = (_id) => {
 
@@ -275,14 +262,16 @@ const SetProduceList: React.FC = () => {
 
 
 
-  let GetProductsDocuments = (_fiscal) => {
+  let GetKardex = (_product,_fiscal) => {
 
 var data={
-  "FiscalYearRef":_fiscal
+  "FiscalYearRef":_fiscal,
+  "ProductRef":_product
+
 }
  
     axios.post(Config.URL +
-      Config.Defination.GetProductsDocuments,data)
+      Config.Defination.GetKardex,data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
@@ -296,7 +285,8 @@ var data={
              ,SecondUserRef:response.data.data[i].SecondUserRef,
              SecondUsername: response.data.data[i].SecondUsername,
              Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-             Datevalue : response.data.data[i].Date
+             Datevalue : response.data.data[i].Date,InsertValue:response.data.data[i].InsertValue,
+             ExitValue : response.data.data[i].ExitValue
             })
         }
         console.log('data1 : ', data1)
@@ -311,7 +301,7 @@ var data={
 
   useEffect(() => {
 
-    GetProductsDocuments(1)
+    GetKardex(3,1)
   }, [Counter])
 
 
@@ -333,6 +323,6 @@ var data={
   );
 };
 
-export default SetProduceList;
+export default Kardex;
 
 

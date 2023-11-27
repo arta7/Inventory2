@@ -32,7 +32,7 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const SetProduceList: React.FC = () => {
+const SetsetsGroupsList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -202,6 +202,7 @@ const SetProduceList: React.FC = () => {
       width: '20%',
       hidden: true,
     },
+   
     {
       title: 'ثبت کننده ',
       dataIndex: 'Username',
@@ -275,16 +276,16 @@ const SetProduceList: React.FC = () => {
 
 
 
-  let GetProductsDocuments = (_fiscal) => {
+  let GetSetsDocuments = (_fiscal) => {
 
 var data={
   "FiscalYearRef":_fiscal
 }
  
     axios.post(Config.URL +
-      Config.Defination.GetProductsDocuments,data)
+      Config.Defination.GetSetsDocuments,data)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        console.log('response data group sets : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({ Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
@@ -296,7 +297,7 @@ var data={
              ,SecondUserRef:response.data.data[i].SecondUserRef,
              SecondUsername: response.data.data[i].SecondUsername,
              Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-             Datevalue : response.data.data[i].Date
+             Datevalue:response.data.data[i].Date
             })
         }
         console.log('data1 : ', data1)
@@ -311,7 +312,7 @@ var data={
 
   useEffect(() => {
 
-    GetProductsDocuments(1)
+    GetSetsDocuments(1)
   }, [Counter])
 
 
@@ -333,6 +334,6 @@ var data={
   );
 };
 
-export default SetProduceList;
+export default SetsetsGroupsList;
 
 

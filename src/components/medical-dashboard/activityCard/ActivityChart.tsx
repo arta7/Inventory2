@@ -28,7 +28,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ data }) => {
     color: new graphic.LinearGradient(0, 0, 0, 1, [
       {
         offset: 0,
-        color: 'rgba(51, 156, 253, 0.7)',
+        color: 'red',
       },
       {
         offset: 1,

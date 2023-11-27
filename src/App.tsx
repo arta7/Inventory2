@@ -23,7 +23,9 @@ const App: React.FC = () => {
     {
      
         UserId: '',
-        Username: ''
+        Username: '',
+        selectedProductId:'',
+        selectedSetsId:''
         }]);
   usePWA();
 
@@ -37,10 +39,11 @@ const App: React.FC = () => {
     var UserId1 = await localStorage.getItem("UserId")
     var Username = await localStorage.getItem("Username")
     console.log('UserId 1 : ',Username)
-    //if(UserId1 != null && UserId1 != '')
+    if(UserId1 != null && UserId1 != '')
     {
       setUserData([{UserId:UserId1.toString(),
-        Username:Username
+        Username:Username,selectedProductId:'',
+        selectedSetsId:''
         }])
     }
    

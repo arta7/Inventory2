@@ -81,7 +81,9 @@ const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
 
 
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
+const Kardex = React.lazy(() => import('@app/NewPage/Dashboard/Kardex'));
 const SetProduceList = React.lazy(() => import('@app/NewPage/Order/SetProduceList'));
+const SetsetsGroupsList = React.lazy(() => import('@app/NewPage/Order/SetsetsGroupsList'));
 const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
 
@@ -161,6 +163,8 @@ const SetProduceFallback = withLoading(SetProduce)
 const SetSetsGroupsFallback = withLoading(SetSetsGroups)
 const FirstScreenFallback = withLoading(FirstScreen)
 const SetProduceListFallback = withLoading(SetProduceList)
+const SetsetsGroupsListFallback = withLoading(SetsetsGroupsList)
+const KardexFallback = withLoading(Kardex)
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -174,7 +178,7 @@ export const AppRouter: React.FC = () => {
       <Routes>
         <Route path={MEDICAL_DASHBOARD_PATH} element={protectedLayout}>
           {/* <Route index element={<NftDashboard />} /> */}
-          <Route path={MEDICAL_DASHBOARD_PATH} element={<FirstScreenFallback />} />
+          <Route path={MEDICAL_DASHBOARD_PATH} element={<MedicalDashboard />} />
           <Route path="apps">
             <Route path="feed" element={<NewsFeed />} />
             <Route path="kanban" element={<Kanban />} />
@@ -187,7 +191,12 @@ export const AppRouter: React.FC = () => {
           
 
           <Route path="DefineUsers" element={<DefineUsersFallback />} />
+
+          <Route path="Kardex" element={<KardexFallback />} />
+
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
+          <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />
+
           <Route path="DefineStates" element={<DefineStatesFallback />} />
           <Route path="DefinePost" element={<DefinePostFallback />} />
           <Route path="DefineProduct" element={<DefineProductFallback/>} />
