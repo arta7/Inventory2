@@ -22,7 +22,7 @@ import { Stimulsoft } from 'stimulsoft-reports-js/Scripts/stimulsoft.viewer';
 import 'stimulsoft-reports-js/Css/stimulsoft.viewer.office2013.whiteblue.css';
 
 
-import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
  
 interface DefinePostData {
   Id: string;
@@ -52,7 +52,11 @@ const SetProduceList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  let componentRef = useRef(null);
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    
+    content: () => componentRef.current,
+  });
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -163,13 +167,24 @@ const SetProduceList: React.FC = () => {
     //   console.log('Rendering the viewer to selected element');
    }
 
+     const  ComponentToPrint =()=> {
+
+      return (
+        
+          <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay != '0')}   />
+        
+      );
+    }
+  
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'شماره سند',
       dataIndex: 'Id',
       key: 'Id',
       width: '10%',
-      hidden: false
+      hidden: false,
+      disaplay:1
     },
     {
       title: 'نوع سند',
@@ -179,6 +194,7 @@ const SetProduceList: React.FC = () => {
       hidden: false,
 
       ...getColumnSearchProps('StatesTitle'),
+      disaplay:1
     },
     {
       title: 'StatesRef ',
@@ -186,6 +202,7 @@ const SetProduceList: React.FC = () => {
       key: 'StatesRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'درخواست کننده',
@@ -193,6 +210,7 @@ const SetProduceList: React.FC = () => {
       key: 'SecondUsername',
       width: '20%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'SecondUserRef ',
@@ -200,6 +218,7 @@ const SetProduceList: React.FC = () => {
       key: 'SecondUserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'سال مالی',
@@ -207,6 +226,7 @@ const SetProduceList: React.FC = () => {
       key: 'FiscalTitle',
       width: '10%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'FiscalYearRef ',
@@ -214,6 +234,7 @@ const SetProduceList: React.FC = () => {
       key: 'FiscalYearRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'تاریخ سند',
@@ -221,6 +242,7 @@ const SetProduceList: React.FC = () => {
       key: 'Date',
       width: '20%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'تاریخ سند',
@@ -228,6 +250,7 @@ const SetProduceList: React.FC = () => {
       key: 'Datevalue',
       width: '20%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'ثبت کننده ',
@@ -235,6 +258,7 @@ const SetProduceList: React.FC = () => {
       key: 'Username',
       width: '20%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'UserRef ',
@@ -242,6 +266,7 @@ const SetProduceList: React.FC = () => {
       key: 'UserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: '',
@@ -249,6 +274,7 @@ const SetProduceList: React.FC = () => {
       key: 'Action',
       width: '40%',
       hidden: false,
+      disaplay:0,
       render: (text, record, index) => < div className="btn-wrap"
         style={
           {
@@ -257,10 +283,9 @@ const SetProduceList: React.FC = () => {
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={
-            (e) => {
          
 
-              printdiv('printitem')
+              handlePrint
               // GetReport()
 
               // // Renreding the report
@@ -270,7 +295,7 @@ const SetProduceList: React.FC = () => {
 
               // Exporting the report to PDF
             
-            }
+            
           } > ویرایش
         </Button>
 
@@ -364,6 +389,12 @@ const SetProduceList: React.FC = () => {
   }
   return (
     <div id='printitem'>
+
+      <div
+      style={{ display: "none" }}
+      > 
+       <ComponentToPrint ref={componentRef} />
+      </div>
     
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)}   />
