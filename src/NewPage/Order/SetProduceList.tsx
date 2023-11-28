@@ -18,8 +18,12 @@ import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 var moment = require('jalali-moment');
+import { Stimulsoft } from 'stimulsoft-reports-js/Scripts/stimulsoft.viewer';
+import 'stimulsoft-reports-js/Css/stimulsoft.viewer.office2013.whiteblue.css';
 
 
+import ReactToPrint from 'react-to-print';
+ 
 interface DefinePostData {
   Id: string;
   Title: string;
@@ -30,7 +34,8 @@ interface DataType {
 }
 
 type DataIndex = keyof DataType;
-
+// let viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
+// let report = new Stimulsoft.Report.StiReport();
 
 const SetProduceList: React.FC = () => {
   const navigate = useNavigate();
@@ -47,7 +52,7 @@ const SetProduceList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-
+  let componentRef = useRef(null);
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -136,6 +141,28 @@ const SetProduceList: React.FC = () => {
       ),
   });
 
+   let GetReport =async ()=>{
+
+
+    // var viewer = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
+    // //  Stimulsoft.Base.StiFontCollection.addOpentypeFontFile();
+		// 	console.log('Creating a new report instance');
+ 
+		// 	var report = new Stimulsoft.Report.StiReport();
+    //   // Stimulsoft.Base.StiLicense.Key = "6vJhGtLLLz2GNviWmUTrhSqnOItdDwjBylQzQcAOiHl2AD0gPVknKsaW0un+3PuM6TTcPMUAWEURKXNso0e5OFPaZYasFtsxNoDemsFOXbvf7SIcnyAkFX/4u37NTfx7g+0IqLXw6QIPolr1PvCSZz8Z5wjBNakeCVozGGOiuCOQDy60XNqfbgrOjxgQ5y/u54K4g7R/xuWmpdx5OMAbUbcy3WbhPCbJJYTI5Hg8C/gsbHSnC2EeOCuyA9ImrNyjsUHkLEh9y4WoRw7lRIc1x+dli8jSJxt9C+NYVUIqK7MEeCmmVyFEGN8mNnqZp4vTe98kxAr4dWSmhcQahHGuFBhKQLlVOdlJ/OT+WPX1zS2UmnkTrxun+FWpCC5bLDlwhlslxtyaN9pV3sRLO6KXM88ZkefRrH21DdR+4j79HA7VLTAsebI79t9nMgmXJ5hB1JKcJMUAgWpxT7C7JUGcWCPIG10NuCd9XQ7H4ykQ4Ve6J2LuNo9SbvP6jPwdfQJB6fJBnKg4mtNuLMlQ4pnXDc+wJmqgw25NfHpFmrZYACZOtLEJoPtMWxxwDzZEYYfT"
+      
+      
+    //   //  Stimulsoft.Base.StiLicense.loadFromFile('./../Report/license.key');
+		// 	console.log('Load report from url');
+		// 	report.loadFile('./../Report/test.mrt');
+
+    //   report.renderedPages.clear();
+      
+		// 	viewer.report = report;
+    //   viewer.renderHtml();
+    //   console.log('Rendering the viewer to selected element');
+   }
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'شماره سند',
@@ -150,7 +177,7 @@ const SetProduceList: React.FC = () => {
       key: 'StatesTitle',
       width: '15%',
       hidden: false,
-      
+
       ...getColumnSearchProps('StatesTitle'),
     },
     {
@@ -231,33 +258,34 @@ const SetProduceList: React.FC = () => {
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={
             (e) => {
-              // form.setFieldsValue({
-              //   Title: record.Title.toString(),
-              //   Code: record.Code.toString(),
-              //    State:record.Active.toString()
+         
 
-              // })
-              // setTitles(record.Title.toString())
-              // setCode(record.Code.toString())
-              // setId(record.Id.toString())
-              // console.log('record.StateType : ',record.Active)        
-              //  setSelectedItem(record.Active)
+              printdiv('printitem')
+              // GetReport()
+
+              // // Renreding the report
+              // report.renderAsync(() => {
+
+              // });
+
+              // Exporting the report to PDF
+            
             }
           } > ویرایش
         </Button>
 
-     
-            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
-          }
+
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteParts(record.Id)}>
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+            onClick={() =>
+              console.log('')
+            }
           >حذف
           </Button>
-          </Popconfirm>
-           
-      
+        </Popconfirm>
+
+
       </div >
     }
 
@@ -268,7 +296,7 @@ const SetProduceList: React.FC = () => {
 
   let DeleteParts = (_id) => {
 
-   
+
 
 
   }
@@ -277,27 +305,28 @@ const SetProduceList: React.FC = () => {
 
   let GetProductsDocuments = (_fiscal) => {
 
-var data={
-  "FiscalYearRef":_fiscal
-}
- 
+    var data = {
+      "FiscalYearRef": _fiscal
+    }
+
     axios.post(Config.URL +
-      Config.Defination.GetProductsDocuments,data)
+      Config.Defination.GetProductsDocuments, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
+          data1.push({
+            Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
             StatesRef: response.data.data[i].StatesRef
-             ,FiscalYearRef:response.data.data[i].FiscalYearRef,
-             FiscalTitle: response.data.data[i].FiscalTitle
-             ,UserRef:response.data.data[i].UserRef,
-             Username: response.data.data[i].Username
-             ,SecondUserRef:response.data.data[i].SecondUserRef,
-             SecondUsername: response.data.data[i].SecondUsername,
-             Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-             Datevalue : response.data.data[i].Date
-            })
+            , FiscalYearRef: response.data.data[i].FiscalYearRef,
+            FiscalTitle: response.data.data[i].FiscalTitle
+            , UserRef: response.data.data[i].UserRef,
+            Username: response.data.data[i].Username
+            , SecondUserRef: response.data.data[i].SecondUserRef,
+            SecondUsername: response.data.data[i].SecondUsername,
+            Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+            Datevalue: response.data.data[i].Date
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -323,12 +352,24 @@ var data={
     console.log('Titles : ', events.target.value)
     setTitles(events.target.value);
   }
-
+  function printdiv(elem) {
+    var header_str = '<html><head><title>' + document.title  + '</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML = header_str + new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    return false;
+  }
   return (
-    <div >
+    <div id='printitem'>
+    
       {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)}   />
       }
+
+      
     </div>
   );
 };

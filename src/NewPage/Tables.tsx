@@ -24,7 +24,9 @@ const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[] }) => {
 
 
 
-  return <Table columns={columns} dataSource={DataSource} style={{marginTop:20,justifyContent:'center',alignItems:'center'}}/>;
+  return <Table columns={columns} dataSource={DataSource} style={{marginTop:20,justifyContent:'center',alignItems:'center'}} bordered
+  
+  />;
 };
 
 export default Tables;
