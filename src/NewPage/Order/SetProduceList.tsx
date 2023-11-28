@@ -37,6 +37,27 @@ type DataIndex = keyof DataType;
 // let viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
 // let report = new Stimulsoft.Report.StiReport();
 
+export class ComponentToPrint1 extends React.PureComponent {
+  render() {
+    return (
+      <table>
+        <thead>
+          <th>column 1</th>
+          <th>column 2</th>
+          <th>column 3</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>data 1</td>
+            <td>data 2</td>
+            <td>data 3</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+}
+
 const SetProduceList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -52,11 +73,17 @@ const SetProduceList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  const componentRef = useRef(null);
+  const componentRef = useRef();
   const handlePrint = useReactToPrint({
     
-    content: () => componentRef.current,
-  });
+        content: () => componentRef.current,
+      })
+  
+  
+  // useReactToPrint({
+    
+  //   content: () => componentRef.current,
+  // });
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -393,7 +420,7 @@ const SetProduceList: React.FC = () => {
       <div
       style={{ display: "none" }}
       > 
-       <ComponentToPrint ref={componentRef} />
+       <ComponentToPrint1 ref={componentRef} />
       </div>
     
       {columns.length > 0 &&
