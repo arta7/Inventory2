@@ -8,14 +8,15 @@ import type { FilterConfirmProps } from 'antd/es/table/interface';
 
 interface DataType {
  DataSource : [],
- columns :[]
+ columns :[],
+ ref:null
 }
 
 type DataIndex = keyof DataType;
 
 
 
-const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[] }) => {
+const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[],ref }) => {
   
 
   useEffect(()=>{
@@ -25,7 +26,7 @@ const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[] }) => {
 
 
   return <Table columns={columns} dataSource={DataSource} style={{marginTop:20,justifyContent:'center',alignItems:'center'}} bordered
-  
+  ref={ref}
   />;
 };
 

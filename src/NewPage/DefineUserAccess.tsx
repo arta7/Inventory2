@@ -193,38 +193,498 @@ const DefineSetsofProducts: React.FC = () => {
       // ...getColumnSearchProps('age'),
     },
     {
-      title: 'دسترسی ها',
-      dataIndex: 'TypeAccess',
-      key: 'TypeAccess',
-      width: '60%',
+      title: 'نمایش',
+      dataIndex: 'Shower',
+      key: 'Shower',
+      width: '5%',
       hidden: false,
       render: (text, record, index) =>
-        options.map((item, index) => (
-          <Checkbox  onChange={(ee) => {
-            if (ee.target.checked)
-            {
-              PostDataAccess.push({"PostRef":PostSelected,"PartRef":record.Id,"TypeAccess":item.value})
-               console.log('PostDataAccess : ', PostDataAccess)    
-            }
-            else
-            {
-                for(let j=0;j<PostDataAccess.length;j++)
-                {
-                  if( PostDataAccess[j].PartRef == record.Id && PostDataAccess[j].TypeAccess == item.value)
-                  {
-                    var xx =  PostDataAccess.splice(j,1)
+        
+      
+      <Checkbox    onChange={(ee) => {
 
-                    console.log('xx : ', xx)
-                  }
-                }
+        const myNextList = [...AllData];
+        const artwork = myNextList.find(
+          a => a.Id == record.Id.toString()
+        );
+        if(ee.target.checked)
+        {
+           artwork.Shower = 1
+          setAllData(myNextList);
+        }
+        else
+        {
+          artwork.Shower = 0;
+          setAllData(myNextList);
+        } 
+      }}
+      checked={record.Shower}   />
+    },
+    {
+      title: 'افزودن',
+      dataIndex: 'Adds',
+      key: 'Adds',
+      width: '5%',
+      hidden: false,
+      render: (text, record, index) =>
+      <Checkbox    onChange={(ee) => {
 
-              console.log('x : ', PostDataAccess)
-            }
-           
-          }} value={item.value} checked={record.Shower} >{item.label}</Checkbox>
-        ))
+        const myNextList = [...AllData];
+        const artwork = myNextList.find(
+          a => a.Id == record.Id.toString()
+        );
+        if(ee.target.checked)
+        {
+           artwork.Adds = 1
+          setAllData(myNextList);
+        }
+        else
+        {
+          artwork.Adds = 0;
+          setAllData(myNextList);
+        } 
+      }}
+      value={'1'}  checked={record.Adds} />
+    },
+    {
+      title: 'ویرایش',
+      dataIndex: 'Edit',
+      key: 'Edit',
+      width: '5%',
+      hidden: false,
+      render: (text, record, index) =>
+      <Checkbox    onChange={(ee) => {
 
+        const myNextList = [...AllData];
+        const artwork = myNextList.find(
+          a => a.Id == record.Id.toString()
+        );
+        if(ee.target.checked)
+        {
+           artwork.Edit = 1
+          setAllData(myNextList);
+        }
+        else
+        {
+          artwork.Edit = 0;
+          setAllData(myNextList);
+        } 
+      }}
+       checked={record.Edit} />
+    },
+    {
+      title: 'حذف',
+      dataIndex: 'Deletes',
+      key: 'Deletes',
+      width: '5%',
+      hidden: false,
+      render: (text, record, index) =>
+      <Checkbox    onChange={(ee) => {
+
+        const myNextList = [...AllData];
+        const artwork = myNextList.find(
+          a => a.Id == record.Id.toString()
+        );
+        if(ee.target.checked)
+        {
+           artwork.Deletes = 1
+          setAllData(myNextList);
+        }
+        else
+        {
+          artwork.Deletes = 0;
+          setAllData(myNextList);
+        } 
+      }}
+      value={'2'}  checked={record.Deletes} />
+    },
+    {
+      title: 'چاپ',
+      dataIndex: 'Prints',
+      key: 'Prints',
+      width: '5%',
+      hidden: false,
+      render: (text, record, index) =>
+      <Checkbox    onChange={(ee) => {
+
+        const myNextList = [...AllData];
+        const artwork = myNextList.find(
+          a => a.Id == record.Id.toString()
+        );
+        if(ee.target.checked)
+        {
+           artwork.Prints = 1
+          setAllData(myNextList);
+        }
+        else
+        {
+          artwork.Prints = 0;
+          setAllData(myNextList);
+        } 
+      }}
+      value={'4'}  checked={record.Prints} />
     }
+  //   {
+  //     title: 'دسترسی ها',
+  //     dataIndex: 'TypeAccess',
+  //     key: 'TypeAccess',
+  //     width: '60%',
+  //     hidden: false,
+  //     render: (text, record, index) =>
+      
+  //     // selectedRowKeys.includes(record.Id)
+  //     // ?
+        
+  //       options.map((item, index) => (
+         
+  //         item.value == '1' ?
+          
+  //         <Checkbox    onChange={(ee) => {
+
+  //           const myNextList = [...AllData];
+  //           const artwork = myNextList.find(
+  //             a => a.Id == record.Id.toString()
+  //           );
+  //           if(ee.target.checked)
+  //           {
+          
+
+  //             switch (item.value) {
+  //               case '1':
+  //                 artwork.Adds = 1;
+  //                 break;
+  //                 case '2':
+  //                   artwork.Deletes = 1;
+  //                 break;
+  //                 case '3':
+  //                   artwork.Edit = 1;
+  //                 break;
+  //                 case '4':
+  //                   artwork.Prints = 1;
+  //                 break;
+  //                 case '5':
+  //                   artwork.Shower = 1;
+  //                 break;
+              
+  //             }
+          
+  //             setAllData(myNextList);
+  //           }
+  //           else
+  //           {
+             
+  //             switch (item.value) {
+  //               case '1':
+  //                 artwork.Adds = 0;
+                  
+  //                 break;
+  //                 case '2':
+  //                   artwork.Deletes = 0;
+  //                 break;
+  //                 case '3':
+  //                   artwork.Edit = 0;
+  //                 break;
+  //                 case '4':
+  //                   artwork.Prints = 0;
+  //                 break;
+  //                 case '5':
+  //                   artwork.Shower = 0;
+  //                 break;
+  //             }
+  //             setAllData(myNextList);
+  //           } 
+  //         }}
+  //         value={item.value}  checked={record.Adds}>{item.label}</Checkbox>
+            
+  //         : item.value == '2'  ?
+  //         <Checkbox    onChange={(ee) => {
+
+  //           const myNextList = [...AllData];
+  //           const artwork = myNextList.find(
+  //             a => a.Id == record.Id.toString()
+  //           );
+  //           if(ee.target.checked)
+  //           {
+          
+
+  //             switch (item.value) {
+  //               case '1':
+  //                 artwork.Adds = 1;
+  //                 break;
+  //                 case '2':
+  //                   artwork.Deletes = 1;
+  //                 break;
+  //                 case '3':
+  //                   artwork.Edit = 1;
+  //                 break;
+  //                 case '4':
+  //                   artwork.Prints = 1;
+  //                 break;
+  //                 case '5':
+  //                   artwork.Shower = 1;
+  //                 break;
+              
+  //             }
+          
+  //             setAllData(myNextList);
+  //           }
+  //           else
+  //           {
+             
+  //             switch (item.value) {
+  //               case '1':
+  //                 artwork.Adds = 0;
+                  
+  //                 break;
+  //                 case '2':
+  //                   artwork.Deletes = 0;
+  //                 break;
+  //                 case '3':
+  //                   artwork.Edit = 0;
+  //                 break;
+  //                 case '4':
+  //                   artwork.Prints = 0;
+  //                 break;
+  //                 case '5':
+  //                   artwork.Shower = 0;
+  //                 break;
+  //             }
+  //             setAllData(myNextList);
+  //           } 
+  //         }}
+  //         value={item.value}  checked={record.Deletes}>{item.label}</Checkbox>
+  //             : item.value =='3'  ?    <Checkbox    onChange={(ee) => {
+
+  //               const myNextList = [...AllData];
+  //               const artwork = myNextList.find(
+  //                 a => a.Id == record.Id.toString()
+  //               );
+  //               if(ee.target.checked)
+  //               {
+              
+    
+  //                 switch (item.value) {
+  //                   case '1':
+  //                     artwork.Adds = 1;
+  //                     break;
+  //                     case '2':
+  //                       artwork.Deletes = 1;
+  //                     break;
+  //                     case '3':
+  //                       artwork.Edit = 1;
+  //                     break;
+  //                     case '4':
+  //                       artwork.Prints = 1;
+  //                     break;
+  //                     case '5':
+  //                       artwork.Shower = 1;
+  //                     break;
+                  
+  //                 }
+              
+  //                 setAllData(myNextList);
+  //               }
+  //               else
+  //               {
+                 
+  //                 switch (item.value) {
+  //                   case '1':
+  //                     artwork.Adds = 0;
+                      
+  //                     break;
+  //                     case '2':
+  //                       artwork.Deletes = 0;
+  //                     break;
+  //                     case '3':
+  //                       artwork.Edit = 0;
+  //                     break;
+  //                     case '4':
+  //                       artwork.Prints = 0;
+  //                     break;
+  //                     case '5':
+  //                       artwork.Shower = 0;
+  //                     break;
+  //                 }
+  //                 setAllData(myNextList);
+  //               } 
+  //             }}
+  //             value={item.value}  checked={Boolean(record.Edit)}>{item.label}</Checkbox>
+  //                : item.value =='4' ?    <Checkbox    onChange={(ee) => {
+
+  //                 const myNextList = [...AllData];
+  //                 const artwork = myNextList.find(
+  //                   a => a.Id == record.Id.toString()
+  //                 );
+  //                 if(ee.target.checked)
+  //                 {
+                
+      
+  //                   switch (item.value) {
+  //                     case '1':
+  //                       artwork.Adds = 1;
+  //                       break;
+  //                       case '2':
+  //                         artwork.Deletes = 1;
+  //                       break;
+  //                       case '3':
+  //                         artwork.Edit = 1;
+  //                       break;
+  //                       case '4':
+  //                         artwork.Prints = 1;
+  //                       break;
+  //                       case '5':
+  //                         artwork.Shower = 1;
+  //                       break;
+                    
+  //                   }
+                
+  //                   setAllData(myNextList);
+  //                 }
+  //                 else
+  //                 {
+                   
+  //                   switch (item.value) {
+  //                     case '1':
+  //                       artwork.Adds = 0;
+                        
+  //                       break;
+  //                       case '2':
+  //                         artwork.Deletes = 0;
+  //                       break;
+  //                       case '3':
+  //                         artwork.Edit = 0;
+  //                       break;
+  //                       case '4':
+  //                         artwork.Prints = 0;
+  //                       break;
+  //                       case '5':
+  //                         artwork.Shower = 0;
+  //                       break;
+  //                   }
+  //                   setAllData(myNextList);
+  //                 } 
+  //               }}
+  //               value={item.value}  checked={record.Prints}>{item.label}</Checkbox>
+  //                  : item.value =='5' ? 
+  //                  <Checkbox    onChange={(ee) => {
+
+  //                   const myNextList = [...AllData];
+  //                   const artwork = myNextList.find(
+  //                     a => a.Id == record.Id.toString()
+  //                   );
+  //                   if(ee.target.checked)
+  //                   {
+                  
+        
+  //                     switch (item.value) {
+  //                       case '1':
+  //                         artwork.Adds = 1;
+  //                         break;
+  //                         case '2':
+  //                           artwork.Deletes = 1;
+  //                         break;
+  //                         case '3':
+  //                           artwork.Edit = 1;
+  //                         break;
+  //                         case '4':
+  //                           artwork.Prints = 1;
+  //                         break;
+  //                         case '5':
+  //                           artwork.Shower = 1;
+  //                         break;
+                      
+  //                     }
+                  
+  //                     setAllData(myNextList);
+  //                   }
+  //                   else
+  //                   {
+                     
+  //                     switch (item.value) {
+  //                       case '1':
+  //                         artwork.Adds = 0;
+                          
+  //                         break;
+  //                         case '2':
+  //                           artwork.Deletes = 0;
+  //                         break;
+  //                         case '3':
+  //                           artwork.Edit = 0;
+  //                         break;
+  //                         case '4':
+  //                           artwork.Prints = 0;
+  //                         break;
+  //                         case '5':
+  //                           artwork.Shower = 0;
+  //                         break;
+  //                     }
+  //                     setAllData(myNextList);
+  //                   } 
+  //                 }}
+  //                 value={item.value}  checked={record.Shower}>{item.label}</Checkbox>
+  //                    : '0'
+  //         // <Checkbox    onChange={(ee) => {
+
+  //         //   const myNextList = [...AllData];
+  //         //   const artwork = myNextList.find(
+  //         //     a => a.Id == record.Id.toString()
+  //         //   );
+  //         //   if(ee.target.checked)
+  //         //   {
+          
+
+  //         //     switch (item.value) {
+  //         //       case '1':
+  //         //         artwork.Adds = 1;
+  //         //         break;
+  //         //         case '2':
+  //         //           artwork.Deletes = 1;
+  //         //         break;
+  //         //         case '3':
+  //         //           artwork.Edit = 1;
+  //         //         break;
+  //         //         case '4':
+  //         //           artwork.Prints = 1;
+  //         //         break;
+  //         //         case '5':
+  //         //           artwork.Shower = 1;
+  //         //         break;
+              
+  //         //     }
+          
+  //         //     setAllData(myNextList);
+  //         //   }
+  //         //   else
+  //         //   {
+             
+  //         //     switch (item.value) {
+  //         //       case '1':
+  //         //         artwork.Adds = 0;
+                  
+  //         //         break;
+  //         //         case '2':
+  //         //           artwork.Deletes = 0;
+  //         //         break;
+  //         //         case '3':
+  //         //           artwork.Edit = 0;
+  //         //         break;
+  //         //         case '4':
+  //         //           artwork.Prints = 0;
+  //         //         break;
+  //         //         case '5':
+  //         //           artwork.Shower = 0;
+  //         //         break;
+  //         //     }
+  //         //     setAllData(myNextList);
+  //         //   } 
+  //         // }}
+  //         // value={item.value}  checked={record.Shower}>{item.label}</Checkbox>
+  //           )
+
+  //       ) 
+  //       //: null
+
+  // }
   ];
 
 
@@ -277,7 +737,7 @@ const DefineSetsofProducts: React.FC = () => {
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({
             KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-            Code: response.data.data[i].Code, Active: response.data.data[i].Active,Shower:1,Edit:0,Adds:0,Prints:0,Deletes:0
+            Code: response.data.data[i].Code, Active: response.data.data[i].Active,Shower:0,Edit:0,Adds:0,Prints:0,Deletes:0
           })
         }
         console.log('data1 : ', data1)
@@ -292,6 +752,9 @@ const DefineSetsofProducts: React.FC = () => {
   let GetPostsAccessParts = (_PostRef) => {
 
 
+   
+
+
     var data = {
       "PostRef": _PostRef
     }
@@ -303,8 +766,23 @@ const DefineSetsofProducts: React.FC = () => {
         var x = []
         for(let i =0;i<response.data.data.length;i++)
         {
-          x.push(response.data.data[i].PostRef.toString())
-        }
+          x.push(response.data.data[i].PartRef.toString())
+          const myNextList = [...AllData];
+          const artwork = myNextList.find(
+            a => a.Id == response.data.data[i].PartRef.toString()
+          );
+
+          console.log('artwork',artwork)
+              artwork.Adds = response.data.data[i].Adds;
+              artwork.Deletes = response.data.data[i].Deletes;
+         
+              artwork.Edit = response.data.data[i].Edit;
+              artwork.Prints = response.data.data[i].Prints;
+              artwork.Shower =response.data.data[i].Shower;
+              setAllData(myNextList);
+              console.log('myNextList',myNextList)
+          }
+      
         setSelectedRowKeys(x)
 
       })
@@ -316,7 +794,24 @@ const DefineSetsofProducts: React.FC = () => {
 
   let AddUsersAccessParts = () => {
 
-    // var data = JSON.stringify(PostDataAccess)
+    console.log('AllData',AllData)
+    PostDataAccess=[];
+    for(let i=0;i<AllData.length;i++)
+    {
+      var dataFind =  selectedRowKeys.includes(AllData[i].Id.toString())
+      console.log('datafind : ',dataFind)
+  
+      if(dataFind)
+      {
+        PostDataAccess.push({"PostRef":PostSelected,"PartRef":AllData[i].Id.toString(),"Shower":AllData[i].Shower.toString(),"Edit":AllData[i].Edit.toString()
+        ,"Adds":AllData[i].Adds.toString(),"Prints":AllData[i].Prints.toString(),"Deletes":AllData[i].Deletes.toString()})
+     
+      }
+    }
+
+    console.log('Postdata  : ',PostDataAccess)
+
+
     var data = {
       'jsonData': JSON.stringify(PostDataAccess)
     }
@@ -398,7 +893,7 @@ const DefineSetsofProducts: React.FC = () => {
                   console.log('test')
                   if (PostSelected != '')
                   {
-                    
+                   // AddUsersAccessParts()
                       DeleteUsersAccessParts()
                   
                   alert('sucess')

@@ -54,6 +54,10 @@ export class ComponentToPrint1 extends React.PureComponent {
           </tr>
         </tbody>
       </table>
+
+      
+       
+      
     );
   }
 }
@@ -309,10 +313,12 @@ const SetProduceList: React.FC = () => {
           }
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
-          onClick={
+          onClick={e=>{
+            printdiv('printitem')
+          }
          
 
-              handlePrint
+             // handlePrint
               // GetReport()
 
               // // Renreding the report
@@ -404,8 +410,12 @@ const SetProduceList: React.FC = () => {
     console.log('Titles : ', events.target.value)
     setTitles(events.target.value);
   }
+
+
+
+
   function printdiv(elem) {
-    var header_str = '<html><head><title>' + document.title  + '</title></head><body>';
+    var header_str = '<html><head><title>تست</title></head><body>';
     var footer_str = '</body></html>';
     var new_str = document.getElementById(elem).innerHTML;
     var old_str = document.body.innerHTML;
@@ -414,17 +424,22 @@ const SetProduceList: React.FC = () => {
     document.body.innerHTML = old_str;
     return false;
   }
+
+
+
+  
   return (
-    <div id='printitem'>
+    <div >
 
       <div
       style={{ display: "none" }}
+      id='printitem'
       > 
-       <ComponentToPrint1 ref={componentRef} />
+      <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay!=0)} />
       </div>
     
       {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)}   />
+        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
 
       

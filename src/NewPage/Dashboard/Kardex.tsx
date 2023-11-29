@@ -17,6 +17,9 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
+
+import Searchinput from '../Searchinput';
+import SearchinputKardex from '../SearchinputKardex';
 var moment = require('jalali-moment');
 
 
@@ -47,6 +50,10 @@ const Kardex: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
+  const [ProductData, setProductData] = useState([]);
+    const[selectedProductId,setselectedProductId] = useState(0)
+    const[selectedProductTitle,setselectedProductTitle] = useState('')
+
 
   const handleSearch = (
     selectedKeys: string[],
@@ -150,7 +157,7 @@ const Kardex: React.FC = () => {
       key: 'StatesTitle',
       width: '15%',
       hidden: false,
-      
+
       ...getColumnSearchProps('StatesTitle'),
     },
     {
@@ -203,91 +210,103 @@ const Kardex: React.FC = () => {
       hidden: true,
     },
     {
-        title: 'سند ورودی',
-        dataIndex: 'InsertValue',
-        key: 'InsertValue',
-        width: '15%',
-        hidden: false,
-      },
-      {
-        title: 'سند خروجی',
-        dataIndex: 'ExitValue',
-        key: 'ExitValue',
-        width: '15%',
-        hidden: false,
-      },
+      title: 'سند ورودی',
+      dataIndex: 'InsertValue',
+      key: 'InsertValue',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'سند خروجی',
+      dataIndex: 'ExitValue',
+      key: 'ExitValue',
+      width: '15%',
+      hidden: false,
+    },
 
-      {
-        title: 'مانده موجودی',
-        dataIndex: 'Deposit',
-        key: 'Deposit',
-        width: '15%',
-        hidden: false,
-        render: (text, record, index) => 
-        
+    {
+      title: 'مانده موجودی',
+      dataIndex: 'Deposit',
+      key: 'Deposit',
+      width: '15%',
+      hidden: false,
+      render: (text, record, index) =>
+
         < div className="btn-wrap"
-        style={
-          {
-            width: "100px",
-          }
-        } >
+          style={
+            {
+              width: "100px",
+            }
+          } >
 
           {
-             index > 0  ? record.InsertValue - record.ExitValue + SumData(index,AllData) : record.InsertValue - record.ExitValue
-          } 
-      </div >
+            index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
+          }
+        </div >
       ,
-      
-      },
+
+    },
 
 
   ];
 
 
-  let SumData=(index,Data)=>{
-     var datasum = 0;
-    for(let i=0;i<index;i++)
-    {
-          datasum += Data[i].InsertValue - Data[i].ExitValue
+  let SumData = (index, Data) => {
+    var datasum = 0;
+    for (let i = 0; i < index; i++) {
+      datasum += Data[i].InsertValue - Data[i].ExitValue
     }
     return datasum;
   }
 
   let DeleteParts = (_id) => {
 
-   
+
 
 
   }
 
+  let GetProducts = () => {
 
-
-  let GetKardex = (_product,_fiscal) => {
-
-var data={
-  "FiscalYearRef":_fiscal,
-  "ProductRef":_product
-
-}
- 
     axios.post(Config.URL +
-      Config.Defination.GetKardex,data)
+      Config.Defination.GetProducts)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        setProductData(response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+  let GetKardex = (_product, _fiscal) => {
+
+    var data = {
+      "FiscalYearRef": _fiscal,
+      "ProductRef": _product
+
+    }
+
+    axios.post(Config.URL +
+      Config.Defination.GetKardex, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
+          data1.push({
+            Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
             StatesRef: response.data.data[i].StatesRef
-             ,FiscalYearRef:response.data.data[i].FiscalYearRef,
-             FiscalTitle: response.data.data[i].FiscalTitle
-             ,UserRef:response.data.data[i].UserRef,
-             Username: response.data.data[i].Username
-             ,SecondUserRef:response.data.data[i].SecondUserRef,
-             SecondUsername: response.data.data[i].SecondUsername,
-             Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-             Datevalue : response.data.data[i].Date,InsertValue:response.data.data[i].InsertValue,
-             ExitValue : response.data.data[i].ExitValue
-            })
+            , FiscalYearRef: response.data.data[i].FiscalYearRef,
+            FiscalTitle: response.data.data[i].FiscalTitle
+            , UserRef: response.data.data[i].UserRef,
+            Username: response.data.data[i].Username
+            , SecondUserRef: response.data.data[i].SecondUserRef,
+            SecondUsername: response.data.data[i].SecondUsername,
+            Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+            Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
+            ExitValue: response.data.data[i].ExitValue
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -300,8 +319,8 @@ var data={
   }
 
   useEffect(() => {
+    GetProducts()
 
-    GetKardex(3,1)
   }, [Counter])
 
 
@@ -311,14 +330,91 @@ var data={
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-    setTitles(events.target.value);
+   // setTitles(events.target.value);
+  }
+
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML =  new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    return false;
   }
 
   return (
     <div >
+    
+
+
+<div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Auth.FormWrapper >
+          <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
+          <SearchinputKardex list={ProductData} PlaceHolder="نام کالا"
+      // onChange={(e)=>{setselectedProductTitle(e)}}
+      setvalue={setselectedProductTitle}
+      setId ={setselectedProductId}
+      value = {selectedProductTitle}
+      setAllData={setAllData}
+       
+      />
+
+            <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+
+
+              <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+               GetKardex(selectedProductId, 1)
+              }}>
+                جستجو
+              </Auth.SubmitButton>
+
+
+
+
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  setAllData([])
+                  setselectedProductTitle('')
+                  setselectedProductId('')
+                }
+              }>
+                بازیابی
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  printdiv("printelement")
+                }
+              }>
+                چاپ
+              </Auth.SubmitButton>
+
+            </div>
+
+
+
+
+          </BaseForm>
+        </Auth.FormWrapper>
+      </div>
+
+
+
+        <div id="printelement">
+
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
+      </div>
     </div>
   );
 };
