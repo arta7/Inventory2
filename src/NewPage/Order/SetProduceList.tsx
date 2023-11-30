@@ -18,8 +18,7 @@ import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 var moment = require('jalali-moment');
-import { Stimulsoft } from 'stimulsoft-reports-js/Scripts/stimulsoft.viewer';
-import 'stimulsoft-reports-js/Css/stimulsoft.viewer.office2013.whiteblue.css';
+import UserContext from './../UserContext';
 
 
 import { useReactToPrint } from 'react-to-print';
@@ -78,6 +77,7 @@ const SetProduceList: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const componentRef = useRef();
+  const { userData,setUserData } = React.useContext(UserContext);
   const handlePrint = useReactToPrint({
     
         content: () => componentRef.current,
@@ -255,7 +255,7 @@ const SetProduceList: React.FC = () => {
       title: 'سال مالی',
       dataIndex: 'FiscalTitle',
       key: 'FiscalTitle',
-      width: '10%',
+      width: '0%',
       hidden: true,
       disaplay:0
     },
@@ -271,7 +271,7 @@ const SetProduceList: React.FC = () => {
       title: 'تاریخ سند',
       dataIndex: 'Date',
       key: 'Date',
-      width: '20%',
+      width: '15%',
       hidden: false,
       disaplay:1
     },
@@ -287,7 +287,7 @@ const SetProduceList: React.FC = () => {
       title: 'ثبت کننده ',
       dataIndex: 'Username',
       key: 'Username',
-      width: '20%',
+      width: '15%',
       hidden: false,
       disaplay:1
     },
@@ -303,13 +303,13 @@ const SetProduceList: React.FC = () => {
       title: '',
       dataIndex: '',
       key: 'Action',
-      width: '40%',
+      width: '50%',
       hidden: false,
       disaplay:0,
       render: (text, record, index) => < div className="btn-wrap"
         style={
           {
-            width: "200px",
+            width: "300px",
           }
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
@@ -342,6 +342,14 @@ const SetProduceList: React.FC = () => {
           >حذف
           </Button>
         </Popconfirm>
+
+        < Button
+          style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
+          onClick={()=>
+            console.log('')
+          }
+          >چاپ
+          </Button>
 
 
       </div >
@@ -398,7 +406,7 @@ const SetProduceList: React.FC = () => {
 
   useEffect(() => {
 
-    GetProductsDocuments(1)
+    GetProductsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
 
 

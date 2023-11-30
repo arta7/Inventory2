@@ -17,7 +17,7 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-
+import UserContext from './../UserContext';
 import Searchinput from '../Searchinput';
 import SearchinputKardex from '../SearchinputKardex';
 var moment = require('jalali-moment');
@@ -53,7 +53,7 @@ const Kardex: React.FC = () => {
   const [ProductData, setProductData] = useState([]);
     const[selectedProductId,setselectedProductId] = useState(0)
     const[selectedProductTitle,setselectedProductTitle] = useState('')
-
+    const { userData,setUserData } = React.useContext(UserContext);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -320,6 +320,7 @@ const Kardex: React.FC = () => {
 
   useEffect(() => {
     GetProducts()
+    
 
   }, [Counter])
 
@@ -341,6 +342,7 @@ const Kardex: React.FC = () => {
     document.body.innerHTML =  new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
+    
     return false;
   }
 
@@ -369,7 +371,8 @@ const Kardex: React.FC = () => {
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-               GetKardex(selectedProductId, 1)
+                  console.log('userData[0].FiscalYearId.toString()',userData[0].FiscalYearId.toString())
+               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
               }}>
                 جستجو
               </Auth.SubmitButton>
@@ -393,6 +396,7 @@ const Kardex: React.FC = () => {
                 () => {
 
                   printdiv("printelement")
+                  window.location.reload();
                 }
               }>
                 چاپ

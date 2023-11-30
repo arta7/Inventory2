@@ -18,7 +18,7 @@ import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 var moment = require('jalali-moment');
-
+import UserContext from './../UserContext';
 
 interface DefinePostData {
   Id: string;
@@ -47,7 +47,7 @@ const SetsetsGroupsList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-
+  const { userData,setUserData } = React.useContext(UserContext);
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -207,7 +207,7 @@ const SetsetsGroupsList: React.FC = () => {
       title: 'ثبت کننده ',
       dataIndex: 'Username',
       key: 'Username',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -221,12 +221,12 @@ const SetsetsGroupsList: React.FC = () => {
       title: '',
       dataIndex: '',
       key: 'Action',
-      width: '40%',
+      width: '50%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
         style={
           {
-            width: "200px",
+            width: "300px",
           }
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
@@ -257,6 +257,14 @@ const SetsetsGroupsList: React.FC = () => {
           >حذف
           </Button>
           </Popconfirm>
+
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
+          onClick={()=>
+            console.log('')
+          }
+          >چاپ
+          </Button>
            
       
       </div >
@@ -312,7 +320,7 @@ var data={
 
   useEffect(() => {
 
-    GetSetsDocuments(1)
+    GetSetsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
 
 

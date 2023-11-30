@@ -519,7 +519,7 @@ const SetProduce: React.FC = () => {
                 {
                   console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString())
                   if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  AddDocumentControls("", "2", userData[0].UserId.toString(), 1)
+                  AddDocumentControls("", "2", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
                 else
                 alert('لطفا داده ها  را کامل پر کنید')
                 }

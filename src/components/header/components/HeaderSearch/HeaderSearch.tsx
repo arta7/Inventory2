@@ -6,75 +6,154 @@ import { components as configComponents, Component } from '@app/constants/config
 import { categoriesList, CategoryType } from '@app/constants/categoriesList';
 import { useResponsive } from '@app/hooks/useResponsive';
 import * as S from './HeaderSearch.styles';
+import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
+import { Select, Option } from '@app/components/common/selects/Select/Select';
+import {  Space } from 'antd';
+import UserContext from './../../../../NewPage/UserContext';
+import axios from 'axios';
+import { Config } from '@app/Database/Config';
+
 
 export interface CategoryComponents {
   category: CategoryType;
   components: Component[];
 }
 
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: 'Item 1',
+  },
+  {
+    key: '2',
+    label: 'Item 2',
+  },
+  {
+    key: '3',
+    label: 'Item 3',
+  },
+];
+
 export const HeaderSearch: React.FC = () => {
-  const { mobileOnly, isTablet } = useResponsive();
+  const { userData,setUserData } = React.useContext(UserContext);
+    const[Items,setItems] = useState([])
+    const[Counter,setCounter] = useState(1)
+    const[SelectedItem,setSelectedItem] = useState('')
+  // const { pathname } = useLocation();
 
-  const { pathname } = useLocation();
+  // const [query, setQuery] = useState('');
+  // const [components] = useState<Component[]>(configComponents);
 
-  const [query, setQuery] = useState('');
-  const [components] = useState<Component[]>(configComponents);
+  // const [isModalVisible, setModalVisible] = useState(false);
+  // const [isOverlayVisible, setOverlayVisible] = useState(false);
 
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isOverlayVisible, setOverlayVisible] = useState(false);
+  // const sortedResults = query
+  //   ? categoriesList.reduce((acc, current) => {
+  //       const searchResults = components.filter(
+  //         (component) =>
+  //           component.categories.includes(current.name) &&
+  //           component.keywords.some((keyword) => keyword.includes(query)),
+  //       );
 
-  const sortedResults = query
-    ? categoriesList.reduce((acc, current) => {
-        const searchResults = components.filter(
-          (component) =>
-            component.categories.includes(current.name) &&
-            component.keywords.some((keyword) => keyword.includes(query)),
-        );
+  //       return searchResults.length > 0 ? acc.concat({ category: current.name, components: searchResults }) : acc;
+  //     }, [] as CategoryComponents[])
+  //   : null;
 
-        return searchResults.length > 0 ? acc.concat({ category: current.name, components: searchResults }) : acc;
-      }, [] as CategoryComponents[])
-    : null;
+  // useEffect(() => {
+  //   setModalVisible(false);
+  //   setOverlayVisible(false);
+  // }, [pathname]);
 
-  useEffect(() => {
-    setModalVisible(false);
-    setOverlayVisible(false);
-  }, [pathname]);
+
+  let GetFiscalYear = () => {
+    
+    axios.post(Config.URL +
+      Config.Defination.GetFiscalYear)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        var data1 = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+          data1.push({ Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title, Code: response.data.data[i].Code })
+        }
+        console.log('data1 : ', data1)
+        setItems(data1)
+        console.log('user dat fiscal year search : ',userData[0].FiscalYearId)
+          setSelectedItem(userData[0].FiscalYearId.toString())
+          setCounter(Counter+1)
+
+
+
+
+
+
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+
+
+  }
+
+    let GetData =async()=>{
+
+      
+        setSelectedItem(userData[0].FiscalYearId.toString())
+      
+     }
+
+  useEffect(()=>{
+    GetFiscalYear()
+     
+
+  },[])
 
   return (
-    <>
-      {mobileOnly && (
-        <>
-          <Button
-            type={isModalVisible ? 'ghost' : 'text'}
-            icon={<S.SearchIcon onClick={() => setModalVisible(true)} />}
-          />
-          <S.SearchModal
-            visible={isModalVisible}
-            closable={false}
-            footer={null}
-            onCancel={() => setModalVisible(false)}
-            destroyOnClose
-          >
-            <SearchDropdown
-              query={query}
-              setQuery={setQuery}
-              data={sortedResults}
-              isOverlayVisible={isOverlayVisible}
-              setOverlayVisible={setOverlayVisible}
-            />
-          </S.SearchModal>
-        </>
-      )}
+    
+    <BaseButtonsForm.Item name="FiscalYear" label="سال مالی">
+<Select
+value={SelectedItem}
+defaultValue={SelectedItem}
+onChange={(value) => {
+ console.log('seleted value : ',value)
+  setSelectedItem(value.toString())
+ localStorage.setItem("FiscalYearId",value.toString())
 
-      {isTablet && (
-        <SearchDropdown
-          query={query}
-          setQuery={setQuery}
-          data={sortedResults}
-          isOverlayVisible={isOverlayVisible}
-          setOverlayVisible={setOverlayVisible}
-        />
-      )}
-    </>
+ const myNextList = [...userData];
+ const artwork = myNextList;
+ console.log('artwork fiscal year 2',artwork)
+ artwork[0].FiscalYearId = value.toString();
+
+
+ var findItem =  Items.find(a=>a.Id == value);
+ console.log('findItem',findItem)
+ if(findItem)
+ {
+  localStorage.setItem("FiscalYearTitle",findItem.Title.toString())
+  artwork[0].FiscalYearTitle = findItem.Title.toString();
+ }
+ setUserData(myNextList);
+ 
+ console.log('userdata 2',userData)
+}}
+>
+ {
+   Items.map((item,index)=>(
+    
+ <Option value={item.Id.toString()} >
+   <Space align="center">
+     {item.Title}
+   </Space>
+ </Option>
+     
+   ))
+ }
+
+ 
+</Select>
+
+
+</BaseButtonsForm.Item>
+     
+    
   );
 };

@@ -281,6 +281,7 @@ const SetProduce: React.FC = () => {
     }
 
   useEffect(() => {
+    console.log('userData test barnameh :',userData)
     GetProducts()
     GetStates()
     GetGroups()
@@ -522,7 +523,18 @@ const SetProduce: React.FC = () => {
                 {
                   console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString())
                   if(AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  AddDocumentControls("", "1", userData[0].UserId.toString(), 1)
+                  {
+                    console.log('userData[0].FiscalYearTitle.toString()',userData[0].FiscalYearTitle.toString(),'date.substring(0,4) : ',date.substring(0,4))
+                    if(userData[0].FiscalYearTitle.toString() ==  date.substring(0,4))
+                    {
+                      AddDocumentControls("", "1", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
+                    }
+                    else
+                    {
+                      alert('سال انتخاب شده در محدوده سال مالی نمی باشد.')
+                    }
+                  }
+                 
                 else
                 alert('لطفا داده ها پایین صفحه را کامل پر کنید')
                 }
