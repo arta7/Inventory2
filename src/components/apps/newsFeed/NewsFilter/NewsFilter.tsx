@@ -59,7 +59,7 @@ const Filter: React.FC<Filter> = ({
       <S.InputWrapper>
         <S.SearchIcon />
         <S.Input
-          placeholder={t('newsFeed.authorSearch')}
+          placeholder={'جستجو'}
           value={author}
           onChange={(event) => updateFilteredField('author', event.target.value)}
         />

@@ -81,10 +81,14 @@ const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
 
 
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
+const Kardex = React.lazy(() => import('@app/NewPage/Dashboard/Kardex'));
+const KardexSets = React.lazy(() => import('@app/NewPage/Dashboard/KardexSets'));
 const SetProduceList = React.lazy(() => import('@app/NewPage/Order/SetProduceList'));
 const SetsetsGroupsList = React.lazy(() => import('@app/NewPage/Order/SetsetsGroupsList'));
 const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
+
+const Charts = React.lazy(() => import('@app/NewPage/Dashboard/Charts'));
 
 // export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/';
@@ -125,7 +129,7 @@ const NotificationsUI = withLoading(NotificationsUIPage);
 const Skeletons = withLoading(SkeletonsPage);
 
 const DataTables = withLoading(DataTablesPage);
-const Charts = withLoading(ChartsPage);
+const ChartsFallBack = withLoading(Charts);
 
 // Maps
 const Google = withLoading(GoogleMaps);
@@ -163,6 +167,8 @@ const SetSetsGroupsFallback = withLoading(SetSetsGroups)
 const FirstScreenFallback = withLoading(FirstScreen)
 const SetProduceListFallback = withLoading(SetProduceList)
 const SetsetsGroupsListFallback = withLoading(SetsetsGroupsList)
+const KardexFallback = withLoading(Kardex)
+const KardexSetsFallback = withLoading(KardexSets)
 
 
 export const AppRouter: React.FC = () => {
@@ -177,19 +183,24 @@ export const AppRouter: React.FC = () => {
       <Routes>
         <Route path={MEDICAL_DASHBOARD_PATH} element={protectedLayout}>
           {/* <Route index element={<NftDashboard />} /> */}
-          <Route path={MEDICAL_DASHBOARD_PATH} element={<FirstScreenFallback />} />
+          <Route path={MEDICAL_DASHBOARD_PATH} element={<MedicalDashboard />} />
           <Route path="apps">
-            <Route path="feed" element={<NewsFeed />} />
-            <Route path="kanban" element={<Kanban />} />
+            {/* <Route path="feed" element={<NewsFeed />} />
+            <Route path="kanban" element={<Kanban />} /> */}
           </Route>
           <Route path="forms">
-            <Route path="advanced-forms" element={<AdvancedForm />} />
+            {/* <Route path="advanced-forms" element={<AdvancedForm />} /> */}
           </Route>
           <Route path="data-tables" element={<DataTables />} />
 
           
 
           <Route path="DefineUsers" element={<DefineUsersFallback />} />
+
+          <Route path="Kardex" element={<KardexFallback />} />
+          <Route path="KardexSets" element={<KardexSetsFallback />} />
+
+
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
           <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />
 
@@ -210,7 +221,7 @@ export const AppRouter: React.FC = () => {
           <Route path="SetSetsGroups" element={<SetSetsGroupsFallback />} />
 
           
-          <Route path="charts" element={<Charts />} />
+          <Route path="Charts" element={<ChartsFallBack />} />
           <Route path="maps">
             <Route path="google-maps" element={<Google />} />
             <Route path="leaflet-maps" element={<Leaflet />} />

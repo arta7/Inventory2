@@ -131,14 +131,19 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     ],
   },
   {
-    title: 'common.forms',
-    key: 'forms',
+    title: 'دسترسی مدیریت',
+    key: 'Dashboard',
     icon: <FormOutlined />,
     children: [
       {
-        title: 'common.advancedForms',
-        key: 'advanced-forms',
-        url: '/forms/advanced-forms',
+        title: 'کاردکس تعدادی',
+        key: 'kardex',
+        url: '/kardex',
+      },
+      {
+        title: 'کاردکس ست محصول',
+        key: 'kardexSets',
+        url: '/kardexSets',
       },
     ],
   },

@@ -15,11 +15,13 @@ import { BloodScreeningCard } from '@app/components/medical-dashboard/bloodScree
 import { NewsCard } from '@app/components/medical-dashboard/NewsCard/NewsCard';
 import { References } from '@app/components/common/References/References';
 import { useResponsive } from '@app/hooks/useResponsive';
-import * as S from './DashboardPage.styles';
+import * as S from './../DashboardPage.styles';
 import { DataUsers } from '@app/NewPage/DataUsers';
 import UserContext from './../../NewPage/UserContext';
 import { useNavigate } from 'react-router-dom';
-const MedicalDashboardPage: React.FC = () => {
+import {SetsChart} from './SetsChart'
+
+const Charts: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const { userData,setUserData } = React.useContext(UserContext);
   const navigate = useNavigate();
@@ -28,18 +30,18 @@ const MedicalDashboardPage: React.FC = () => {
 
       
 
-      if(userData.length == 0)
-      {
-          navigate('/auth/login')
-      }
-      else if(userData[0].UserId != null && userData[0].UserId!='')
-      {
-        navigate('/auth/login')
-      }
-      else
-      {
-        console.log('UserId  : ',userData)
-      }
+    //   if(userData.length == 0)
+    //   {
+    //       navigate('/auth/login')
+    //   }
+    //   else if(userData[0].UserId != null && userData[0].UserId!='')
+    //   {
+    //     navigate('/auth/login')
+    //   }
+    //   else
+    //   {
+    //     console.log('UserId  : ',userData)
+    //   }
 
 
   },[])
@@ -72,8 +74,12 @@ const MedicalDashboardPage: React.FC = () => {
             <CovidCard />
           </Col> */}
 
-          <Col id="activity" xl={24} xxl={12}>
-            <ActivityCard />
+          <Col id="activity" xl={24} xxl={10}>
+            <SetsChart />
+          </Col>
+
+          <Col id="activity" xl={24} xxl={10}>
+            <SetsChart />
           </Col>
 
           {/* <Col id="health" xl={24} xxl={12}>
@@ -107,47 +113,47 @@ const MedicalDashboardPage: React.FC = () => {
     <Row gutter={[20, 20]}>
       <StatisticsCards />
 
-      {isTablet && (
+      {/* {isTablet && (
         <Col id="map" md={24} order={4}>
           <MapCard />
         </Col>
-      )}
+      )} */}
 
-      <Col id="latest-screenings" xs={24} md={12} order={(isTablet && 5) || 0}>
+      {/* <Col id="latest-screenings" xs={24} md={12} order={(isTablet && 5) || 0}>
         <ScreeningsCard />
+      </Col> */}
+
+      <Col id="activity" xs={24} md={10} order={(isTablet && 8) || 0}>
+        <SetsChart />
       </Col>
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard />
-      </Col>
-
-      <Col id="treatment-plan" xs={24} md={24} order={(isTablet && 10) || 0}>
+      {/* <Col id="treatment-plan" xs={24} md={24} order={(isTablet && 10) || 0}>
         <TreatmentCard />
-      </Col>
+      </Col> */}
 
-      <Col id="health" xs={24} md={12} order={(isTablet && 9) || 0}>
+      {/* <Col id="health" xs={24} md={12} order={(isTablet && 9) || 0}>
         <HealthCard />
-      </Col>
+      </Col> */}
 
-      <Col id="patient-timeline" xs={24} md={12} order={(isTablet && 11) || 0}>
+      {/* <Col id="patient-timeline" xs={24} md={12} order={(isTablet && 11) || 0}>
         <PatientResultsCard />
-      </Col>
+      </Col> */}
 
-      <Col id="blood-screening" xs={24} md={12} order={(isTablet && 6) || 0}>
+      {/* <Col id="blood-screening" xs={24} md={12} order={(isTablet && 6) || 0}>
         <BloodScreeningCard />
-      </Col>
+      </Col> */}
 
-      <Col id="favorite-doctors" xs={24} md={24} order={(isTablet && 13) || 0}>
+      {/* <Col id="favorite-doctors" xs={24} md={24} order={(isTablet && 13) || 0}>
         <FavoritesDoctorsCard />
-      </Col>
+      </Col> */}
 
-      <Col id="covid" xs={24} md={12} order={(isTablet && 12) || 0}>
+      {/* <Col id="covid" xs={24} md={12} order={(isTablet && 12) || 0}>
         <CovidCard />
-      </Col>
+      </Col> */}
 
-      <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
+      {/* <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
         <NewsCard />
-      </Col>
+      </Col> */}
     </Row>
   );
 
@@ -159,4 +165,4 @@ const MedicalDashboardPage: React.FC = () => {
   );
 };
 
-export default MedicalDashboardPage;
+export default Charts;

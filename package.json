@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@ant-design/plots": "^2.0.6",
     "@craco/craco": "^6.1.2",
     "@reduxjs/toolkit": "^1.7.1",
     "antd": "^5.10.0",
@@ -50,6 +51,7 @@
     "react-scripts": "4.0.3",
     "react-simple-maps": "^2.3.0",
     "react-slick": "^0.28.1",
+    "react-to-print": "^2.14.15",
     "react-trello": "^2.2.11",
     "react-verification-input": "^2.0.3",
     "slick-carousel": "^1.8.1",

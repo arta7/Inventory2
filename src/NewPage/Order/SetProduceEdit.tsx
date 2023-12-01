@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './../SForm.styles';
+import * as S from '../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
@@ -14,17 +14,17 @@ import { SearchDropdown } from '@app/components/header/components/searchDropdown
 import { components as configComponents, Component } from '@app/constants/config/components';
 import { Btn, InputSearch } from '@app/components/header/components/HeaderSearch/HeaderSearch.styles';
 import { BirthdayItem } from '@app/components/profile/profileCard/profileFormNav/nav/PersonalInfo/BirthdayItem/BirthdayItem';
-import { Config } from './../../Database/Config';
+import { Config } from '../../Database/Config';
 import {
   DatePicker
 } from "react-advance-jalaali-datepicker";
-import Tables from './../Tables';
+import Tables from '../Tables';
 import axios from 'axios';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm, Col, Row } from 'antd';
 import Searchinput from '../Searchinput';
 import { DataUsers } from '../DataUsers';
-import UserContext from './../UserContext';
+import UserContext from '../UserContext';
 
 
 interface DataType {
@@ -43,7 +43,7 @@ export interface CategoryComponents {
   components: Component[];
 }
 
-const SetProduce: React.FC = () => {
+const SetProduceEdit: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -257,7 +257,9 @@ const SetProduce: React.FC = () => {
       key: 'Action',
       width: '20%',
       hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
+      render: (text, record, index) => 
+            
+      < div className="btn-wrap"
         style={
           {
             width: "100px",
@@ -281,7 +283,6 @@ const SetProduce: React.FC = () => {
     }
 
   useEffect(() => {
-    console.log('userData test barnameh :',userData)
     GetProducts()
     GetStates()
     GetGroups()
@@ -523,18 +524,7 @@ const SetProduce: React.FC = () => {
                 {
                   console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString())
                   if(AllData.filter(a=>a.Name !="" && a.ProductId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  {
-                    console.log('userData[0].FiscalYearTitle.toString()',userData[0].FiscalYearTitle.toString(),'date.substring(0,4) : ',date.substring(0,4))
-                    if(userData[0].FiscalYearTitle.toString() ==  date.substring(0,4))
-                    {
-                      AddDocumentControls("", "1", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
-                    }
-                    else
-                    {
-                      alert('سال انتخاب شده در محدوده سال مالی نمی باشد.')
-                    }
-                  }
-                 
+                  AddDocumentControls("", "1", userData[0].UserId.toString(), 1)
                 else
                 alert('لطفا داده ها پایین صفحه را کامل پر کنید')
                 }
@@ -576,4 +566,4 @@ const SetProduce: React.FC = () => {
   );
 };
 
-export default SetProduce;
+export default SetProduceEdit;
