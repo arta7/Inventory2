@@ -51,6 +51,7 @@ const SetProduce: React.FC = () => {
   const [ProductData, setProductData] = useState([]);
   const [StatesData, setStatesData] = useState([]);
   const [GroupsData, setGroupsData] = useState([])
+  const [Code,setCode] = useState('')
   const [query, setQuery] = useState('');
   const [selectedStates, setselectedStates] = useState('');
   const [selectedGroups, setselectedGroups] = useState('');
@@ -60,6 +61,7 @@ const SetProduce: React.FC = () => {
   const [ProductName, setProductName] = useState({})
   const [isModalVisible, setModalVisible] = useState(false);
   const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const [form] = BaseForm.useForm();
   const { userData,setUserData } = React.useContext(UserContext);
   var moment = require('jalali-moment');
   const sortedResults = query
@@ -276,18 +278,78 @@ const SetProduce: React.FC = () => {
   ]
 
 
+    let GetDocumentData=(_fisc,_Id)=>{
+
+      var data={
+        "Id": _Id,
+        "FiscalYearRef":_fisc
+      }
+
+      console.log('Data ProductDocuments : ',data)
+      axios.post(Config.URL +
+        Config.Defination.GetProductsDocumentsWithId,data)
+        .then((response) => {
+          console.log('response data  documents product : ', response.data.data)
+          
+            if(response.data.data.length > 0 )
+            {
+              form.setFieldsValue({
+                Code: response.data.data[0].Id.toString(),
+                DocumentType: response.data.data[0].StatesRef.toString(),
+                DocumentSecond:response.data.data[0].SecondUserRef.toString(),
+                // Dates:"1402/09/08"
+
+              })
+              setCode(response.data.data[0].Id.toString())
+              setselectedGroups(response.data.data[0].SecondUserRef.toString())
+              setselectedStates(response.data.data[0].StatesRef.toString())
+             
+              var dates = toEnglishDigits(new Date(response.data.data[0].Date).toLocaleDateString('fa'));
+              console.log('date : ',dates)
+             setDate(dates)
+            
+              console.log('set data')
+              setControlId(ControlId+1)
+            }
+        
+        })
+        .catch((error) => {
+          console.log('Error data document product id : ', error)
+        })
+    }
+
+    let toEnglishDigits=(str) =>{
+
+      var e = '۰'.charCodeAt(0);
+      str = str.replace(/[۰-۹]/g, function(t) {
+          return t.charCodeAt(0) - e;
+      });
+  
+      // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
+      e = '٠'.charCodeAt(0);
+      str = str.replace(/[٠-٩]/g, function(t) {
+          return t.charCodeAt(0) - e;
+      });
+      return str;
+  }
+
+
     let  GetDataUser=()=>{
-      console.log('UserData test : ',userData[0].UserId.toString())
+      console.log('UserData test : ',userData[0].selectedProductId.toString())
+      if(userData[0].selectedProductId.toString() != "")
+      {
+        GetDocumentData(userData[0].FiscalYearId.toString(),userData[0].selectedProductId.toString())
+      }
     }
 
   useEffect(() => {
-    console.log('userData test barnameh :',userData)
+   
     GetProducts()
     GetStates()
     GetGroups()
-    GetDataUser()
+   
 
-  }, [])
+  }, [ControlId])
 
 
 
@@ -376,6 +438,8 @@ const SetProduce: React.FC = () => {
         console.log('response data : ', response.data.data)
 
         setGroupsData(response.data.data)
+
+        GetDataUser()
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -414,7 +478,7 @@ const SetProduce: React.FC = () => {
       }}> */}
 
       {/* <Auth.FormWrapper style={{ width: '100%' }}> */}
-      <BaseForm layout="horizontal"  >
+      <BaseForm layout="horizontal"   form={form}>
 
         <S.Title>سند انبار</S.Title>
 
@@ -423,12 +487,17 @@ const SetProduce: React.FC = () => {
           <Col xs={24} md={8}>
             <Auth.FormItem
               label="شماره سند "
-              name="Number"
+              name="Code"
             // rules={[{ required: true, message: t('common.requiredField') }]}
 
             >
 
-              <Auth.FormInput placeholder="شمار سند " readOnly={true} />
+              <Auth.FormInput placeholder="شماره سند " 
+              readOnly={true} 
+               value={Code}
+                onChange={(e) => {
+                  setCode(e.target.value)
+                }}/>
             </Auth.FormItem>
           </Col>
 
@@ -505,7 +574,7 @@ const SetProduce: React.FC = () => {
                   setDate(formatValue)
                 }}
                 id="datePicker"
-                // preSelected={date}
+                 preSelected={date}
                 inputTextAlign='center'
               />
             </Auth.FormItem>

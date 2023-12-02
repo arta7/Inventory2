@@ -12,32 +12,20 @@ import {  Space } from 'antd';
 import UserContext from './../../../../NewPage/UserContext';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
-
+import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 
 export interface CategoryComponents {
   category: CategoryType;
   components: Component[];
 }
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: 'Item 1',
-  },
-  {
-    key: '2',
-    label: 'Item 2',
-  },
-  {
-    key: '3',
-    label: 'Item 3',
-  },
-];
+
 
 export const HeaderSearch: React.FC = () => {
   const { userData,setUserData } = React.useContext(UserContext);
     const[Items,setItems] = useState([])
     const[Counter,setCounter] = useState(1)
+    const [form] = BaseForm.useForm();
     const[SelectedItem,setSelectedItem] = useState('')
   // const { pathname } = useLocation();
 
@@ -77,9 +65,12 @@ export const HeaderSearch: React.FC = () => {
         }
         console.log('data1 : ', data1)
         setItems(data1)
-        console.log('user dat fiscal year search : ',userData[0].FiscalYearId)
+        console.log('user dat fiscal year search : ',userData[0].FiscalYearId.toString())
           setSelectedItem(userData[0].FiscalYearId.toString())
-          setCounter(Counter+1)
+          form.setFieldsValue({
+            FiscalYear : userData[0].FiscalYearId.toString()
+          })
+        
 
 
 
@@ -98,6 +89,9 @@ export const HeaderSearch: React.FC = () => {
 
       
         setSelectedItem(userData[0].FiscalYearId.toString())
+        // form.setFieldsValue({
+        //   FiscalYear : userData[0].FiscalYearId
+        // })
       
      }
 
@@ -108,11 +102,10 @@ export const HeaderSearch: React.FC = () => {
   },[])
 
   return (
-    
-    <BaseButtonsForm.Item name="FiscalYear" label="سال مالی">
+    <BaseForm layout="horizontal"   form={form}>
+    <BaseButtonsForm.Item name="FiscalYear" label="سال مالی" >
 <Select
 value={SelectedItem}
-defaultValue={SelectedItem}
 onChange={(value) => {
  console.log('seleted value : ',value)
   setSelectedItem(value.toString())
@@ -153,6 +146,7 @@ onChange={(value) => {
 
 
 </BaseButtonsForm.Item>
+</BaseForm>
      
     
   );

@@ -82,10 +82,13 @@ const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
 
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
 const Kardex = React.lazy(() => import('@app/NewPage/Dashboard/Kardex'));
+const KardexSets = React.lazy(() => import('@app/NewPage/Dashboard/KardexSets'));
 const SetProduceList = React.lazy(() => import('@app/NewPage/Order/SetProduceList'));
 const SetsetsGroupsList = React.lazy(() => import('@app/NewPage/Order/SetsetsGroupsList'));
 const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
+
+const Charts = React.lazy(() => import('@app/NewPage/Dashboard/Charts'));
 
 // export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/';
@@ -126,7 +129,7 @@ const NotificationsUI = withLoading(NotificationsUIPage);
 const Skeletons = withLoading(SkeletonsPage);
 
 const DataTables = withLoading(DataTablesPage);
-const Charts = withLoading(ChartsPage);
+const ChartsFallBack = withLoading(Charts);
 
 // Maps
 const Google = withLoading(GoogleMaps);
@@ -165,6 +168,8 @@ const FirstScreenFallback = withLoading(FirstScreen)
 const SetProduceListFallback = withLoading(SetProduceList)
 const SetsetsGroupsListFallback = withLoading(SetsetsGroupsList)
 const KardexFallback = withLoading(Kardex)
+const KardexSetsFallback = withLoading(KardexSets)
+
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -193,6 +198,8 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineUsers" element={<DefineUsersFallback />} />
 
           <Route path="Kardex" element={<KardexFallback />} />
+          <Route path="KardexSets" element={<KardexSetsFallback />} />
+
 
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
           <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />
@@ -214,7 +221,7 @@ export const AppRouter: React.FC = () => {
           <Route path="SetSetsGroups" element={<SetSetsGroupsFallback />} />
 
           
-          <Route path="charts" element={<Charts />} />
+          <Route path="Charts" element={<ChartsFallBack />} />
           <Route path="maps">
             <Route path="google-maps" element={<Google />} />
             <Route path="leaflet-maps" element={<Leaflet />} />

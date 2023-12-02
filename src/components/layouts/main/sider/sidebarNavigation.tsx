@@ -140,6 +140,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'kardex',
         url: '/kardex',
       },
+      {
+        title: 'کاردکس ست محصول',
+        key: 'kardexSets',
+        url: '/kardexSets',
+      },
     ],
   },
   {

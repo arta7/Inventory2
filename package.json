@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@ant-design/plots": "^2.0.6",
     "@craco/craco": "^6.1.2",
     "@reduxjs/toolkit": "^1.7.1",
     "antd": "^5.10.0",

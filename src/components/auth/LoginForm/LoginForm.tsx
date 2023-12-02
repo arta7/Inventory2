@@ -65,11 +65,14 @@ export const LoginForm: React.FC = () => {
           DataUsers.Username = response.data.data[0].Username.toString();
           localStorage.setItem('Username', response.data.data[0].Username);
           localStorage.setItem('UserId', response.data.data[0].Id);
-          setUserData([{UserId:response.data.data[0].Id.toString(),
-          Username:response.data.data[0].Username,selectedProductId:'',
-          selectedSetsId:''
-          }])
-        
+          
+
+          const myNextList = [...userData];
+          const artwork = myNextList;
+          console.log('login 2',artwork)
+          artwork[0].UserId = response.data.data[0].Id;
+          artwork[0].Username = response.data.data[0].Username;
+          setUserData(myNextList)
           navigate('/')
         }
         else

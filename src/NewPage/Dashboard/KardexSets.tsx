@@ -17,8 +17,11 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-var moment = require('jalali-moment');
 import UserContext from './../UserContext';
+import Searchinput from '../Searchinput';
+import SearchinputKardex from '../SearchinputKardex';
+var moment = require('jalali-moment');
+
 
 interface DefinePostData {
   Id: string;
@@ -32,7 +35,7 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const SetsetsGroupsList: React.FC = () => {
+const KardexSets: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -47,7 +50,11 @@ const SetsetsGroupsList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  const { userData,setUserData } = React.useContext(UserContext);
+  const [ProductData, setProductData] = useState([]);
+    const[selectedProductId,setselectedProductId] = useState(0)
+    const[selectedProductTitle,setselectedProductTitle] = useState('')
+    const { userData,setUserData } = React.useContext(UserContext);
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -150,7 +157,7 @@ const SetsetsGroupsList: React.FC = () => {
       key: 'StatesTitle',
       width: '15%',
       hidden: false,
-      
+
       ...getColumnSearchProps('StatesTitle'),
     },
     {
@@ -164,7 +171,7 @@ const SetsetsGroupsList: React.FC = () => {
       title: 'درخواست کننده',
       dataIndex: 'SecondUsername',
       key: 'SecondUsername',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -178,7 +185,7 @@ const SetsetsGroupsList: React.FC = () => {
       title: 'سال مالی',
       dataIndex: 'FiscalTitle',
       key: 'FiscalTitle',
-      width: '10%',
+      width: '0%',
       hidden: true,
     },
     {
@@ -199,113 +206,107 @@ const SetsetsGroupsList: React.FC = () => {
       title: 'تاریخ سند',
       dataIndex: 'Datevalue',
       key: 'Datevalue',
-      width: '20%',
-      hidden: true,
-    },
-   
-    {
-      title: 'ثبت کننده ',
-      dataIndex: 'Username',
-      key: 'Username',
-      width: '15%',
-      hidden: false,
-    },
-    {
-      title: 'UserRef ',
-      dataIndex: 'UserRef',
-      key: 'UserRef',
       width: '0%',
       hidden: true,
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'Action',
-      width: '50%',
+      title: 'سند ورودی',
+      dataIndex: 'InsertValue',
+      key: 'InsertValue',
+      width: '15%',
       hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
-        style={
-          {
-            width: "300px",
-          }
-        } > < Button
-          style={{ backgroundColor: 'green', color: 'white' }}
-          onClick={
-            (e) => {
-              // form.setFieldsValue({
-              //   Title: record.Title.toString(),
-              //   Code: record.Code.toString(),
-              //    State:record.Active.toString()
+    },
+    {
+      title: 'سند خروجی',
+      dataIndex: 'ExitValue',
+      key: 'ExitValue',
+      width: '15%',
+      hidden: false,
+    },
 
-              // })
-              // setTitles(record.Title.toString())
-              // setCode(record.Code.toString())
-              // setId(record.Id.toString())
-              // console.log('record.StateType : ',record.Active)        
-              //  setSelectedItem(record.Active)
+    {
+      title: 'مانده موجودی',
+      dataIndex: 'Deposit',
+      key: 'Deposit',
+      width: '15%',
+      hidden: false,
+      render: (text, record, index) =>
+
+        < div className="btn-wrap"
+          style={
+            {
+              width: "100px",
             }
-          } > ویرایش
-        </Button>
+          } >
 
-     
-            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
+          {
+            index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
           }
-          >حذف
-          </Button>
-          </Popconfirm>
+        </div >
+      ,
 
-          < Button
-            style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
-          onClick={()=>
-            console.log('')
-          }
-          >چاپ
-          </Button>
-           
-      
-      </div >
-    }
+    },
+
 
   ];
 
 
-
+  let SumData = (index, Data) => {
+    var datasum = 0;
+    for (let i = 0; i < index; i++) {
+      datasum += Data[i].InsertValue - Data[i].ExitValue
+    }
+    return datasum;
+  }
 
   let DeleteParts = (_id) => {
 
-   
+
 
 
   }
 
+  let GetSets = () => {
 
-  let GetSetsDocuments = (_fiscal) => {
-
-var data={
-  "FiscalYearRef":_fiscal
-}
- 
     axios.post(Config.URL +
-      Config.Defination.GetSetsDocuments,data)
+      Config.Defination.GetSets)
       .then((response) => {
-        console.log('response data group sets : ', response.data.data)
+        console.log('response data : ', response.data.data)
+        setProductData(response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+  let GetKardex = (_sets, _fiscal) => {
+
+    var data = {
+      "FiscalYearRef": _fiscal,
+      "SetsRef": _sets
+
+    }
+
+    axios.post(Config.URL +
+      Config.Defination.GetKardexSets, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
+          data1.push({
+            Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
             StatesRef: response.data.data[i].StatesRef
-             ,FiscalYearRef:response.data.data[i].FiscalYearRef,
-             FiscalTitle: response.data.data[i].FiscalTitle
-             ,UserRef:response.data.data[i].UserRef,
-             Username: response.data.data[i].Username
-             ,SecondUserRef:response.data.data[i].SecondUserRef,
-             SecondUsername: response.data.data[i].SecondUsername,
-             Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-             Datevalue:response.data.data[i].Date
-            })
+            , FiscalYearRef: response.data.data[i].FiscalYearRef,
+            FiscalTitle: response.data.data[i].FiscalTitle
+            , UserRef: response.data.data[i].UserRef,
+            Username: response.data.data[i].Username
+            , SecondUserRef: response.data.data[i].SecondUserRef,
+            SecondUsername: response.data.data[i].SecondUsername,
+            Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+            Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
+            ExitValue: response.data.data[i].ExitValue
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -318,8 +319,9 @@ var data={
   }
 
   useEffect(() => {
+    GetSets()
+    
 
-    GetSetsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
 
 
@@ -329,18 +331,98 @@ var data={
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-    setTitles(events.target.value);
+   // setTitles(events.target.value);
+  }
+
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML =  new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    
+    return false;
   }
 
   return (
     <div >
+    
+
+
+<div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Auth.FormWrapper >
+          <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
+          <SearchinputKardex list={ProductData} PlaceHolder="نام ست کالا"
+      // onChange={(e)=>{setselectedProductTitle(e)}}
+      setvalue={setselectedProductTitle}
+      setId ={setselectedProductId}
+      value = {selectedProductTitle}
+      setAllData={setAllData}
+       
+      />
+
+            <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+
+
+              <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+                  console.log('selectedProductId : ',selectedProductId)
+               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
+              }}>
+                جستجو
+              </Auth.SubmitButton>
+
+
+
+
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  setAllData([])
+                  setselectedProductTitle('')
+                  setselectedProductId('')
+                }
+              }>
+                بازیابی
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  printdiv("printelement")
+                  window.location.reload();
+                }
+              }>
+                چاپ
+              </Auth.SubmitButton>
+
+            </div>
+
+
+
+
+          </BaseForm>
+        </Auth.FormWrapper>
+      </div>
+
+
+
+        <div id="printelement">
+
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
+      </div>
     </div>
   );
 };
 
-export default SetsetsGroupsList;
+export default KardexSets;
 
 

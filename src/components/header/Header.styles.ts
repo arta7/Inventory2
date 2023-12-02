@@ -83,7 +83,7 @@ export const ProfileColumn = styled(Col)<ProfileColumn>`
     ${(props) =>
       props?.$isTwoColumnsLayout &&
       css`
-        background-color: var(--sider-background-color);
+       
         padding: ${LAYOUT.desktop.paddingVertical} ${LAYOUT.desktop.paddingHorizontal};
       `}
   }

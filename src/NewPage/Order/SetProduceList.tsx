@@ -314,7 +314,13 @@ const SetProduceList: React.FC = () => {
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={e=>{
-            printdiv('printitem')
+           
+            const myNextList = [...userData];
+            const artwork = myNextList;
+            console.log('artwork change selected product Id : ',artwork)
+            artwork[0].selectedProductId = record.Id;
+            setUserData(myNextList);
+            navigate('/SetProduce')
           }
          
 
@@ -345,9 +351,10 @@ const SetProduceList: React.FC = () => {
 
         < Button
           style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
-          onClick={()=>
-            console.log('')
+          onClick={e=>{
+            printdiv('printitem')
           }
+        }
           >چاپ
           </Button>
 
