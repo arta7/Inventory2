@@ -277,6 +277,40 @@ const SetProduce: React.FC = () => {
 
   ]
 
+    let GetProductDocumentData=(_Id)=>{
+
+      var data={
+        "Id": _Id
+      }
+
+      console.log('Data GetProductDocumentData : ',data)
+      axios.post(Config.URL +
+        Config.Defination.GetProductDocumentData,data)
+        .then((response) => {
+          console.log('response   GetProductDocumentData : ', response.data.data)
+            var datapush = [];
+
+            if(response.data.data.length > 0 )
+            {
+              for(let i=0;i<response.data.data.length;i++)
+              {
+                datapush.push({ Code: response.data.data[i].ProductCode.toString(), Name: response.data.data[i].ProductTitle.toString(), ProductId: response.data.data[i].ProductId.toString()
+                  , Units: response.data.data[i].UnitTitle.toString(), UnitsRef: response.data.data[i].UnitRef.toString(), Counts: response.data.data[i].Counts.toString()
+                  , Details: response.data.data[i].Details.toString(), Id: ControlId })
+                  setControlId(ControlId+1) 
+               }
+               setAllData(datapush)
+            }
+        
+        })
+        .catch((error) => {
+          console.log('Error data document GetProductDocumentData : ', error)
+        })
+
+
+    }
+
+
 
     let GetDocumentData=(_fisc,_Id)=>{
 
@@ -303,13 +337,13 @@ const SetProduce: React.FC = () => {
               setCode(response.data.data[0].Id.toString())
               setselectedGroups(response.data.data[0].SecondUserRef.toString())
               setselectedStates(response.data.data[0].StatesRef.toString())
+              GetProductDocumentData(_Id)
              
               var dates = toEnglishDigits(new Date(response.data.data[0].Date).toLocaleDateString('fa'));
               console.log('date : ',dates)
              setDate(dates)
-            
+           
               console.log('set data')
-              setControlId(ControlId+1)
             }
         
         })
