@@ -280,7 +280,7 @@ const SetProduce: React.FC = () => {
     let GetProductDocumentData=(_Id)=>{
 
       var data={
-        "Id": _Id
+        "DocumentsRef": _Id
       }
 
       console.log('Data GetProductDocumentData : ',data)
@@ -294,8 +294,9 @@ const SetProduce: React.FC = () => {
             {
               for(let i=0;i<response.data.data.length;i++)
               {
-                datapush.push({ Code: response.data.data[i].ProductCode.toString(), Name: response.data.data[i].ProductTitle.toString(), ProductId: response.data.data[i].ProductId.toString()
-                  , Units: response.data.data[i].UnitTitle.toString(), UnitsRef: response.data.data[i].UnitRef.toString(), Counts: response.data.data[i].Counts.toString()
+                datapush.push({ Code: response.data.data[i].ProductCode.toString()
+                  , Name: response.data.data[i].ProductTitle.toString(), ProductId: response.data.data[i].ProductId.toString()
+                  , Units: response.data.data[i].UnitTitle.toString(), UnitsRef: response.data.data[i].UnitRef.toString(), Counts: response.data.data[i].Counts
                   , Details: response.data.data[i].Details.toString(), Id: ControlId })
                   setControlId(ControlId+1) 
                }
