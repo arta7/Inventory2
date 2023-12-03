@@ -321,20 +321,7 @@ const SetProduceList: React.FC = () => {
             artwork[0].selectedProductId = record.Id;
             setUserData(myNextList);
             navigate('/SetProduce')
-          }
-         
-
-             // handlePrint
-              // GetReport()
-
-              // // Renreding the report
-              // report.renderAsync(() => {
-
-              // });
-
-              // Exporting the report to PDF
-            
-            
+          } 
           } > ویرایش
         </Button>
 
