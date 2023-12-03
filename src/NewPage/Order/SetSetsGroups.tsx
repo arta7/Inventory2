@@ -414,7 +414,7 @@ const SetProduce: React.FC = () => {
       "CurrentState": 1,
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
-      "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD').toString(),
+      "Date":  moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
       "UserRef": _userRef,
       "FiscalYearRef": _fiscalYearRef
 
@@ -443,7 +443,7 @@ const SetProduce: React.FC = () => {
       "CurrentState": 1,
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
-      "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD').toString(),
+      "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
       "UserRef": _userRef,
       "FiscalYearRef": _fiscalYearRef,
       "Id":_id
@@ -679,7 +679,7 @@ const SetProduce: React.FC = () => {
           <BaseForm.Item noStyle>
 
 
-            <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+            <Auth.SubmitButton type="primary"  loading={isLoading}
               onClick={() => {
                 if (date != '' && selectedGroups != "" && selectedStates != "")
                 {
