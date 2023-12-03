@@ -183,8 +183,8 @@ const SetProduce: React.FC = () => {
     // },
     {
       title: 'تعداد',
-      dataIndex: 'Count',
-      key: 'Count',
+      dataIndex: 'Counts',
+      key: 'Counts',
       width: '15%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
@@ -194,7 +194,7 @@ const SetProduce: React.FC = () => {
           }
         } >
         <Auth.FormInput placeholder="عدد"
-          value={record.Count}
+          value={record.Counts}
           style={{ textAlign: 'center' }}
 
           onChange={(v) => {
@@ -203,7 +203,7 @@ const SetProduce: React.FC = () => {
             const artwork = myNextList.find(
               a => a.Id == record.Id
             );
-            artwork.Count = v.target.value;
+            artwork.Counts = v.target.value;
             setAllData(myNextList);
 
           }
@@ -304,7 +304,7 @@ const SetProduce: React.FC = () => {
             {
               datapush.push({ Code: response.data.data[i].SetsCode
                 , Name: response.data.data[i].SetsTitle, SetsId: response.data.data[i].SetsId
-                 , Count: response.data.data[i].Counts
+                 , Counts: response.data.data[i].Counts
                 , Details: response.data.data[i].Details, Id: ControlId })
                 setControlId(ControlId+1) 
              }
@@ -472,7 +472,7 @@ const SetProduce: React.FC = () => {
     var dataPush = [];
     for (let i = 0; i < AllData.length; i++) {
 
-      dataPush.push({"SetsRef":AllData[i].SetsId.toString(),"Count":AllData[i].Count.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
+      dataPush.push({"SetsRef":AllData[i].SetsId.toString(),"Counts":AllData[i].Counts.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
     }
 
 
@@ -492,6 +492,11 @@ const SetProduce: React.FC = () => {
         setDate('')
         setselectedGroups('')
         setselectedStates('')
+        const myNextList = [...userData];
+              const artwork = myNextList;
+              console.log('artwork change selected product Id : ',artwork)
+              artwork[0].selectedSetsId = "";
+              setUserData(myNextList);
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -677,8 +682,8 @@ const SetProduce: React.FC = () => {
               onClick={() => {
                 if (date != '' && selectedGroups != "" && selectedStates != "")
                 {
-                  console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString())
-                  if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Count!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
+                  console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Counts!="" ).length.toString())
+                  if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
                   {
                     if(userData[0].selectedSetsId == '')
                    {
@@ -717,7 +722,7 @@ const SetProduce: React.FC = () => {
         <Auth.SubmitButton loading={isLoading}
           onClick={() => {
             // setAllData([{Code:"",Name:"",ProductId:"",Units:"",UnitsRef:"",Counts:"",Details:""}])
-            setAllData([...AllData, { Code: "", Name: "", SetsId: "", Count: "", Details: "", Id: ControlId }]);
+            setAllData([...AllData, { Code: "", Name: "", SetsId: "", Counts: "", Details: "", Id: ControlId }]);
             setControlId(ControlId + 1)
           }}
         >
