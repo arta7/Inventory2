@@ -450,13 +450,15 @@ const SetProduce: React.FC = () => {
 
 
     }
+
+    console.log('data : ',data)
     axios.post(Config.URL +
       Config.Defination.UpdateDocumentControls, data)
       .then((response) => {
-        console.log('response data : ', response.data.data)
-        console.log('result Id : ', response.data.data)
+       
         
-        AddSetsDocuments(_id)
+
+    DeleteDocumentControlsSets(_id)
       
       })
       .catch((error) => {
@@ -490,6 +492,27 @@ const SetProduce: React.FC = () => {
         setDate('')
         setselectedGroups('')
         setselectedStates('')
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+  let DeleteDocumentControlsSets = (_id) => {
+
+    var data = {
+      "Id":_id
+
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteDocumentControlsSets, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+
+        console.log('result Id : ', response.data)
+        AddSetsDocuments(_id)
+  
       })
       .catch((error) => {
         console.log('Error : ', error)

@@ -53,6 +53,7 @@ URL:'http://localhost:8090/api',
         DeleteStates:'/DeleteStates',
         DeleteProducts:'/DeleteProducts',
         ResetPassword:'/ResetPassword',
+        DeleteDocumentControlsSets:'/DeleteDocumentControlsSets'
     }
   
 
