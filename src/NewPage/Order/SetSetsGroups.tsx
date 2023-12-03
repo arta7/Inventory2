@@ -666,7 +666,8 @@ const SetProduce: React.FC = () => {
                   setDate(formatValue)
                 }}
                 id="datePicker"
-                // preSelected={date}
+                 preSelected={date}
+                 controlValue={true}
                 inputTextAlign='center'
               />
             </Auth.FormItem>
