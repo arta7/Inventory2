@@ -56,7 +56,7 @@ const SetProduce: React.FC = () => {
   const [selectedStates, setselectedStates] = useState('');
   const [selectedGroups, setselectedGroups] = useState('');
   const [ControlId, setControlId] = useState(0)
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString('fa'));
   const [components] = useState<Component[]>(configComponents);
   const [ProductName, setProductName] = useState({})
   const [isModalVisible, setModalVisible] = useState(false);
@@ -609,7 +609,8 @@ const SetProduce: React.FC = () => {
                   setDate(formatValue)
                 }}
                 id="datePicker"
-                 preSelected={date}
+                preSelected={date}
+                 controlValue={true}
                 inputTextAlign='center'
               />
             </Auth.FormItem>
