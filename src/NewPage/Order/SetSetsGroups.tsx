@@ -122,7 +122,7 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
             artwork.Code = v.target.value;
             setAllData(myNextList);
@@ -297,17 +297,20 @@ const SetProduce: React.FC = () => {
       .then((response) => {
         console.log('response   GetSetsDocumentData : ', response.data.data)
           var datapush = [];
-
+          var id  =0;
           if(response.data.data.length > 0 )
           {
             for(let i=0;i<response.data.data.length;i++)
             {
+             
               datapush.push({ Code: response.data.data[i].SetsCode
                 , Name: response.data.data[i].SetsTitle, SetsId: response.data.data[i].SetsId
                  , Counts: response.data.data[i].Counts
-                , Details: response.data.data[i].Details, Id: ControlId })
-                setControlId(ControlId+1) 
+                , Details: response.data.data[i].Details, Id: id })
+              
              }
+             id=id+3;
+               setControlId(id) 
              setAllData(datapush)
           }
       
@@ -386,6 +389,18 @@ const SetProduce: React.FC = () => {
     {
       GetDocumentData(userData[0].FiscalYearId.toString(),userData[0].selectedSetsId.toString())
     }
+    else
+    {
+      form.setFieldsValue({
+        Code: '',
+        DocumentType: '',
+        DocumentSecond:'',
+      })
+      setCode('')
+      setselectedGroups('')
+      setselectedStates('')
+      setAllData([])
+    }
   }
   
   let GetStates = () => {
@@ -409,14 +424,15 @@ const SetProduce: React.FC = () => {
     var data = {
       "Code": _code,
       "Type": _type,
-      "StatesRef": selectedStates,
+      "UserRef": _userRef,
       "SecondUserRef": selectedGroups,
+      "FiscalYearRef": _fiscalYearRef,
+      "StatesRef": selectedStates,
       "CurrentState": 1,
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
       "Date":  moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
-      "UserRef": _userRef,
-      "FiscalYearRef": _fiscalYearRef
+     
 
 
     }
@@ -469,7 +485,7 @@ const SetProduce: React.FC = () => {
   let AddSetsDocuments = (_id) => {
 
 
-    var dataPush = [];
+    var dataPush =[] ;
     for (let i = 0; i < AllData.length; i++) {
 
       dataPush.push({"SetsRef":AllData[i].SetsId.toString(),"Counts":AllData[i].Counts.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
@@ -478,9 +494,8 @@ const SetProduce: React.FC = () => {
 
     var data = {
       "jsonData": JSON.stringify(dataPush)
-
-
     }
+    console.log('data push for add database : ',data)
     axios.post(Config.URL +
       Config.Defination.AddSetsDocuments, data)
       .then((response) => {
@@ -497,6 +512,17 @@ const SetProduce: React.FC = () => {
               console.log('artwork change selected product Id : ',artwork)
               artwork[0].selectedSetsId = "";
               setUserData(myNextList);
+
+   form.setFieldsValue({
+              Code: '',
+              DocumentType: '',
+              DocumentSecond:'',
+              // Dates:"1402/09/08"
+
+            })
+            setCode('')
+            setselectedGroups('')
+            setselectedStates('')
       })
       .catch((error) => {
         console.log('Error : ', error)

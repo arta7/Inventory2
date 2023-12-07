@@ -122,7 +122,7 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
             artwork.Code = v.target.value;
             setAllData(myNextList);
@@ -201,7 +201,7 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
             artwork.Counts = v.target.value;
             setAllData(myNextList);
@@ -234,8 +234,9 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
+            console.log('details :',artwork)
             artwork.Details = v.target.value;
             setAllData(myNextList);
 
@@ -289,17 +290,19 @@ const SetProduce: React.FC = () => {
         .then((response) => {
           console.log('response   GetProductDocumentData : ', response.data.data)
             var datapush = [];
-
+            var id  =0;
             if(response.data.data.length > 0 )
             {
               for(let i=0;i<response.data.data.length;i++)
               {
+                  id = i+1;
                 datapush.push({ Code: response.data.data[i].ProductCode
                   , Name: response.data.data[i].ProductTitle, ProductId: response.data.data[i].ProductId
                   , Units: response.data.data[i].UnitTitle, UnitsRef: response.data.data[i].UnitRef, Counts: response.data.data[i].Counts
-                  , Details: response.data.data[i].Details, Id: ControlId })
-                  setControlId(ControlId+1) 
+                  , Details: response.data.data[i].Details, Id: id })
                }
+               id=id+3;
+               setControlId(id) 
                setAllData(datapush)
             }
         
@@ -375,6 +378,18 @@ const SetProduce: React.FC = () => {
       {
         GetDocumentData(userData[0].FiscalYearId.toString(),userData[0].selectedProductId.toString())
       }
+      else
+      {
+        form.setFieldsValue({
+          Code: '',
+          DocumentType: '',
+          DocumentSecond:'',
+        })
+        setCode('')
+        setselectedGroups('')
+        setselectedStates('')
+        setAllData([])
+      }
     }
 
   useEffect(() => {
@@ -384,7 +399,7 @@ const SetProduce: React.FC = () => {
     GetGroups()
    
 
-  }, [ControlId])
+  }, [])
 
 
 
@@ -445,8 +460,6 @@ const SetProduce: React.FC = () => {
 
     var data = {
       "jsonData": JSON.stringify(dataPush)
-
-
     }
     axios.post(Config.URL +
       Config.Defination.AddProductDocuments, data)
@@ -661,6 +674,8 @@ const SetProduce: React.FC = () => {
       <div style={{ width: '100px', marginTop: 20, textAlign: 'center' }}>
         <Auth.SubmitButton loading={isLoading}
           onClick={() => {
+            console.log('ControlID : ',ControlId)
+          
             // setAllData([{Code:"",Name:"",ProductId:"",Units:"",UnitsRef:"",Counts:"",Details:""}])
             setAllData([...AllData, { Code: "", Name: "", ProductId: "", Units: "", UnitsRef: "", Counts: "", Details: "", Id: ControlId }]);
             setControlId(ControlId + 1)

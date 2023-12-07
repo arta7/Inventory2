@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation ,useNavigate} from 'react-router-dom';
 import * as S from './SiderMenu.styles';
 import { sidebarNavigation, SidebarNavigationItem } from '../sidebarNavigation';
 import { Menu } from 'antd';
+import UserContext from './../../../../../NewPage/UserContext';
 
 interface SiderContentProps {
   setCollapsed: (isCollapsed: boolean) => void;
@@ -18,7 +19,8 @@ const sidebarNavFlat = sidebarNavigation.reduce(
 const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
   const { t } = useTranslation();
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const { userData,setUserData } = React.useContext(UserContext);
   const currentMenuItem = sidebarNavFlat.find(({ url }) => url === location.pathname);
   const defaultSelectedKeys = currentMenuItem ? [currentMenuItem.key] : [];
 
@@ -44,13 +46,22 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
             popupClassName="d-none"
           >
             {nav.children.map((childNav) => (
-              <Menu.Item key={childNav.key} title="">
+              <Menu.Item key={childNav.key} title="" onClick={()=>{
+                const myNextList = [...userData];
+                const artwork = myNextList;
+                console.log('artwork change selected product Id : ',artwork)
+                artwork[0].selectedProductId = '';
+                artwork[0].selectedSetsId = '';
+                setUserData(myNextList);
+              }}>
                 <Link to={childNav.url || ''}>{t(childNav.title)}</Link>
               </Menu.Item>
             ))}
           </Menu.SubMenu>
         ) : (
-          <Menu.Item key={nav.key} title="" icon={nav.icon}>
+          <Menu.Item key={nav.key} title="" icon={nav.icon} onClick={()=>{
+            console.log('test')
+          }}>
             <Link to={nav.url || ''}>{t(nav.title)}</Link>
           </Menu.Item>
         ),

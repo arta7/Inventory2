@@ -39,6 +39,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'اطلاعات پایه',
     key: 'apps',
     icon: <HomeOutlined />,
+    
     children: [
       {
         title: 'تعریف کاربر',
