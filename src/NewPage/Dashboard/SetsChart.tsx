@@ -10,7 +10,7 @@ import { themeObject } from '@app/styles/themes/themeVariables';
 import { graphic } from 'echarts';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
-import { Column } from '@ant-design/plots';
+import { Bar,Column } from '@ant-design/plots';
 
 
 var moment = require('jalali-moment');
@@ -33,8 +33,8 @@ export const SetsChart: React.FC<ActivityChartProps> = ({data1}) => {
   let GetKardex = (_sets, _fiscal) => {
 
     var data = {
-      "FiscalYearRef": _fiscal,
-      "SetsRef": _sets
+      "SetsRef": _sets,
+       "FiscalYearRef": _fiscal
 
     }
     
@@ -190,23 +190,20 @@ export const SetsChart: React.FC<ActivityChartProps> = ({data1}) => {
     
       xAxis: {
         label: {
+      
           autoRotate: false,
         },
       },
-      
+      legend: {
+        position: 'top-left',
+      },
       scrollbar: {
         type: 'horizontal',
       },
       minColumnWidth: 10,
       maxColumnWidth: 10,
-      meta: {
-        Id: {
-          alias: 'عدد',
-        },
-        StatesTitle: {
-          alias: 'نوع',
-        },
-      },
+      seriesField: 'StatesTitle',
+    
     }
   
 

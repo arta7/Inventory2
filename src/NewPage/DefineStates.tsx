@@ -338,7 +338,7 @@ const DefineStates: React.FC = () => {
 
       "Id": Id,
       "Title": Titles,
-      "Code": "000"+(Id).toString(),
+      "Code": Code.toString(),
       "StateType":SelectedItem.toString()
 
     }

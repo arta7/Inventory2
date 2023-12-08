@@ -51,15 +51,17 @@ const SetProduce: React.FC = () => {
   const [ProductData, setProductData] = useState([]);
   const [StatesData, setStatesData] = useState([]);
   const [GroupsData, setGroupsData] = useState([])
+  const [Code,setCode] = useState('')
   const [query, setQuery] = useState('');
   const [selectedStates, setselectedStates] = useState('');
   const [selectedGroups, setselectedGroups] = useState('');
   const [ControlId, setControlId] = useState(0)
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString('fa'));
   const [components] = useState<Component[]>(configComponents);
   const [ProductName, setProductName] = useState({})
   const [isModalVisible, setModalVisible] = useState(false);
   const [isOverlayVisible, setOverlayVisible] = useState(false);
+  const [form] = BaseForm.useForm();
   const { userData,setUserData } = React.useContext(UserContext);
   var moment = require('jalali-moment');
   const sortedResults = query
@@ -120,7 +122,7 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
             artwork.Code = v.target.value;
             setAllData(myNextList);
@@ -199,7 +201,7 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
             artwork.Counts = v.target.value;
             setAllData(myNextList);
@@ -232,8 +234,9 @@ const SetProduce: React.FC = () => {
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
-              a => a.Id === record.Id
+              a => a.Id == record.Id
             );
+            console.log('details :',artwork)
             artwork.Details = v.target.value;
             setAllData(myNextList);
 
@@ -275,17 +278,126 @@ const SetProduce: React.FC = () => {
 
   ]
 
+    let GetProductDocumentData=(_Id)=>{
+
+      var data={
+        "DocumentsRef": _Id
+      }
+
+      console.log('Data GetProductDocumentData : ',data)
+      axios.post(Config.URL +
+        Config.Defination.GetProductDocumentData,data)
+        .then((response) => {
+          console.log('response   GetProductDocumentData : ', response.data.data)
+            var datapush = [];
+            var id  =0;
+            if(response.data.data.length > 0 )
+            {
+              for(let i=0;i<response.data.data.length;i++)
+              {
+                  id = i+1;
+                datapush.push({ Code: response.data.data[i].ProductCode
+                  , Name: response.data.data[i].ProductTitle, ProductId: response.data.data[i].ProductId
+                  , Units: response.data.data[i].UnitTitle, UnitsRef: response.data.data[i].UnitRef, Counts: response.data.data[i].Counts
+                  , Details: response.data.data[i].Details, Id: id })
+               }
+               id=id+3;
+               setControlId(id) 
+               setAllData(datapush)
+            }
+        
+        })
+        .catch((error) => {
+          console.log('Error data document GetProductDocumentData : ', error)
+        })
+
+
+    }
+
+
+
+    let GetDocumentData=(_fisc,_Id)=>{
+
+      var data={
+        "Id": _Id,
+        "FiscalYearRef":_fisc
+      }
+
+      console.log('Data ProductDocuments : ',data)
+      axios.post(Config.URL +
+        Config.Defination.GetProductsDocumentsWithId,data)
+        .then((response) => {
+          console.log('response data  documents product : ', response.data.data)
+          
+            if(response.data.data.length > 0 )
+            {
+              form.setFieldsValue({
+                Code: response.data.data[0].Id.toString(),
+                DocumentType: response.data.data[0].StatesRef.toString(),
+                DocumentSecond:response.data.data[0].SecondUserRef.toString(),
+                // Dates:"1402/09/08"
+
+              })
+              setCode(response.data.data[0].Id.toString())
+              setselectedGroups(response.data.data[0].SecondUserRef.toString())
+              setselectedStates(response.data.data[0].StatesRef.toString())
+              GetProductDocumentData(_Id)
+             
+              var dates = toEnglishDigits(new Date(response.data.data[0].Date).toLocaleDateString('fa'));
+              console.log('date : ',dates)
+             setDate(dates)
+           
+              console.log('set data')
+            }
+        
+        })
+        .catch((error) => {
+          console.log('Error data document product id : ', error)
+        })
+    }
+
+    let toEnglishDigits=(str) =>{
+
+      var e = '۰'.charCodeAt(0);
+      str = str.replace(/[۰-۹]/g, function(t) {
+          return t.charCodeAt(0) - e;
+      });
+  
+      // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
+      e = '٠'.charCodeAt(0);
+      str = str.replace(/[٠-٩]/g, function(t) {
+          return t.charCodeAt(0) - e;
+      });
+      return str;
+  }
+
 
     let  GetDataUser=()=>{
-      console.log('UserData test : ',userData[0].UserId.toString())
+      console.log('UserData test : ',userData[0].selectedProductId.toString())
+      if(userData[0].selectedProductId.toString() != "")
+      {
+        GetDocumentData(userData[0].FiscalYearId.toString(),userData[0].selectedProductId.toString())
+      }
+      else
+      {
+        form.setFieldsValue({
+          Code: '',
+          DocumentType: '',
+          DocumentSecond:'',
+        })
+        setCode('')
+        setselectedGroups('')
+        setselectedStates('')
+        setAllData([])
+      }
     }
 
   useEffect(() => {
-    console.log('userData test barnameh :',userData)
+   
     GetProducts()
     GetStates()
     GetGroups()
-    GetDataUser()
+   
 
   }, [])
 
@@ -306,6 +418,22 @@ const SetProduce: React.FC = () => {
       })
   }
 
+  let GetGroups = () => {
+
+    axios.post(Config.URL +
+      Config.Defination.GetGroups)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+
+        setGroupsData(response.data.data)
+        GetDataUser()
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+
+
+  }
 
   let AddDocumentControls = (_code, _type, _userRef, _fiscalYearRef) => {
 
@@ -320,8 +448,6 @@ const SetProduce: React.FC = () => {
       "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD').toString(),
       "UserRef": _userRef,
       "FiscalYearRef": _fiscalYearRef
-
-
     }
     axios.post(Config.URL +
       Config.Defination.AddDocumentControls, data)
@@ -336,6 +462,60 @@ const SetProduce: React.FC = () => {
       })
   }
 
+  let UpdateDocumentControls = (_code, _type, _userRef, _fiscalYearRef,_id) => {
+    var data = {
+      "Code": _code,
+      "Type": _type,
+      "StatesRef": selectedStates,
+      "SecondUserRef": selectedGroups,
+      "CurrentState": 1,
+      "RegisterDate":new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
+      "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
+      "UserRef": _userRef,
+      "FiscalYearRef": _fiscalYearRef,
+      "Id":_id
+
+
+    }
+
+    console.log('data : ',data)
+    axios.post(Config.URL +
+      Config.Defination.UpdateDocumentControls, data)
+      .then((response) => {
+       
+        
+
+        DeleteDocumentControlsProduct(_id)
+      
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+  let DeleteDocumentControlsProduct = (_id) => {
+
+    var data = {
+      "Id":_id
+
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteDocumentControlsProduct, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+
+        console.log('result Id : ', response.data)
+        AddProductDocuments(_id)
+  
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+
+
   let AddProductDocuments = (_id) => {
 
 
@@ -348,8 +528,6 @@ const SetProduce: React.FC = () => {
 
     var data = {
       "jsonData": JSON.stringify(dataPush)
-
-
     }
     axios.post(Config.URL +
       Config.Defination.AddProductDocuments, data)
@@ -358,31 +536,24 @@ const SetProduce: React.FC = () => {
 
         console.log('result Id : ', response.data)
 
-        setAllData([])
-        setDate('')
         setselectedGroups('')
         setselectedStates('')
+        form.setFieldsValue({
+          Code: '',
+          DocumentType: '',
+          DocumentSecond:'',
+        })
+        setCode('')
+        setselectedGroups('')
+        setselectedStates('')
+        setAllData([])
       })
       .catch((error) => {
         console.log('Error : ', error)
       })
   }
 
-  let GetGroups = () => {
 
-    axios.post(Config.URL +
-      Config.Defination.GetGroups)
-      .then((response) => {
-        console.log('response data : ', response.data.data)
-
-        setGroupsData(response.data.data)
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-      })
-
-
-  }
 
 
 
@@ -414,7 +585,7 @@ const SetProduce: React.FC = () => {
       }}> */}
 
       {/* <Auth.FormWrapper style={{ width: '100%' }}> */}
-      <BaseForm layout="horizontal"  >
+      <BaseForm layout="horizontal"   form={form}>
 
         <S.Title>سند انبار</S.Title>
 
@@ -423,12 +594,17 @@ const SetProduce: React.FC = () => {
           <Col xs={24} md={8}>
             <Auth.FormItem
               label="شماره سند "
-              name="Number"
+              name="Code"
             // rules={[{ required: true, message: t('common.requiredField') }]}
 
             >
 
-              <Auth.FormInput placeholder="شمار سند " readOnly={true} />
+              <Auth.FormInput placeholder="شماره سند " 
+              readOnly={true} 
+               value={Code}
+                onChange={(e) => {
+                  setCode(e.target.value)
+                }}/>
             </Auth.FormItem>
           </Col>
 
@@ -505,7 +681,8 @@ const SetProduce: React.FC = () => {
                   setDate(formatValue)
                 }}
                 id="datePicker"
-                // preSelected={date}
+                preSelected={date}
+                 controlValue={true}
                 inputTextAlign='center'
               />
             </Auth.FormItem>
@@ -527,7 +704,10 @@ const SetProduce: React.FC = () => {
                     console.log('userData[0].FiscalYearTitle.toString()',userData[0].FiscalYearTitle.toString(),'date.substring(0,4) : ',date.substring(0,4))
                     if(userData[0].FiscalYearTitle.toString() ==  date.substring(0,4))
                     {
+                      if(userData[0].selectedProductId =='')
                       AddDocumentControls("", "1", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
+                    else
+                    UpdateDocumentControls("", "1", userData[0].UserId.toString(), userData[0].FiscalYearId.toString(),userData[0].selectedProductId.toString())
                     }
                     else
                     {
@@ -556,6 +736,8 @@ const SetProduce: React.FC = () => {
       <div style={{ width: '100px', marginTop: 20, textAlign: 'center' }}>
         <Auth.SubmitButton loading={isLoading}
           onClick={() => {
+            console.log('ControlID : ',ControlId)
+          
             // setAllData([{Code:"",Name:"",ProductId:"",Units:"",UnitsRef:"",Counts:"",Details:""}])
             setAllData([...AllData, { Code: "", Name: "", ProductId: "", Units: "", UnitsRef: "", Counts: "", Details: "", Id: ControlId }]);
             setControlId(ControlId + 1)

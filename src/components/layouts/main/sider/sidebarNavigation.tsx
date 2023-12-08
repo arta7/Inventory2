@@ -39,6 +39,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'اطلاعات پایه',
     key: 'apps',
     icon: <HomeOutlined />,
+    
     children: [
       {
         title: 'تعریف کاربر',
@@ -147,14 +148,14 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       },
     ],
   },
+  // {
+  //   title: 'common.dataTables',
+  //   key: 'dataTables',
+  //   url: '/data-tables',
+  //   icon: <TableOutlined />,
+  // },
   {
-    title: 'common.dataTables',
-    key: 'dataTables',
-    url: '/data-tables',
-    icon: <TableOutlined />,
-  },
-  {
-    title: 'common.charts',
+    title: 'نمودار',
     key: 'charts',
     url: '/charts',
     icon: <LineChartOutlined />,
@@ -186,28 +187,28 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   //     },
   //   ],
   // },
-  {
-    title: 'common.pages',
-    key: 'pages',
-    icon: <LayoutOutlined />,
-    children: [
-      {
-        title: 'common.profilePage',
-        key: 'profile',
-        url: '/profile',
-      },
-      {
-        title: 'common.serverError',
-        key: 'serverError',
-        url: '/server-error',
-      },
-      {
-        title: 'common.clientError',
-        key: '404Error',
-        url: '/404',
-      },
-    ],
-  },
+  // {
+  //   title: 'common.pages',
+  //   key: 'pages',
+  //   icon: <LayoutOutlined />,
+  //   children: [
+  //     {
+  //       title: 'common.profilePage',
+  //       key: 'profile',
+  //       url: '/profile',
+  //     },
+  //     {
+  //       title: 'common.serverError',
+  //       key: 'serverError',
+  //       url: '/server-error',
+  //     },
+  //     {
+  //       title: 'common.clientError',
+  //       key: '404Error',
+  //       url: '/404',
+  //     },
+  //   ],
+  // },
   // {
   //   title: 'common.ui',
   //   key: 'ui',

@@ -196,10 +196,17 @@ const KardexSets: React.FC = () => {
       hidden: true,
     },
     {
+      title: 'نام ست ',
+      dataIndex: 'SetsTitle',
+      key: 'SetsTitle',
+      width: '20%',
+      hidden: false,
+    },
+    {
       title: 'تاریخ سند',
       dataIndex: 'Date',
       key: 'Date',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -283,9 +290,8 @@ const KardexSets: React.FC = () => {
   let GetKardex = (_sets, _fiscal) => {
 
     var data = {
+      "SetsRef": _sets,
       "FiscalYearRef": _fiscal,
-      "SetsRef": _sets
-
     }
 
     axios.post(Config.URL +
@@ -305,7 +311,7 @@ const KardexSets: React.FC = () => {
             SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
             Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue
+            ExitValue: response.data.data[i].ExitValue,SetsTitle:response.data.data[i].SetsTitle
           })
         }
         console.log('data1 : ', data1)
@@ -371,7 +377,7 @@ const KardexSets: React.FC = () => {
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                  console.log('selectedProductId : ',selectedProductId)
+                  console.log('userData[0].FiscalYearId.toString() : ',userData[0].FiscalYearId.toString())
                GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
               }}>
                 جستجو

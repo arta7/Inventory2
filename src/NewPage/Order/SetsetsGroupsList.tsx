@@ -232,23 +232,18 @@ const SetsetsGroupsList: React.FC = () => {
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={
             (e) => {
-              // form.setFieldsValue({
-              //   Title: record.Title.toString(),
-              //   Code: record.Code.toString(),
-              //    State:record.Active.toString()
-
-              // })
-              // setTitles(record.Title.toString())
-              // setCode(record.Code.toString())
-              // setId(record.Id.toString())
-              // console.log('record.StateType : ',record.Active)        
-              //  setSelectedItem(record.Active)
+              const myNextList = [...userData];
+              const artwork = myNextList;
+              console.log('artwork change selected product Id : ',artwork)
+              artwork[0].selectedSetsId = record.Id;
+              setUserData(myNextList);
+              navigate('/SetSetsGroups')
             }
           } > ویرایش
         </Button>
 
      
-            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
+            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteDocuments(record.Id)}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
@@ -275,7 +270,7 @@ const SetsetsGroupsList: React.FC = () => {
 
 
 
-  let DeleteParts = (_id) => {
+  let DeleteDocuments = (_id) => {
 
    
 

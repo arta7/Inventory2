@@ -314,30 +314,24 @@ const SetProduceList: React.FC = () => {
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={e=>{
-            printdiv('printitem')
-          }
-         
-
-             // handlePrint
-              // GetReport()
-
-              // // Renreding the report
-              // report.renderAsync(() => {
-
-              // });
-
-              // Exporting the report to PDF
-            
-            
+           
+            const myNextList = [...userData];
+            const artwork = myNextList;
+            console.log('artwork change selected product Id : ',artwork)
+            artwork[0].selectedProductId = record.Id;
+            setUserData(myNextList);
+            navigate('/SetProduce')
+          } 
           } > ویرایش
         </Button>
 
 
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteParts(record.Id)}>
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteDocuments(record.Id)}>
           < Button
             style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
             onClick={() =>
               console.log('')
+
             }
           >حذف
           </Button>
@@ -345,9 +339,10 @@ const SetProduceList: React.FC = () => {
 
         < Button
           style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
-          onClick={()=>
-            console.log('')
+          onClick={e=>{
+            printdiv('printitem')
           }
+        }
           >چاپ
           </Button>
 
@@ -360,10 +355,9 @@ const SetProduceList: React.FC = () => {
 
 
 
-  let DeleteParts = (_id) => {
+  let DeleteDocuments = (_id) => {
 
-
-
+    
 
   }
 
