@@ -437,6 +437,7 @@ const DefineGroups: React.FC = () => {
 
 
   let AddGroups = () => {
+    setLoading(true)
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
 
     var data = {
@@ -452,9 +453,11 @@ const DefineGroups: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
         setCounter(Counter+1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -563,7 +566,7 @@ const DefineGroups: React.FC = () => {
                 AddGroups()
                 else
                 {
-               alert('error')
+               alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

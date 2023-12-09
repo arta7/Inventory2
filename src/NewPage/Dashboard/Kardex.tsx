@@ -196,10 +196,17 @@ const Kardex: React.FC = () => {
       hidden: true,
     },
     {
+      title: 'نام محصول ',
+      dataIndex: 'ProductTitle',
+      key: 'ProductTitle',
+      width: '15%',
+      hidden: false,
+    },
+    {
       title: 'تاریخ سند',
       dataIndex: 'Date',
       key: 'Date',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -282,9 +289,11 @@ const Kardex: React.FC = () => {
 
   let GetKardex = (_product, _fiscal) => {
 
+     setLoading(true)
     var data = {
+     
+      "ProductRef": _product,
       "FiscalYearRef": _fiscal,
-      "ProductRef": _product
 
     }
 
@@ -305,14 +314,16 @@ const Kardex: React.FC = () => {
             SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
             Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue
+            ExitValue: response.data.data[i].ExitValue,ProductTitle:response.data.data[i].ProductTitle
           })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 

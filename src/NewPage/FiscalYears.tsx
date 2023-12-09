@@ -293,7 +293,7 @@ const FiscalYears: React.FC = () => {
 
   let AddFiscalYear = () => {
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+      setLoading(true)
     var data = {
 
       "Id": Id,
@@ -307,9 +307,11 @@ const FiscalYears: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
         setCounter(Counter+1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -425,7 +427,7 @@ const FiscalYears: React.FC = () => {
                 AddFiscalYear()
                 else
                 {
-               alert('error')
+               alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

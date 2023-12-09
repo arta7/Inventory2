@@ -33,8 +33,8 @@ export const SetsChart: React.FC<ActivityChartProps> = ({data1}) => {
   let GetKardex = (_sets, _fiscal) => {
 
     var data = {
-      "FiscalYearRef": _fiscal,
-      "SetsRef": _sets
+      "SetsRef": _sets,
+       "FiscalYearRef": _fiscal
 
     }
     
@@ -200,8 +200,8 @@ export const SetsChart: React.FC<ActivityChartProps> = ({data1}) => {
       scrollbar: {
         type: 'horizontal',
       },
-      minColumnWidth: 10,
-      maxColumnWidth: 10,
+      minColumnWidth: 2,
+      maxColumnWidth: 2,
       seriesField: 'StatesTitle',
     
     }

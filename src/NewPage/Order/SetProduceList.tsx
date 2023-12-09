@@ -326,24 +326,25 @@ const SetProduceList: React.FC = () => {
         </Button>
 
 
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteParts(record.Id)}>
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteDocuments(record.Id)}>
           < Button
             style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
             onClick={() =>
               console.log('')
+
             }
           >حذف
           </Button>
         </Popconfirm>
 
-        < Button
+        {/* < Button
           style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
           onClick={e=>{
             printdiv('printitem')
           }
         }
           >چاپ
-          </Button>
+          </Button> */}
 
 
       </div >
@@ -354,10 +355,24 @@ const SetProduceList: React.FC = () => {
 
 
 
-  let DeleteParts = (_id) => {
+  let DeleteDocuments = (_id) => {
 
+    var data = {
+      "Id":_id
 
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteDocumentControls, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
 
+        console.log('result Id : ', response.data)
+        setCounter(Counter+1)
+  
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
 
   }
 
@@ -439,6 +454,46 @@ const SetProduceList: React.FC = () => {
       > 
       <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay!=0)} />
       </div>
+
+      <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
+
+<div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+
+
+  <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+    navigate('/setProduce')
+  }}>
+    سند جدید
+  </Auth.SubmitButton>
+
+
+
+
+
+  <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+    () => {
+   setCounter(Counter+1)
+    }
+  }>
+    بازیابی
+  </Auth.SubmitButton>
+
+  <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+    () => {
+
+      printdiv("printitem")
+      window.location.reload();
+    }
+  }>
+    چاپ
+  </Auth.SubmitButton>
+
+</div>
+
+
+
+
+</BaseForm>
     
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />

@@ -243,7 +243,7 @@ const SetsetsGroupsList: React.FC = () => {
         </Button>
 
      
-            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteParts(record.Id)}>
+            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteDocuments(record.Id)}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
@@ -253,13 +253,13 @@ const SetsetsGroupsList: React.FC = () => {
           </Button>
           </Popconfirm>
 
-          < Button
+          {/* < Button
             style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
           onClick={()=>
             console.log('')
           }
           >چاپ
-          </Button>
+          </Button> */}
            
       
       </div >
@@ -269,11 +269,24 @@ const SetsetsGroupsList: React.FC = () => {
 
 
 
+  let DeleteDocuments = (_id) => {
 
-  let DeleteParts = (_id) => {
+    var data = {
+      "Id":_id
 
-   
+    }
+    axios.post(Config.URL +
+      Config.Defination.DeleteDocumentControls, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
 
+        console.log('result Id : ', response.data)
+        setCounter(Counter+1)
+  
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
 
   }
 
@@ -317,6 +330,18 @@ var data={
     GetSetsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
 
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML =  new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    
+    return false;
+  }
+
 
 
   const handleSubmit = (values: DefinePostData) => {
@@ -329,9 +354,50 @@ var data={
 
   return (
     <div >
+               <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
+
+            <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+
+
+              <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+                 navigate('/SetSetsGroups')
+              }}>
+                سند جدید
+              </Auth.SubmitButton>
+
+
+
+
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+                  setCounter(Counter+1)
+                }
+              }>
+                بازیابی
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  printdiv("printelement")
+                  window.location.reload();
+                }
+              }>
+                چاپ
+              </Auth.SubmitButton>
+
+            </div>
+
+
+
+
+          </BaseForm>
+          <div id="printelement">
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
+      </div>
     </div>
   );
 };

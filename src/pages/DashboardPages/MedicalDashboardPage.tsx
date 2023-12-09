@@ -21,28 +21,8 @@ import UserContext from './../../NewPage/UserContext';
 import { useNavigate } from 'react-router-dom';
 const MedicalDashboardPage: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
-  const { userData,setUserData } = React.useContext(UserContext);
   const navigate = useNavigate();
-  useEffect(()=>{
 
-
-      
-
-      if(userData.length == 0)
-      {
-          navigate('/auth/login')
-      }
-      else if(userData[0].UserId != null && userData[0].UserId!='')
-      {
-        navigate('/auth/login')
-      }
-      else
-      {
-        console.log('UserId  : ',userData)
-      }
-
-
-  },[])
 
   const { t } = useTranslation();
 

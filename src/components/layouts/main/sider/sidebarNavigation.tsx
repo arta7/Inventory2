@@ -96,36 +96,36 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'DefineGroupsofSets',
         url: '/DefineGroupsofSets',
       },
-      {
-        title: 'تعریف دسترسی کاربران',
-        key: 'DefineUserAccess',
-        url: '/DefineUserAccess',
-      },
+      // {
+      //   title: 'تعریف دسترسی کاربران',
+      //   key: 'DefineUserAccess',
+      //   url: '/DefineUserAccess',
+      // },
 
     ],
   },
   {
-    title: 'ثبت اطلاعات',
+    title: 'لیست اسناد',
     key: 'auth',
     icon: <UserOutlined />,
     children: [
+      // {
+      //   title: 'ثبت سند محصول',
+      //   key: 'setproduce',
+      //   url: '/setproduce',
+      // },
+      // {
+      //   title: 'ثبت سند ست محصول',
+      //   key: 'SetSetsGroups',
+      //   url: '/SetSetsGroups',
+      // },
       {
-        title: 'ثبت سند محصول',
-        key: 'setproduce',
-        url: '/setproduce',
-      },
-      {
-        title: 'ثبت سند ست محصول',
-        key: 'SetSetsGroups',
-        url: '/SetSetsGroups',
-      },
-      {
-        title: 'لیست سند محصولات ',
+        title: 'لیست اسناد محصولات ',
         key: 'SetProduceList',
         url: '/SetProduceList',
       },
       {
-        title: 'لیست سند ست محصولات',
+        title: 'لیست اسناد ست ',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
       }
@@ -146,20 +146,21 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'kardexSets',
         url: '/kardexSets',
       },
+      {
+        title: 'نمودار',
+        key: 'charts',
+        url: '/charts',
+        icon: <LineChartOutlined />,
+      },
     ],
   },
-  {
-    title: 'common.dataTables',
-    key: 'dataTables',
-    url: '/data-tables',
-    icon: <TableOutlined />,
-  },
-  {
-    title: 'common.charts',
-    key: 'charts',
-    url: '/charts',
-    icon: <LineChartOutlined />,
-  },
+  // {
+  //   title: 'common.dataTables',
+  //   key: 'dataTables',
+  //   url: '/data-tables',
+  //   icon: <TableOutlined />,
+  // },
+
   // {
   //   title: 'common.maps',
   //   key: 'maps',
@@ -187,28 +188,28 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   //     },
   //   ],
   // },
-  {
-    title: 'common.pages',
-    key: 'pages',
-    icon: <LayoutOutlined />,
-    children: [
-      {
-        title: 'common.profilePage',
-        key: 'profile',
-        url: '/profile',
-      },
-      {
-        title: 'common.serverError',
-        key: 'serverError',
-        url: '/server-error',
-      },
-      {
-        title: 'common.clientError',
-        key: '404Error',
-        url: '/404',
-      },
-    ],
-  },
+  // {
+  //   title: 'common.pages',
+  //   key: 'pages',
+  //   icon: <LayoutOutlined />,
+  //   children: [
+  //     {
+  //       title: 'common.profilePage',
+  //       key: 'profile',
+  //       url: '/profile',
+  //     },
+  //     {
+  //       title: 'common.serverError',
+  //       key: 'serverError',
+  //       url: '/server-error',
+  //     },
+  //     {
+  //       title: 'common.clientError',
+  //       key: '404Error',
+  //       url: '/404',
+  //     },
+  //   ],
+  // },
   // {
   //   title: 'common.ui',
   //   key: 'ui',

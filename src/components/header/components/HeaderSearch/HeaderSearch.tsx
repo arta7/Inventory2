@@ -72,11 +72,6 @@ export const HeaderSearch: React.FC = () => {
           })
         
 
-
-
-
-
-
       })
       .catch((error) => {
         console.log('Error : ', error)

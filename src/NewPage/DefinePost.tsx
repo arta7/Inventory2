@@ -365,7 +365,7 @@ const DefinePost: React.FC = () => {
 
   let AddPosts = () => {
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+      setLoading(true)
     var data = {
 
       "Id": Id,
@@ -378,10 +378,12 @@ const DefinePost: React.FC = () => {
       Config.Defination.AddPosts, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
+        setLoading(false)
         setCounter(Counter+1)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -491,7 +493,7 @@ const DefinePost: React.FC = () => {
                 AddPosts()
                 else
                 {
-               alert('error')
+               alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

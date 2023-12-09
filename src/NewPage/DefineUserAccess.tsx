@@ -820,14 +820,17 @@ const DefineSetsofProducts: React.FC = () => {
       Config.Defination.AddUsersAccessParts, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
+        setLoading(false)
       })
+      
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
   let DeleteUsersAccessParts = () => {
-
+    setLoading(true)
     var data = {
       'PostRef': PostSelected
     }
@@ -839,6 +842,7 @@ const DefineSetsofProducts: React.FC = () => {
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
@@ -896,12 +900,12 @@ const DefineSetsofProducts: React.FC = () => {
                    // AddUsersAccessParts()
                       DeleteUsersAccessParts()
                   
-                  alert('sucess')
+                  // alert('sucess')
                   }
                   
                   else
                   {
-  
+                    alert('لطفا اطلاعات را کامل پر کنید')
                   }
                 }}
               >

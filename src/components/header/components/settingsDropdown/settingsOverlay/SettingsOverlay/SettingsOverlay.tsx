@@ -7,15 +7,16 @@ import { ThemePicker } from '../ThemePicker/ThemePicker';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import * as S from './SettingsOverlay.styles';
-
+import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
+import UserContext from './../../../../../../NewPage/UserContext'
 export const SettingsOverlay: React.FC = ({ ...props }) => {
   const { t } = useTranslation();
 
   const { isPWASupported, event } = useAppSelector((state) => state.pwa);
-
+  const { userData,setUserData } = React.useContext(UserContext);
   return (
     <S.SettingsOverlayMenu mode="inline" selectable={false} {...props}>
-      <DropdownCollapse bordered={false} expandIconPosition="right" ghost defaultActiveKey="themePicker">
+      {/* <DropdownCollapse bordered={false} expandIconPosition="right" ghost defaultActiveKey="themePicker">
         <DropdownCollapse.Panel header={t('header.changeLanguage')} key="languagePicker">
           <LanguagePicker />
         </DropdownCollapse.Panel>
@@ -32,7 +33,28 @@ export const SettingsOverlay: React.FC = ({ ...props }) => {
             {t('common.pwa')}
           </Button>
         </S.PwaInstallWrapper>
-      )}
+      )} */}
+        {/* <Auth.SubmitButton type="primary"  style={{ marginBottom:10 }} onClick={() => {
+
+                }}>
+                  تغییر رمز عبور
+                </Auth.SubmitButton> */}
+
+                
+       <Auth.SubmitButton   style={{ backgroundColor:'red',color:'white' }} onClick={() => {
+          localStorage.removeItem("UserId")
+          localStorage.removeItem("Username")
+          console.log('localStorage.getItem("UserId")',localStorage.getItem("UserId"))
+          const myNextList = [...userData];
+          const artwork = myNextList;
+          console.log('login 2',artwork)
+          artwork[0].UserId = '';
+          artwork[0].Username = '';
+          setUserData(myNextList)
+        
+              }}>
+                خروج
+              </Auth.SubmitButton>
     </S.SettingsOverlayMenu>
   );
 };

@@ -51,9 +51,9 @@ const KardexSets: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [ProductData, setProductData] = useState([]);
-    const[selectedProductId,setselectedProductId] = useState(0)
-    const[selectedProductTitle,setselectedProductTitle] = useState('')
-    const { userData,setUserData } = React.useContext(UserContext);
+  const [selectedProductId, setselectedProductId] = useState(0)
+  const [selectedProductTitle, setselectedProductTitle] = useState('')
+  const { userData, setUserData } = React.useContext(UserContext);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -196,10 +196,17 @@ const KardexSets: React.FC = () => {
       hidden: true,
     },
     {
+      title: 'نام ست ',
+      dataIndex: 'SetsTitle',
+      key: 'SetsTitle',
+      width: '20%',
+      hidden: false,
+    },
+    {
       title: 'تاریخ سند',
       dataIndex: 'Date',
       key: 'Date',
-      width: '20%',
+      width: '15%',
       hidden: false,
     },
     {
@@ -281,11 +288,10 @@ const KardexSets: React.FC = () => {
 
 
   let GetKardex = (_sets, _fiscal) => {
-
+    setLoading(true)
     var data = {
+      "SetsRef": _sets,
       "FiscalYearRef": _fiscal,
-      "SetsRef": _sets
-
     }
 
     axios.post(Config.URL +
@@ -305,14 +311,16 @@ const KardexSets: React.FC = () => {
             SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
             Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue
+            ExitValue: response.data.data[i].ExitValue, SetsTitle: response.data.data[i].SetsTitle
           })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -320,7 +328,7 @@ const KardexSets: React.FC = () => {
 
   useEffect(() => {
     GetSets()
-    
+
 
   }, [Counter])
 
@@ -331,7 +339,7 @@ const KardexSets: React.FC = () => {
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-   // setTitles(events.target.value);
+    // setTitles(events.target.value);
   }
 
   function printdiv(elem) {
@@ -339,40 +347,40 @@ const KardexSets: React.FC = () => {
     var footer_str = '</body></html>';
     var new_str = document.getElementById(elem).innerHTML;
     var old_str = document.body.innerHTML;
-    document.body.innerHTML =  new_str + footer_str;
+    document.body.innerHTML = new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
-    
+
     return false;
   }
 
   return (
     <div >
-    
 
 
-<div style={{
+
+      <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-          <SearchinputKardex list={ProductData} PlaceHolder="نام ست کالا"
-      // onChange={(e)=>{setselectedProductTitle(e)}}
-      setvalue={setselectedProductTitle}
-      setId ={setselectedProductId}
-      value = {selectedProductTitle}
-      setAllData={setAllData}
-       
-      />
+            <SearchinputKardex list={ProductData} PlaceHolder="نام ست کالا"
+              // onChange={(e)=>{setselectedProductTitle(e)}}
+              setvalue={setselectedProductTitle}
+              setId={setselectedProductId}
+              value={selectedProductTitle}
+              setAllData={setAllData}
+
+            />
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                  console.log('selectedProductId : ',selectedProductId)
-               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
+                console.log('userData[0].FiscalYearId.toString() : ', userData[0].FiscalYearId.toString())
+                GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
               }}>
                 جستجو
               </Auth.SubmitButton>
@@ -413,11 +421,11 @@ const KardexSets: React.FC = () => {
 
 
 
-        <div id="printelement">
+      <div id="printelement">
 
-      {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
-      }
+        {columns.length > 0 &&
+          <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+        }
       </div>
     </div>
   );

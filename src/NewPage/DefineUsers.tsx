@@ -253,14 +253,15 @@ const DefineUsers: React.FC = () => {
 
 
   let AddUsers = () => {
-
+      setLoading(true)
     var data = {
 
-      "Id": Id,
+     
       "Username": Username,
       "Password": hashedPassword,
       "PostRef": PostRef,
-      "Active": Active
+      "Active": Active,
+      "Id": Id
 
     }
 
@@ -269,9 +270,11 @@ const DefineUsers: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
         setCounter(Counter + 1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -473,7 +476,7 @@ const DefineUsers: React.FC = () => {
                 if (Username.toString().trim().length > 0)
                   AddUsers()
                 else {
-
+                  alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

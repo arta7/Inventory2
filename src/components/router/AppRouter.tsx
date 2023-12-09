@@ -183,7 +183,7 @@ export const AppRouter: React.FC = () => {
       <Routes>
         <Route path={MEDICAL_DASHBOARD_PATH} element={protectedLayout}>
           {/* <Route index element={<NftDashboard />} /> */}
-          <Route path={MEDICAL_DASHBOARD_PATH} element={<MedicalDashboard />} />
+          <Route path={MEDICAL_DASHBOARD_PATH} element={<FirstScreenFallback />} />
           <Route path="apps">
             {/* <Route path="feed" element={<NewsFeed />} />
             <Route path="kanban" element={<Kanban />} /> */}

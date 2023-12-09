@@ -15,9 +15,7 @@ import { components as configComponents, Component } from '@app/constants/config
 import { Btn, InputSearch } from '@app/components/header/components/HeaderSearch/HeaderSearch.styles';
 import { BirthdayItem } from '@app/components/profile/profileCard/profileFormNav/nav/PersonalInfo/BirthdayItem/BirthdayItem';
 import { Config } from '../../Database/Config';
-import {
-  DatePicker
-} from "react-advance-jalaali-datepicker";
+import { DateInput } from 'react-hichestan-datetimepicker';
 import Tables from '../Tables';
 import axios from 'axios';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
@@ -52,7 +50,7 @@ const SetProduce: React.FC = () => {
   const [StatesData, setStatesData] = useState([]);
   const [GroupsData, setGroupsData] = useState([])
   const [query, setQuery] = useState('');
-  const [Code,setCode] = useState('')
+  const [Code, setCode] = useState('')
   const [selectedStates, setselectedStates] = useState('');
   const [selectedGroups, setselectedGroups] = useState('');
   const [ControlId, setControlId] = useState(0)
@@ -62,7 +60,7 @@ const SetProduce: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [form] = BaseForm.useForm();
-  const { userData,setUserData } = React.useContext(UserContext);
+  const { userData, setUserData } = React.useContext(UserContext);
   var moment = require('jalali-moment');
   const sortedResults = query
     ? categoriesList.reduce((acc, current) => {
@@ -278,42 +276,47 @@ const SetProduce: React.FC = () => {
   ]
 
   useEffect(() => {
+    form.setFieldsValue({
+      Dates:new Date()
+    })
+    setDate(new Date())
     GetSets()
     GetStates()
     GetGroups()
-   
+
   }, [])
 
 
-  let GetSetsDocumentData=(_Id)=>{
+  let GetSetsDocumentData = (_Id) => {
 
-    var data={
+    var data = {
       "DocumentsRef": _Id
     }
 
-    console.log('Data GetSetsDocumentData : ',data)
+    console.log('Data GetSetsDocumentData : ', data)
     axios.post(Config.URL +
-      Config.Defination.GetSetsDocumentData,data)
+      Config.Defination.GetSetsDocumentData, data)
       .then((response) => {
         console.log('response   GetSetsDocumentData : ', response.data.data)
-          var datapush = [];
-          var id  =0;
-          if(response.data.data.length > 0 )
-          {
-            for(let i=0;i<response.data.data.length;i++)
-            {
-             
-              datapush.push({ Code: response.data.data[i].SetsCode
-                , Name: response.data.data[i].SetsTitle, SetsId: response.data.data[i].SetsId
-                 , Counts: response.data.data[i].Counts
-                , Details: response.data.data[i].Details, Id: id })
-              
-             }
-             id=id+3;
-               setControlId(id) 
-             setAllData(datapush)
+        var datapush = [];
+        var id = 0;
+        if (response.data.data.length > 0) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            id = i + 1;
+            datapush.push({
+              Code: response.data.data[i].SetsCode
+              , Name: response.data.data[i].SetsTitle, SetsId: response.data.data[i].SetsId
+              , Counts: response.data.data[i].Counts
+              , Details: response.data.data[i].Details, Id: id
+            })
+
           }
-      
+          id = id + 3;
+          setControlId(id)
+        
+          setAllData(datapush)
+        }
+
       })
       .catch((error) => {
         console.log('Error data document GetProductDocumentData : ', error)
@@ -324,40 +327,37 @@ const SetProduce: React.FC = () => {
 
 
 
-  let GetDocumentData=(_fisc,_Id)=>{
+  let GetDocumentData = (_fisc, _Id) => {
 
-    var data={
+    var data = {
       "Id": _Id,
-      "FiscalYearRef":_fisc
+      "FiscalYearRef": _fisc
     }
 
-    console.log('Data ProductDocuments : ',data)
+    console.log('Data ProductDocuments : ', data)
     axios.post(Config.URL +
-      Config.Defination.GetSetsDocumentsWithId,data)
+      Config.Defination.GetSetsDocumentsWithId, data)
       .then((response) => {
         console.log('response data  documents product : ', response.data.data)
-        
-          if(response.data.data.length > 0 )
-          {
-            form.setFieldsValue({
-              Code: response.data.data[0].Id.toString(),
-              DocumentType: response.data.data[0].StatesRef.toString(),
-              DocumentSecond:response.data.data[0].SecondUserRef.toString(),
-              // Dates:"1402/09/08"
 
-            })
-            setCode(response.data.data[0].Id.toString())
-            setselectedGroups(response.data.data[0].SecondUserRef.toString())
-            setselectedStates(response.data.data[0].StatesRef.toString())
-            GetSetsDocumentData(_Id)
-           
-            var dates = toEnglishDigits(new Date(response.data.data[0].Date).toLocaleDateString('fa'));
-            console.log('date : ',dates)
-           setDate(dates)
-         
-            console.log('set data')
-          }
-      
+        if (response.data.data.length > 0) {
+          form.setFieldsValue({
+            Code: response.data.data[0].Id.toString(),
+            DocumentType: response.data.data[0].StatesRef.toString(),
+            DocumentSecond: response.data.data[0].SecondUserRef.toString(),
+            Dates:response.data.data[0].Date
+
+          })
+          setCode(response.data.data[0].Id.toString())
+          setselectedGroups(response.data.data[0].SecondUserRef.toString())
+          setselectedStates(response.data.data[0].StatesRef.toString())
+          GetSetsDocumentData(_Id)
+
+          setDate(response.data.data[0].Date)
+
+          console.log('set data')
+        }
+
       })
       .catch((error) => {
         console.log('Error data document product id : ', error)
@@ -367,34 +367,32 @@ const SetProduce: React.FC = () => {
 
 
 
-  let toEnglishDigits=(str) =>{
+  let toEnglishDigits = (str) => {
 
     var e = '۰'.charCodeAt(0);
-    str = str.replace(/[۰-۹]/g, function(t) {
-        return t.charCodeAt(0) - e;
+    str = str.replace(/[۰-۹]/g, function (t) {
+      return t.charCodeAt(0) - e;
     });
 
     // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
     e = '٠'.charCodeAt(0);
-    str = str.replace(/[٠-٩]/g, function(t) {
-        return t.charCodeAt(0) - e;
+    str = str.replace(/[٠-٩]/g, function (t) {
+      return t.charCodeAt(0) - e;
     });
     return str;
-}
+  }
 
 
-  let  GetDataUser=()=>{
-    console.log('UserData test : ',userData[0].selectedProductId.toString())
-    if(userData[0].selectedSetsId.toString() != "")
-    {
-      GetDocumentData(userData[0].FiscalYearId.toString(),userData[0].selectedSetsId.toString())
+  let GetDataUser = () => {
+    console.log('UserData test : ', userData[0].selectedProductId.toString())
+    if (userData[0].selectedSetsId.toString() != "") {
+      GetDocumentData(userData[0].FiscalYearId.toString(), userData[0].selectedSetsId.toString())
     }
-    else
-    {
+    else {
       form.setFieldsValue({
         Code: '',
         DocumentType: '',
-        DocumentSecond:'',
+        DocumentSecond: '',
       })
       setCode('')
       setselectedGroups('')
@@ -402,7 +400,7 @@ const SetProduce: React.FC = () => {
       setAllData([])
     }
   }
-  
+
   let GetStates = () => {
 
 
@@ -420,7 +418,7 @@ const SetProduce: React.FC = () => {
 
 
   let AddDocumentControls = (_code, _type, _userRef, _fiscalYearRef) => {
-
+      setLoading(true)
     var data = {
       "Code": _code,
       "Type": _type,
@@ -431,8 +429,8 @@ const SetProduce: React.FC = () => {
       "CurrentState": 1,
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
-      "Date":  moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
-     
+        "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
+
 
 
     }
@@ -442,89 +440,91 @@ const SetProduce: React.FC = () => {
         console.log('response data : ', response.data.data)
         console.log('result Id : ', response.data.data)
         AddSetsDocuments(response.data.data[0].Id)
-      
+
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
-  let UpdateDocumentControls = (_code, _type, _userRef, _fiscalYearRef,_id) => {
-
+  let UpdateDocumentControls = (_code, _type, _userRef, _fiscalYearRef, _id) => {
+    setLoading(true)
     var data = {
       "Code": _code,
       "Type": _type,
       "StatesRef": selectedStates,
       "SecondUserRef": selectedGroups,
       "CurrentState": 1,
-      "RegisterDate":
-        new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
-      "Date": moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD'),
+      "RegisterDate":new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
+        "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
       "UserRef": _userRef,
       "FiscalYearRef": _fiscalYearRef,
-      "Id":_id
+      "Id": _id
 
 
     }
 
-    console.log('data : ',data)
+    console.log('data : ', data)
     axios.post(Config.URL +
       Config.Defination.UpdateDocumentControls, data)
       .then((response) => {
-       
-        
 
-    DeleteDocumentControlsSets(_id)
-      
+
+
+        DeleteDocumentControlsSets(_id)
+
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
   let AddSetsDocuments = (_id) => {
 
-
-    var dataPush =[] ;
+    setLoading(true)
+    var dataPush = [];
     for (let i = 0; i < AllData.length; i++) {
 
-      dataPush.push({"SetsRef":AllData[i].SetsId.toString(),"Counts":AllData[i].Counts.toString(),"Details":AllData[i].Details.toString(),"DocumentsRef":_id.toString()})
+      dataPush.push({ "SetsRef": AllData[i].SetsId.toString(), "Counts": AllData[i].Counts.toString(), "Details": AllData[i].Details.toString(), "DocumentsRef": _id.toString() })
     }
 
 
     var data = {
       "jsonData": JSON.stringify(dataPush)
     }
-    console.log('data push for add database : ',data)
+    console.log('data push for add database : ', data)
     axios.post(Config.URL +
       Config.Defination.AddSetsDocuments, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
 
         console.log('result Id : ', response.data)
-
+        setLoading(false)
         setAllData([])
         setDate('')
         setselectedGroups('')
         setselectedStates('')
         const myNextList = [...userData];
-              const artwork = myNextList;
-              console.log('artwork change selected product Id : ',artwork)
-              artwork[0].selectedSetsId = "";
-              setUserData(myNextList);
+        const artwork = myNextList;
+        console.log('artwork change selected product Id : ', artwork)
+        artwork[0].selectedSetsId = "";
+        setUserData(myNextList);
 
-   form.setFieldsValue({
-              Code: '',
-              DocumentType: '',
-              DocumentSecond:'',
-              // Dates:"1402/09/08"
+        form.setFieldsValue({
+          Code: '',
+          DocumentType: '',
+          DocumentSecond: '',
+          // Dates:"1402/09/08"
 
-            })
-            setCode('')
-            setselectedGroups('')
-            setselectedStates('')
+        })
+        setCode('')
+        setselectedGroups('')
+        setselectedStates('')
       })
       .catch((error) => {
+        setLoading(false)
         console.log('Error : ', error)
       })
   }
@@ -533,7 +533,7 @@ const SetProduce: React.FC = () => {
   let DeleteDocumentControlsSets = (_id) => {
 
     var data = {
-      "Id":_id
+      "Id": _id
 
     }
     axios.post(Config.URL +
@@ -543,10 +543,11 @@ const SetProduce: React.FC = () => {
 
         console.log('result Id : ', response.data)
         AddSetsDocuments(_id)
-  
+
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
@@ -597,7 +598,7 @@ const SetProduce: React.FC = () => {
       }}> */}
 
       {/* <Auth.FormWrapper style={{ width: '100%' }}> */}
-      <BaseForm layout="horizontal"   form={form}>
+      <BaseForm layout="horizontal" form={form}>
 
         <S.Title>سند انبار</S.Title>
 
@@ -611,8 +612,8 @@ const SetProduce: React.FC = () => {
 
             >
 
-              <Auth.FormInput placeholder="شمار سند " readOnly={true} 
-               value={Code}
+              <Auth.FormInput placeholder="شمار سند " readOnly={true}
+                value={Code}
                 onChange={(e) => {
                   setCode(e.target.value)
                 }} />
@@ -676,13 +677,13 @@ const SetProduce: React.FC = () => {
 
 
 
-          <Col xs={24} md={8}>
+          <Col xs={20} md={6}>
             <Auth.FormItem
               label="تاریخ سند "
               name="Dates"
               rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <DatePicker
+              {/* <DatePicker
 
                 placeholder="انتخاب تاریخ"
                 format="jYYYY/jMM/jDD"
@@ -695,6 +696,15 @@ const SetProduce: React.FC = () => {
                  preSelected={date}
                  controlValue={true}
                 inputTextAlign='center'
+              /> */}
+
+              <DateInput
+                value={date}
+                name={'datePicker'}
+                onChange={(event) => {
+                  console.log('date : ', new Date(event.target.value).toLocaleDateString('zh-Hans-CN'))
+                  setDate((event.target.value))
+                }}
               />
             </Auth.FormItem>
           </Col>
@@ -705,32 +715,33 @@ const SetProduce: React.FC = () => {
           <BaseForm.Item noStyle>
 
 
-            <Auth.SubmitButton type="primary"  loading={isLoading}
+            <Auth.SubmitButton type="primary" loading={isLoading}
               onClick={() => {
-                if (date != '' && selectedGroups != "" && selectedStates != "")
-                {
-                  console.log("All dta ",AllData.length.toString(), AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Counts!="" ).length.toString())
-                  if(AllData.filter(a=>a.Name !="" && a.SetsId != "" && a.Counts!="" ).length.toString() == AllData.length.toString() && AllData.length > 0)
-                  {
-                    if(userData[0].selectedSetsId == '')
-                   {
-                    AddDocumentControls("", "2", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
-                   }
-                  else
-                  {
-                    UpdateDocumentControls("", "2", userData[0].UserId.toString(), userData[0].FiscalYearId.toString(),userData[0].selectedSetsId.toString())
+                if (date != '' && selectedGroups != "" && selectedStates != "") {
+                  console.log("All dta ", AllData.length.toString(), AllData.filter(a => a.Name != "" && a.SetsId != "" && a.Counts != "").length.toString())
+                  if (AllData.filter(a => a.Name != "" && a.SetsId != "" && a.Counts != "").length.toString() == AllData.length.toString() && AllData.length > 0) {
+                    if (userData[0].FiscalYearTitle.toString() == 
+                    toEnglishDigits(new Date(date).toLocaleDateString('fa').substring(0, 4))) {
+                      if (userData[0].selectedSetsId == '') {
+                        AddDocumentControls("", "2", userData[0].UserId.toString(), userData[0].FiscalYearId.toString())
+                      }
+                      else {
+                        UpdateDocumentControls("", "2", userData[0].UserId.toString(), userData[0].FiscalYearId.toString(), userData[0].selectedSetsId.toString())
+                      }
+                    }
+                    else {
+                      alert('سال انتخاب شده در محدوده سال مالی نمی باشد.')
+                    }
+
                   }
 
-                 }
-                  
-                else
-                alert('لطفا داده ها  را کامل پر کنید')
+                  else
+                    alert('لطفا داده ها  را کامل پر کنید')
                 }
-                else
-                {
+                else {
                   alert('لطفا داده ها  را کامل پر کنید')
                 }
-                
+
               }}
             >
               ثبت
