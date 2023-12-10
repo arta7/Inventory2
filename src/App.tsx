@@ -37,7 +37,7 @@ const App: React.FC = () => {
 
 
 
-  let GetData = async () => {
+  const GetData = async () => {
     var UserId1 = await localStorage.getItem("UserId")
     var Username = await localStorage.getItem("Username")
     var FiscalYearIds = await localStorage.getItem("FiscalYearId")

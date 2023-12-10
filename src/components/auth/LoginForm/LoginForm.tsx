@@ -47,7 +47,7 @@ export const LoginForm: React.FC = () => {
 
 
 
-   let GetLoginData=(_username,_pass)=>{
+   const  GetLoginData=(_username,_pass)=>{
     
    var pass = bcrypt.hashSync(_pass.toString(), '$2a$10$CwTycUXWue0Thq9StjUM0u')
     var data={
@@ -88,12 +88,7 @@ export const LoginForm: React.FC = () => {
       })
   }
 
-  // let removeData = (_id) => {
-  //   console.log("Id : ", _id)
-  //   let filteredArray = AllData.filter(item => item.Id !== _id)
-  //   console.log("filteredArray : ", filteredArray)
-  //   setAllData(filteredArray)
-  //  }
+
 
   return (
     <Auth.FormWrapper >
@@ -101,15 +96,11 @@ export const LoginForm: React.FC = () => {
         <Auth.FormTitle >صفحه ورود</Auth.FormTitle>
         {/* <S.LoginDescription>{t('login.loginInfo')}</S.LoginDescription> */}
         <Auth.FormItem
-        
           name="username"
           label="نام کاربری"
           rules={[
-            { required: true, message: t('common.requiredField') },
-            
-          ]}
-
-        >
+            { required: true, message: t('common.requiredField')}
+          ]}>
           <Auth.FormInput placeholder="نام کاربری" />
         </Auth.FormItem>
         <Auth.FormItem

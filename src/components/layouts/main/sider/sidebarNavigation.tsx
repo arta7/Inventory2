@@ -56,11 +56,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'DefineSets',
         url: '/DefineSets',
       },
-      {
-        title: 'تعریف بخش ها',
-        key: 'DefineParts',
-        url: '/DefineParts',
-      },
+      // {
+      //   title: 'تعریف بخش ها',
+      //   key: 'DefineParts',
+      //   url: '/DefineParts',
+      // },
       {
         title: 'تعریف گروه کالا',
         key: 'DefineGroups',
@@ -96,11 +96,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'DefineGroupsofSets',
         url: '/DefineGroupsofSets',
       },
-      // {
-      //   title: 'تعریف دسترسی کاربران',
-      //   key: 'DefineUserAccess',
-      //   url: '/DefineUserAccess',
-      // },
+      {
+        title: 'تعریف دسترسی کاربران',
+        key: 'DefineUserAccess',
+        url: '/DefineUserAccess',
+      },
 
     ],
   },

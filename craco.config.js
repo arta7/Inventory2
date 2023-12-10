@@ -5,6 +5,9 @@ const CracoAlias = require('craco-alias');
 process.env.BROWSER = 'none';
 
 module.exports = {
+  eslint: {
+    enable: false,
+  },
   webpack: {
     plugins: [
       new WebpackBar({ profile: true }),

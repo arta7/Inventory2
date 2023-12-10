@@ -2,9 +2,9 @@
 
 React-powered **100% FREE** Admin Dashboard Template for building rich user interfaces significantly faster. For developers of all levels. Open-source and maintained by the [Altence](https://altence.com) team.
 
-<p align="center">
+<!-- <p align="center">
     <img src="./public/Lightence-screenshot.png" alt="Lightence Admin Template">
-</p>
+</p> -->
 
 ## Key Features
 - 🚀 This solution allows you to reduce MVP development costs by up to 40%
