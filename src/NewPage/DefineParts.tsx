@@ -146,7 +146,7 @@ const DefineParts: React.FC = () => {
   const [AllData, setAllData] = useState([]);
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
-  const [SelectedItem, setSelectedItem] = useState(1);
+  const [SelectedItem, setSelectedItem] = useState('');
   const [Titles, setTitles] = useState('');
   const [Code, setCode] = useState('');
   const [form] = BaseForm.useForm();
@@ -334,7 +334,7 @@ const DefineParts: React.FC = () => {
 
   let AddParts = () => {
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code,'Active : ',SelectedItem)
-
+    setLoading(true)
     var data = {
 
       "Id": Id,
@@ -348,10 +348,12 @@ const DefineParts: React.FC = () => {
       Config.Defination.AddParts, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
+        setLoading(false)
         setCounter(Counter+1)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -488,11 +490,11 @@ const DefineParts: React.FC = () => {
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
                 console.log('test')
-                if (Titles.toString().trim().length > 0)
+                if (Titles.toString().trim().length > 0 && SelectedItem!='')
                 AddParts()
                 else
                 {
-                  alert('error')
+                  alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

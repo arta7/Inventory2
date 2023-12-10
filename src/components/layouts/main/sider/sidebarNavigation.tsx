@@ -56,11 +56,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'DefineSets',
         url: '/DefineSets',
       },
-      {
-        title: 'تعریف بخش ها',
-        key: 'DefineParts',
-        url: '/DefineParts',
-      },
+      // {
+      //   title: 'تعریف بخش ها',
+      //   key: 'DefineParts',
+      //   url: '/DefineParts',
+      // },
       {
         title: 'تعریف گروه کالا',
         key: 'DefineGroups',
@@ -105,27 +105,27 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     ],
   },
   {
-    title: 'ثبت اطلاعات',
+    title: 'لیست اسناد',
     key: 'auth',
     icon: <UserOutlined />,
     children: [
+      // {
+      //   title: 'ثبت سند محصول',
+      //   key: 'setproduce',
+      //   url: '/setproduce',
+      // },
+      // {
+      //   title: 'ثبت سند ست محصول',
+      //   key: 'SetSetsGroups',
+      //   url: '/SetSetsGroups',
+      // },
       {
-        title: 'ثبت سند محصول',
-        key: 'setproduce',
-        url: '/setproduce',
-      },
-      {
-        title: 'ثبت سند ست محصول',
-        key: 'SetSetsGroups',
-        url: '/SetSetsGroups',
-      },
-      {
-        title: 'لیست سند محصولات ',
+        title: 'لیست اسناد محصولات ',
         key: 'SetProduceList',
         url: '/SetProduceList',
       },
       {
-        title: 'لیست سند ست محصولات',
+        title: 'لیست اسناد ست ',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
       }
@@ -146,6 +146,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'kardexSets',
         url: '/kardexSets',
       },
+      {
+        title: 'نمودار',
+        key: 'charts',
+        url: '/charts',
+        icon: <LineChartOutlined />,
+      },
     ],
   },
   // {
@@ -154,12 +160,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   //   url: '/data-tables',
   //   icon: <TableOutlined />,
   // },
-  {
-    title: 'نمودار',
-    key: 'charts',
-    url: '/charts',
-    icon: <LineChartOutlined />,
-  },
+
   // {
   //   title: 'common.maps',
   //   key: 'maps',

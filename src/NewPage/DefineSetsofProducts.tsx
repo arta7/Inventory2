@@ -189,12 +189,12 @@ const DefineSetsofProducts: React.FC = () => {
         } >
         <Auth.FormInput placeholder="عدد"
           type="number"
-           value={record.Counts}
+          value={record.Counts}
           style={{ textAlign: 'center' }}
 
           onChange={(v) => {
 
-
+            
             const myNextList = [...AllData];
             const artwork = myNextList.find(
               a => a.Id == record.Id.toString()
@@ -205,6 +205,8 @@ const DefineSetsofProducts: React.FC = () => {
 
 
             if (DataProduct.filter(item1 => item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id).length == 0) {
+              console.log('selectedRowKeys',selectedRowKeys)
+              if(selectedRowKeys.filter(a=>a == record.Id).length>0)
               DataProduct.push({ "SetsRef": SetsSelectedItem, "ProductRef": record.Id, "Counts": v.target.value.toString() })
               console.log('text : ', DataProduct)
             }
@@ -216,12 +218,13 @@ const DefineSetsofProducts: React.FC = () => {
                 }
                 return item1;
               })
-             
+              
+
               console.log('text : ', DataProduct)
 
             }
-         
-           // setCounter(Counter+1)
+
+            // setCounter(Counter+1)
           }}
         />
 
@@ -242,6 +245,12 @@ const DefineSetsofProducts: React.FC = () => {
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    // DataProduct = DataProduct.map(item1 => {
+    //   if (item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id) {
+    //     return { ...item1, "Counts": ''};
+    //   }
+    //   return item1;
+    // })
     if (SetsSelectedItem != "")
       setSelectedRowKeys(newSelectedRowKeys);
     else
@@ -279,34 +288,35 @@ const DefineSetsofProducts: React.FC = () => {
         console.log('response data Sets : ', response.data.data)
         // setSetofProductData(response.data.data)
         var x = [];
-         DataProduct = [];
+        DataProduct = [];
         for (let i = 0; i < response.data.data.length; i++) {
 
           x.push(response.data.data[i].ProductRef.toString())
-          DataProduct.push({ "SetsRef": response.data.data[i].SetsRef.toString(), 
-          "ProductRef": response.data.data[i].ProductRef.toString(), "Counts": response.data.data[i].Counts.toString() })
+          DataProduct.push({
+            "SetsRef": response.data.data[i].SetsRef.toString(),
+            "ProductRef": response.data.data[i].ProductRef.toString(), "Counts": response.data.data[i].Counts.toString()
+          })
           //  for(let j=0;j<AllData.length;j++)
           //  {
-             if(AllData.filter(item1=>item1.Id ==response.data.data[i].ProductRef).length >0)
-             {
-              console.log('ProductRef : ',response.data.data[i].ProductRef.toString(),
-              'Counts : ',response.data.data[i].Counts.toString() )
+          if (AllData.filter(item1 => item1.Id == response.data.data[i].ProductRef).length > 0) {
+            console.log('ProductRef : ', response.data.data[i].ProductRef.toString(),
+              'Counts : ', response.data.data[i].Counts.toString())
 
-              const myNextList = [...AllData];
-              const artwork = myNextList.find(
-                a => a.Id == response.data.data[i].ProductRef.toString()
-              );
-    
-                console.log('artwork : ',artwork)
-              artwork.Counts = response.data.data[i].Counts.toString();
-              setAllData(myNextList);
-             }
-            // }
+            const myNextList = [...AllData];
+            const artwork = myNextList.find(
+              a => a.Id == response.data.data[i].ProductRef.toString()
+            );
+
+            console.log('artwork : ', artwork)
+            artwork.Counts = response.data.data[i].Counts.toString();
+            setAllData(myNextList);
+          }
+          // }
           console.log('x : ', x)
         }
         // console.log('newdata : ',newdata)
         setSelectedRowKeys(x)
-       
+
 
 
 
@@ -345,7 +355,16 @@ const DefineSetsofProducts: React.FC = () => {
 
   let AddSetsOfProduct = () => {
 
-    console.log('DataProduct', JSON.stringify(DataProduct))
+    
+
+      for(let i =0;i<DataProduct.length;i++)
+      {
+        if(selectedRowKeys.filter(a=>a == DataProduct[i].ProductRef).length == 0)
+        {
+          DataProduct = DataProduct.filter(item => item.ProductRef != DataProduct[i].ProductRef);
+        }
+      }
+      console.log('DataProduct', JSON.stringify(DataProduct))
     var data = {
       'jsonData': JSON.stringify(DataProduct)
     }
@@ -354,9 +373,19 @@ const DefineSetsofProducts: React.FC = () => {
       Config.Defination.AddSetsOfProduct, data)
       .then((response) => {
         console.log('response data product : ', response.data.data)
+        form.setFieldsValue({
+          Sets: ''
+        })
+        setSetsSelectedItem('')
+        setLoading(false)
+        setCounter(Counter+1)
+        setSelectedRowKeys([])
+        DataProduct = [];
+
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -365,7 +394,7 @@ const DefineSetsofProducts: React.FC = () => {
 
 
   let DeleteSetsOfProduct = () => {
-
+    setLoading(true)
     var data = {
       'SetsRef': SetsSelectedItem
     }
@@ -377,6 +406,7 @@ const DefineSetsofProducts: React.FC = () => {
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
@@ -385,7 +415,7 @@ const DefineSetsofProducts: React.FC = () => {
   useEffect(() => {
     GetProducts()
     GetSets()
-   
+
   }, [Counter])
 
   return (
@@ -406,7 +436,7 @@ const DefineSetsofProducts: React.FC = () => {
                 onChange={(v) => {
                   setSetsSelectedItem(v)
                   console.log('v : ', v)
-                 
+
                   GetSetsofP(v)
                 }}
               >
@@ -439,7 +469,7 @@ const DefineSetsofProducts: React.FC = () => {
                   }
 
                   else {
-
+                    alert('لطفا اطلاعات را کامل پر کنید.')
                   }
                 }}
               >
@@ -452,7 +482,7 @@ const DefineSetsofProducts: React.FC = () => {
       </div>
       <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
         rowSelections={rowSelection}
-        
+
       />
 
 

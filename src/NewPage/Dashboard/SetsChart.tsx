@@ -200,8 +200,8 @@ export const SetsChart: React.FC<ActivityChartProps> = ({data1}) => {
       scrollbar: {
         type: 'horizontal',
       },
-      minColumnWidth: 10,
-      maxColumnWidth: 10,
+      minColumnWidth: 2,
+      maxColumnWidth: 2,
       seriesField: 'StatesTitle',
     
     }

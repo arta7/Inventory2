@@ -34,11 +34,13 @@ export const SettingsOverlay: React.FC = ({ ...props }) => {
           </Button>
         </S.PwaInstallWrapper>
       )} */}
-        <Auth.SubmitButton type="primary"  style={{ marginBottom:10 }} onClick={() => {
+        {/* <Auth.SubmitButton type="primary"  style={{ marginBottom:10 }} onClick={() => {
 
                 }}>
                   تغییر رمز عبور
-                </Auth.SubmitButton>
+                </Auth.SubmitButton> */}
+
+                
        <Auth.SubmitButton   style={{ backgroundColor:'red',color:'white' }} onClick={() => {
           localStorage.removeItem("UserId")
           localStorage.removeItem("Username")

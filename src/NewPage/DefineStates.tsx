@@ -67,7 +67,7 @@
 //         >
 //           <Auth.FormInput placeholder="کد " />
 //         </Auth.FormItem>
-      
+
 //         <BaseButtonsForm.Item name="State" label="وضعیت"
 //            rules={[{ required: true}]}
 //         >
@@ -86,7 +86,7 @@
 //         </Option>
 //       </Select>
 
-      
+
 //     </BaseButtonsForm.Item>
 
 //         <BaseForm.Item noStyle>
@@ -94,7 +94,7 @@
 //            ثبت
 //           </Auth.SubmitButton>
 //         </BaseForm.Item>
- 
+
 //       </BaseForm>
 //     </Auth.FormWrapper>
 //     </div>
@@ -145,7 +145,7 @@ const DefineStates: React.FC = () => {
   const [AllData, setAllData] = useState([]);
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
-  const [SelectedItem, setSelectedItem] = useState(1);
+  const [SelectedItem, setSelectedItem] = useState('');
   const [Titles, setTitles] = useState('');
   const [Code, setCode] = useState('');
   const [form] = BaseForm.useForm();
@@ -249,7 +249,7 @@ const DefineStates: React.FC = () => {
       key: 'Title',
       width: '30%',
       hidden: false,
-      
+
       ...getColumnSearchProps('Title'),
 
 
@@ -304,7 +304,7 @@ const DefineStates: React.FC = () => {
               form.setFieldsValue({
                 Title: record.Title.toString(),
                 Code: record.Code.toString(),
-                State:record.StateType.toString()
+                State: record.StateType.toString()
 
               })
               setId(record.Id.toString())
@@ -316,15 +316,15 @@ const DefineStates: React.FC = () => {
           } > ویرایش
         </Button>
 
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteStates(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
-          }
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteStates(record.Id)}>
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+            onClick={() =>
+              console.log('')
+            }
           >حذف
           </Button>
-          </Popconfirm>
+        </Popconfirm>
       </div >
     }
 
@@ -332,14 +332,14 @@ const DefineStates: React.FC = () => {
 
 
   let AddStates = () => {
-    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+    console.log('Id : ', Id, "Titles : ", Titles, "Code :", Code)
+    setLoading(true)
     var data = {
 
       "Id": Id,
       "Title": Titles,
       "Code": Code.toString(),
-      "StateType":SelectedItem.toString()
+      "StateType": SelectedItem.toString()
 
     }
 
@@ -347,10 +347,12 @@ const DefineStates: React.FC = () => {
       Config.Defination.AddStates, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
+        setCounter(Counter + 1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -369,7 +371,7 @@ const DefineStates: React.FC = () => {
       Config.Defination.DeleteStates, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
+        setCounter(Counter + 1)
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -382,16 +384,18 @@ const DefineStates: React.FC = () => {
 
   let GetStates = () => {
 
- 
+
     axios.post(Config.URL +
       Config.Defination.GetStates)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,StateType:response.data.data[i].StateType,
-             StateTypeValue: response.data.data[i].StateType==1?"افزایشی":"کاهشی"})
+          data1.push({
+            Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code, StateType: response.data.data[i].StateType,
+            StateTypeValue: response.data.data[i].StateType == 1 ? "افزایشی" : "کاهشی"
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -447,47 +451,46 @@ const DefineStates: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput readOnly={true} placeholder="کد "
+              <Auth.FormInput placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' />
+               />
             </Auth.FormItem>
 
             <BaseButtonsForm.Item name="State" label="وضعیت"
-           rules={[{ required: true}]}>
-      <Select
-      title={SelectedItem}
-      onChange={(value) => {
-        console.log('seleted value : ',value)
-        setSelectedItem(value)
-      }}
-      >
-        <Option value="1">
-          <Space align="center">
-            {/* <ManOutlined /> */}
-            افزایشی
-          </Space>
-        </Option>
-        <Option value="2">
-          <Space align="center">
-            {/* <WomanOutlined /> */}
-             کاهشی 
-          </Space>
-        </Option>
-      </Select>
+              rules={[{ required: true }]}>
+              <Select
+                title={SelectedItem}
+                onChange={(value) => {
+                  console.log('seleted value : ', value)
+                  setSelectedItem(value)
+                }}
+              >
+                <Option value="1">
+                  <Space align="center">
+                    {/* <ManOutlined /> */}
+                    افزایشی
+                  </Space>
+                </Option>
+                <Option value="2">
+                  <Space align="center">
+                    {/* <WomanOutlined /> */}
+                    کاهشی
+                  </Space>
+                </Option>
+              </Select>
 
-      
-    </BaseButtonsForm.Item>
+
+            </BaseButtonsForm.Item>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
                 console.log('test')
-                if (Titles.toString().trim().length > 0)
-                AddStates()
-                else
-                {
-
+                if (Titles.toString().trim().length > 0 && SelectedItem!='')
+                  AddStates()
+                else {
+                  alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

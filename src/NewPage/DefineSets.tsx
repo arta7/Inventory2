@@ -231,12 +231,12 @@ const DefineSets: React.FC = () => {
 
   let AddSets = () => {
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+  setLoading(true)
     var data = {
 
       "Id": Id,
       "Title": Titles,
-      "Code": "000"+Id.toString(),
+      "Code": Code.toString(),
       "Details":Details
 
     }
@@ -245,10 +245,12 @@ const DefineSets: React.FC = () => {
       Config.Defination.AddSets, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
+        setLoading(false)
         setCounter(Counter+1)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -354,9 +356,9 @@ const DefineSets: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput readOnly={true} placeholder="کد "
+              <Auth.FormInput placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' />
+              />
             </Auth.FormItem>
 
                      <Auth.FormItem
@@ -378,7 +380,7 @@ const DefineSets: React.FC = () => {
                   AddSets()
                 else
                 {
-
+                  alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

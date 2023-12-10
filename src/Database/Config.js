@@ -1,6 +1,6 @@
 export const Config = 
 {
-URL:'http://localhost:8090/api',
+URL:'https://api.bizhan-shabani.ir/api',
 
     Defination:{
         GetUnit:'/GetUnits',
@@ -54,7 +54,8 @@ URL:'http://localhost:8090/api',
         DeleteProducts:'/DeleteProducts',
         ResetPassword:'/ResetPassword',
         DeleteDocumentControlsSets:'/DeleteDocumentControlsSets',
-        DeleteDocumentControlsProduct:'/DeleteDocumentControlsProduct'
+        DeleteDocumentControlsProduct:'/DeleteDocumentControlsProduct',
+        DeleteDocumentControls:"/DeleteDocumentControls"
     }
   
 

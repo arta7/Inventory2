@@ -289,6 +289,7 @@ const Kardex: React.FC = () => {
 
   let GetKardex = (_product, _fiscal) => {
 
+     setLoading(true)
     var data = {
      
       "ProductRef": _product,
@@ -318,9 +319,11 @@ const Kardex: React.FC = () => {
         }
         console.log('data1 : ', data1)
         setAllData(data1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 

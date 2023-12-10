@@ -53,7 +53,7 @@ export const HeaderSearch: React.FC = () => {
   // }, [pathname]);
 
 
-  let GetFiscalYear = () => {
+  const GetFiscalYear = () => {
     
     axios.post(Config.URL +
       Config.Defination.GetFiscalYear)
@@ -80,15 +80,6 @@ export const HeaderSearch: React.FC = () => {
 
   }
 
-    let GetData =async()=>{
-
-      
-        setSelectedItem(userData[0].FiscalYearId.toString())
-        // form.setFieldsValue({
-        //   FiscalYear : userData[0].FiscalYearId
-        // })
-      
-     }
 
   useEffect(()=>{
     GetFiscalYear()

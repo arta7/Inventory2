@@ -67,7 +67,7 @@
 //         >
 //           <Auth.FormInput placeholder="کد " />
 //         </Auth.FormItem>
-      
+
 //         <BaseButtonsForm.Item name="UnitRef" label="واحد محصول"
 //            rules={[{ required: true}]}
 //         >
@@ -86,7 +86,7 @@
 //         </Option>
 //       </Select>
 
-      
+
 //     </BaseButtonsForm.Item>
 
 
@@ -97,7 +97,7 @@
 //            ثبت
 //           </Auth.SubmitButton>
 //         </BaseForm.Item>
- 
+
 //       </BaseForm>
 //     </Auth.FormWrapper>
 //     </div>
@@ -256,7 +256,7 @@ const DefineProduct: React.FC = () => {
       key: 'Title',
       width: '30%',
       hidden: false,
-      
+
       ...getColumnSearchProps('Title'),
 
 
@@ -311,28 +311,28 @@ const DefineProduct: React.FC = () => {
               form.setFieldsValue({
                 Title: record.Title.toString(),
                 Code: record.Code.toString(),
-                State:record.UnitTitle.toString()
+                State: record.UnitTitle.toString()
 
               })
               setTitles(record.Title.toString())
               setCode(record.Code.toString())
               setId(record.Id.toString())
-                console.log('record.StateType : ',record.UnitRef)        
+              console.log('record.StateType : ', record.UnitRef)
               setSelectedItem(record.UnitRef.toString())
             }
           } > ویرایش
         </Button>
 
 
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteStates(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
-          }
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteStates(record.Id)}>
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+            onClick={() =>
+              console.log('')
+            }
           >حذف
           </Button>
-          </Popconfirm>
+        </Popconfirm>
       </div >
     }
 
@@ -340,14 +340,14 @@ const DefineProduct: React.FC = () => {
 
 
   let AddProducts = () => {
-    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+    console.log('Id : ', Id, "Titles : ", Titles, "Code :", Code)
+    setLoading(true)
     var data = {
 
       "Id": Id,
       "Title": Titles,
       "Code": Code.toString(),
-      "UnitRef":SelectedItem.toString()
+      "UnitRef": SelectedItem.toString()
 
     }
 
@@ -355,10 +355,12 @@ const DefineProduct: React.FC = () => {
       Config.Defination.AddProducts, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
+        setCounter(Counter + 1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -377,7 +379,7 @@ const DefineProduct: React.FC = () => {
       Config.Defination.DeleteProducts, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
+        setCounter(Counter + 1)
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -390,16 +392,18 @@ const DefineProduct: React.FC = () => {
 
   let GetProducts = () => {
 
- 
+
     axios.post(Config.URL +
       Config.Defination.GetProducts)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,UnitRef:response.data.data[i].UnitRef,
-             UnitTitle: response.data.data[i].UnitTitle})
+          data1.push({
+            Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code, UnitRef: response.data.data[i].UnitRef,
+            UnitTitle: response.data.data[i].UnitTitle
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
@@ -412,12 +416,12 @@ const DefineProduct: React.FC = () => {
 
   let GetUnits = () => {
 
- 
+
     axios.post(Config.URL +
       Config.Defination.GetUnit)
       .then((response) => {
         console.log('response data units : ', response.data.data)
-       
+
         setUnitData(response.data.data)
       })
       .catch((error) => {
@@ -430,7 +434,7 @@ const DefineProduct: React.FC = () => {
     form.setFieldsValue({
       Title: "",
       Code: "",
-      State:""
+      State: ""
 
     })
     setId(0)
@@ -474,49 +478,48 @@ const DefineProduct: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput  placeholder="کد "
+              <Auth.FormInput placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                // style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' 
-                />
+              // style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' 
+              />
             </Auth.FormItem>
 
             <BaseButtonsForm.Item name="State" label="واحد کالا"
-           rules={[{ required: true}]}>
-      <Select
-      value={SelectedItem}
-      onChange={(value) => {
-        console.log('seleted value : ',value)
-        setSelectedItem(value)
-      }}
-      >
-        {
-          UnitData.map((item,index)=>(
-           
-        <Option value={item.Id.toString()}>
-          <Space align="center">
-            {item.Title}
-          </Space>
-        </Option>
-            
-          ))
-        }
-       
-        
-      </Select>
+              rules={[{ required: true }]}>
+              <Select
+                value={SelectedItem}
+                onChange={(value) => {
+                  console.log('seleted value : ', value)
+                  setSelectedItem(value)
+                }}
+              >
+                {
+                  UnitData.map((item, index) => (
 
-      
-    </BaseButtonsForm.Item>
+                    <Option value={item.Id.toString()}>
+                      <Space align="center">
+                        {item.Title}
+                      </Space>
+                    </Option>
+
+                  ))
+                }
+
+
+              </Select>
+
+
+            </BaseButtonsForm.Item>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
                 console.log('test')
-                if (Titles.toString().trim().length > 0)
-                AddProducts()
-                else
-                {
-
+                if (Titles.toString().trim().length > 0 && SelectedItem!='')
+                  AddProducts()
+                else {
+                  alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت

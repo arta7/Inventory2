@@ -144,7 +144,7 @@ type DataIndex = keyof DataType;
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const { t } = useTranslation();
-
+  const [form] = BaseForm.useForm();
   const handleSubmit = (values: DefinePostData) => {
 
   };
@@ -290,8 +290,9 @@ type DataIndex = keyof DataType;
 
 
           if (DataProduct.filter(item1 => item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem ).length == 0) {
+            if(selectedRowKeys.filter(a=>a == record.Id).length>0)
             DataProduct.push({ "SetsRef": record.Id, "GroupRef":GroupsSelectedItem  , "Count": v.target.value.toString() })
-            console.log('text : ', DataProduct)
+            
           }
 
           else {
@@ -373,6 +374,14 @@ type DataIndex = keyof DataType;
 
   let AddGroupOfSets = () => {
 
+    for(let i =0;i<DataProduct.length;i++)
+    {
+      if(selectedRowKeys.filter(a=>a == DataProduct[i].SetsRef).length == 0)
+      {
+        DataProduct = DataProduct.filter(item => item.SetsRef != DataProduct[i].SetsRef);
+      }
+    }
+
     console.log('DataProduct', JSON.stringify(DataProduct))
     var data = {
       'jsonData': JSON.stringify(DataProduct)
@@ -382,14 +391,22 @@ type DataIndex = keyof DataType;
       Config.Defination.AddGroupOfSets, data)
       .then((response) => {
         console.log('response data product : ', response.data.data)
+        setLoading(false)
+        form.setFieldsValue({
+          Groups: ''
+        })
+        setGroupsSelectedItem('')
+        setSelectedRowKeys([])
+        DataProduct = [];
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
   let DeleteGroupOfSets = () => {
-
+    setLoading(true)
     var data = {
       'GroupRef': GroupsSelectedItem
     }
@@ -401,12 +418,11 @@ type DataIndex = keyof DataType;
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
   }
 
   let GetGroupOfS = (_v) => {
-
-
     var data = {
       "GroupRef": _v
     }
@@ -427,12 +443,9 @@ type DataIndex = keyof DataType;
           const artwork = myNextList.find(
             a => a.Id == response.data.data[i].SetsRef.toString()
           );
-
-            console.log('artwork : ',artwork)
+          console.log('artwork : ',artwork)
           artwork.Count = response.data.data[i].Count.toString();
           setAllData(myNextList);
-
-
           console.log('x : ', x)
         }
         // console.log('newdata : ',newdata)
@@ -464,7 +477,7 @@ type DataIndex = keyof DataType;
         justifyContent: 'center'
       }}>
     <Auth.FormWrapper >
-      <BaseForm layout="vertical" onFinish={handleSubmit}  >
+      <BaseForm layout="vertical" onFinish={handleSubmit}  form={form} >
         <S.Title>گروه هر سِت</S.Title>
       
         <BaseButtonsForm.Item name="Groups" label="نام گروه"
@@ -506,7 +519,7 @@ type DataIndex = keyof DataType;
             }
 
             else {
-
+                alert('لطفا اطلاعات را کامل پر کنید.')
             }
           }}
           >

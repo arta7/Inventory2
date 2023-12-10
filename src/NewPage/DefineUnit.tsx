@@ -218,12 +218,12 @@ const DefineUnit: React.FC = () => {
 
   let AddUnits = () => {
     console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-
+      setLoading(true)
     var data = {
 
       "Id": Id,
       "Title": Titles,
-      "Code": "000"+Id.toString()
+      "Code": Code.toString()
 
     }
 
@@ -232,9 +232,11 @@ const DefineUnit: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
         setCounter(Counter+1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
@@ -336,9 +338,9 @@ const DefineUnit: React.FC = () => {
 
             // rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              <Auth.FormInput readOnly={true} placeholder="کد "
+              <Auth.FormInput  placeholder="کد "
                 value={Code} onChange={(e) => { setCode(e.target.value) }}
-                style={{ backgroundColor: 'grey', borderColor: 'grey' }} color='red' />
+                 />
             </Auth.FormItem>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
@@ -350,7 +352,7 @@ const DefineUnit: React.FC = () => {
                   AddUnits()
                 else
                 {
-
+                    alert('لطفا اطلاعات را کامل پر کنید')
                 }
               }}>
                 ثبت
