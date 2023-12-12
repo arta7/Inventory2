@@ -1,6 +1,6 @@
 export const Config = 
 {
-URL:'https://api.bizhan-shabani.ir/api',
+URL:'https://api.docshafa.ir/api',
 
     Defination:{
         GetUnit:'/GetUnits',
@@ -21,6 +21,7 @@ URL:'https://api.bizhan-shabani.ir/api',
         GetSetsDocumentsWithId:'/GetSetsDocumentsWithId',
         GetProductDocumentData:'/GetProductDocumentData',
         GetSetsDocumentData:'/GetSetsDocumentData',
+        GetUserAccessParts:'/GetUserAccessParts',
         GetKardex:'/GetKardex',
         GetKardexSets:'/GetKardexSets',
         GetSetsDocuments:'/GetSetsDocuments',

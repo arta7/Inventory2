@@ -19,6 +19,7 @@ export interface SidebarNavigationItem {
   url?: string;
   children?: SidebarNavigationItem[];
   icon?: React.ReactNode;
+  showItem:Boolean;
 }
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
@@ -34,72 +35,85 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     key: 'medical-dashboard',
     url: '/',
     icon: <DashboardOutlined />,
+    showItem:true
   },
   {
     title: 'اطلاعات پایه',
     key: 'apps',
     icon: <HomeOutlined />,
-    
+    showItem:true,
     children: [
       {
         title: 'تعریف کاربر',
         key: 'DefineUser',
         url: '/DefineUsers',
+        showItem:true
       },
       {
         title: 'تعریف کالا',
         key: 'DefineProduct',
         url: '/DefineProduct',
+        showItem:true
       },
       {
         title: 'تعریف سِت ها',
         key: 'DefineSets',
         url: '/DefineSets',
+        showItem:true
       },
-      // {
-      //   title: 'تعریف بخش ها',
-      //   key: 'DefineParts',
-      //   url: '/DefineParts',
-      // },
+      {
+        title: 'تعریف بخش ها',
+        key: 'DefineParts',
+        url: '/DefineParts',
+        showItem:false
+      },
       {
         title: 'تعریف گروه کالا',
         key: 'DefineGroups',
         url: '/DefineGroups',
+        showItem:true
       },
       {
         title: 'تعریف سال مالی',
         key: 'FiscalYears',
         url: '/FiscalYears',
+        showItem:true
       },
       {
         title: 'تعریف واحد کالا',
         key: 'DefineUnit',
         url: '/DefineUnit',
+        showItem:true
       },
       {
         title: 'تعریف نوع سند',
         key: 'DefineStates',
         url: '/DefineStates',
+        showItem:true
       },
       {
         title: 'تعریف گروه کاربری',
         key: 'DefinePost',
         url: '/DefinePost',
+        showItem:true
       },
       {
         title: 'تعریف دسترسی ست ابزار',
         key: 'DefineSetsofProducts',
         url: '/DefineSetsofProducts',
+        showItem:true
       },
       {
         title: 'تعریف دسترسی گروه ',
         key: 'DefineGroupsofSets',
         url: '/DefineGroupsofSets',
+        showItem:true
       },
       {
         title: 'تعریف دسترسی کاربران',
         key: 'DefineUserAccess',
         url: '/DefineUserAccess',
+        showItem:true
       },
 
     ],
@@ -108,6 +122,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'لیست اسناد',
     key: 'auth',
     icon: <UserOutlined />,
+    showItem:true,
     children: [
       // {
       //   title: 'ثبت سند محصول',
@@ -123,11 +138,13 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         title: 'لیست اسناد محصولات ',
         key: 'SetProduceList',
         url: '/SetProduceList',
+        showItem:true
       },
       {
         title: 'لیست اسناد ست ',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
+        showItem:true
       }
     ],
   },
@@ -135,21 +152,25 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'دسترسی مدیریت',
     key: 'Dashboard',
     icon: <FormOutlined />,
+    showItem:true,
     children: [
       {
         title: 'کاردکس تعدادی',
         key: 'kardex',
         url: '/kardex',
+        showItem:true
       },
       {
         title: 'کاردکس ست محصول',
         key: 'kardexSets',
         url: '/kardexSets',
+        showItem:true
       },
       {
         title: 'نمودار',
         key: 'charts',
         url: '/charts',
+        showItem:true,
         icon: <LineChartOutlined />,
       },
     ],
