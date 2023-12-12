@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { store } from '@app/store/store';
 import ReactDOM from 'react-dom';
 import React from 'react';
-
-
+import './index.css';
+import "./font/IranianSans.ttf";
 interface EventTarget {
   state?: 'activated';
 }

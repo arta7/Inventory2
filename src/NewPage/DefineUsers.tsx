@@ -40,6 +40,7 @@ const DefineUsers: React.FC = () => {
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
   const [Username, setUsername] = useState('');
+  const [PassWord, setPassWord] = useState('');
   const [PostRef, setPostRef] = useState('');
   const [Active, setActive] = useState('');
   const [form] = BaseForm.useForm();
@@ -239,13 +240,13 @@ const DefineUsers: React.FC = () => {
           </Popconfirm>
 
 
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>       ResetPassword(record.Username.toString(),hashedPassword)}>
+        {/* <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>       ResetPassword(record.Username.toString(),hashedPassword)}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'yellow', color: 'black' }}
          
           >بازیابی رمز عبور
           </Button>
-          </Popconfirm>
+          </Popconfirm> */}
       </div >
     }
 
@@ -258,7 +259,7 @@ const DefineUsers: React.FC = () => {
 
      
       "Username": Username,
-      "Password": hashedPassword,
+      "Password": bcrypt.hashSync(PassWord.toString(), '$2a$10$CwTycUXWue0Thq9StjUM0u'),
       "PostRef": PostRef,
       "Active": Active,
       "Id": Id
@@ -372,11 +373,12 @@ const DefineUsers: React.FC = () => {
     form.setFieldsValue({
       Username: "",
       Groups: "",
-      Satte: "",
+      State: "",
     })
     setId(0)
     setUsername("")
     setActive('')
+    setPassWord('')
     setPostRef('')
     GetPosts()
     GetAllUsers()
@@ -410,6 +412,16 @@ const DefineUsers: React.FC = () => {
              
             >
               <Auth.FormInput placeholder="نام کاربری"   value={Username} onChange={(e) => { setUsername(e.target.value) }}/>
+            </Auth.FormItem>
+
+
+            <Auth.FormItem
+              name="PassWord"
+              label="رمز عبور"
+              rules={[{ required: true, message: t('common.requiredField') }]}
+             
+            >
+              <Auth.FormInput placeholder="رمز عبور" type="password"  value={PassWord} onChange={(e) => { setPassWord(e.target.value) }}/>
             </Auth.FormItem>
 
 

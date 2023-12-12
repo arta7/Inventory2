@@ -207,6 +207,7 @@ const DefineSets: React.FC = () => {
               })
               setTitles(record.Title.toString())
               setCode(record.Code.toString())
+              setDetails(record.Details)
               setId(record.Id.toString())
 
             }

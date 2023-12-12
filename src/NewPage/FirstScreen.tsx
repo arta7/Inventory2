@@ -34,8 +34,8 @@ import image from "./screen.webp";
    <div style={{backgroundImage:`url(${image})`,backgroundPosition: 'center',
    backgroundSize: 'cover',
    backgroundRepeat: 'no-repeat',
-   width: '100vw',
-   height: '100vh'}}>
+   width: '100%',
+   height:'90vh'}}>
     </div>
   );
 };
