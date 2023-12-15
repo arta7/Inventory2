@@ -130,35 +130,66 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     ],
   },
   {
-    title: 'لیست اسناد',
+     title: 'تجهیزات پزشکی',
     key: 'auth',
     icon: <UserOutlined />,
     showItem:true,
     children: [
-      // {
-      //   title: 'ثبت سند محصول',
-      //   key: 'setproduce',
-      //   url: '/setproduce',
-      // },
-      // {
-      //   title: 'ثبت سند ست محصول',
-      //   key: 'SetSetsGroups',
-      //   url: '/SetSetsGroups',
-      // },
       {
-        title: 'لیست اسناد محصولات ',
+        title: 'لیست محصول',
         key: 'SetProduceList',
         url: '/SetProduceList',
-        showItem:false
+        showItem:true
       },
       {
-        title: 'لیست اسناد ست ',
+        title: 'لیست ست محصول',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
-        showItem:false
+        showItem:true
       }
     ],
   },
+    {
+     title: 'تجهیزات CSR',
+    key: 'auth',
+    icon: <UserOutlined />,
+    showItem:true,
+    children: [
+      {
+        title: 'لیست محصول',
+        key: 'SetProduceList',
+        url: '/SetProduceList',
+        showItem:true
+      },
+      {
+        title: 'لیست ست محصول',
+        key: 'SetsetsGroupsList',
+        url: '/SetsetsGroupsList',
+        showItem:true
+      }
+    ],
+  },
+
+  // {
+  //   title: 'لیست اسناد',
+  //   key: 'auth',
+  //   icon: <UserOutlined />,
+  //   showItem:true,
+  //   children: [
+  //     {
+  //       title: 'لیست اسناد محصولات ',
+  //       key: 'SetProduceList',
+  //       url: '/SetProduceList',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'لیست اسناد ست ',
+  //       key: 'SetsetsGroupsList',
+  //       url: '/SetsetsGroupsList',
+  //       showItem:false
+  //     }
+  //   ],
+  // },
   {
     title: 'دسترسی مدیریت',
     key: 'Dashboard',

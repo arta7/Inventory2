@@ -119,21 +119,31 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     ],
   },
   {
+    title: 'مجموعه',
+    key: 'auth',
+    icon: <UserOutlined />,
+    showItem:true,
+    children: [
+      {
+        title: 'تجهیزات پزشکی',
+        key: 'SetProduceList',
+        url: '/SetProduceList',
+        showItem:true
+      },
+      {
+        title: 'تجهیزات CSR',
+        key: 'SetsetsGroupsList',
+        url: '/SetsetsGroupsList',
+        showItem:true
+      }
+    ],
+  },
+  {
     title: 'لیست اسناد',
     key: 'auth',
     icon: <UserOutlined />,
     showItem:true,
     children: [
-      // {
-      //   title: 'ثبت سند محصول',
-      //   key: 'setproduce',
-      //   url: '/setproduce',
-      // },
-      // {
-      //   title: 'ثبت سند ست محصول',
-      //   key: 'SetSetsGroups',
-      //   url: '/SetSetsGroups',
-      // },
       {
         title: 'لیست اسناد محصولات ',
         key: 'SetProduceList',
