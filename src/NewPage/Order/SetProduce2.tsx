@@ -43,7 +43,7 @@ export interface CategoryComponents {
   components: Component[];
 }
 
-const SetProduce: React.FC = () => {
+const SetProduce2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -448,7 +448,7 @@ const SetProduce: React.FC = () => {
       "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
       "UserRef": _userRef,
       "FiscalYearRef": _fiscalYearRef,
-      "CollectionId":1
+      "CollectionId":2
     }
     axios.post(Config.URL +
       Config.Defination.AddDocumentControls, data)
@@ -764,4 +764,4 @@ const SetProduce: React.FC = () => {
   );
 };
 
-export default SetProduce;
+export default SetProduce2;

@@ -146,6 +146,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
         showItem:true
+      },
+      {
+        title: 'کاردکس تعدادی',
+        key: 'kardex',
+        url: '/kardex',
+        showItem:false
+      },
+      {
+        title: 'کاردکس ست محصول',
+        key: 'kardexSets',
+        url: '/kardexSets',
+        showItem:false
+      },
+      {
+        title: 'نمودار',
+        key: 'charts',
+        url: '/charts',
+        showItem:false,
+        icon: <LineChartOutlined />
       }
     ],
   },
@@ -157,15 +176,34 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     children: [
       {
         title: 'لیست محصول',
-        key: 'SetProduceList',
-        url: '/SetProduceList',
+        key: 'SetProduceList2',
+        url: '/SetProduceList2',
         showItem:true
       },
       {
         title: 'لیست ست محصول',
-        key: 'SetsetsGroupsList',
-        url: '/SetsetsGroupsList',
+        key: 'SetsetsGroupsList2',
+        url: '/SetsetsGroupsList2',
         showItem:true
+      },
+      {
+        title: 'کاردکس تعدادی',
+        key: 'kardex2',
+        url: '/kardex2',
+        showItem:false
+      },
+      {
+        title: 'کاردکس ست محصول',
+        key: 'kardexSets2',
+        url: '/kardexSets2',
+        showItem:false
+      },
+      {
+        title: 'نمودار',
+        key: 'charts',
+        url: '/charts',
+        showItem:false,
+        icon: <LineChartOutlined />
       }
     ],
   },
@@ -190,33 +228,35 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
   //     }
   //   ],
   // },
-  {
-    title: 'دسترسی مدیریت',
-    key: 'Dashboard',
-    icon: <FormOutlined />,
-    showItem:true,
-    children: [
-      {
-        title: 'کاردکس تعدادی',
-        key: 'kardex',
-        url: '/kardex',
-        showItem:false
-      },
-      {
-        title: 'کاردکس ست محصول',
-        key: 'kardexSets',
-        url: '/kardexSets',
-        showItem:false
-      },
-      {
-        title: 'نمودار',
-        key: 'charts',
-        url: '/charts',
-        showItem:false,
-        icon: <LineChartOutlined />
-      }
-    ]
-    }]);
+  // {
+  //   title: 'دسترسی مدیریت',
+  //   key: 'Dashboard',
+  //   icon: <FormOutlined />,
+  //   showItem:true,
+  //   children: [
+  //     {
+  //       title: 'کاردکس تعدادی',
+  //       key: 'kardex',
+  //       url: '/kardex',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'کاردکس ست محصول',
+  //       key: 'kardexSets',
+  //       url: '/kardexSets',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'نمودار',
+  //       key: 'charts',
+  //       url: '/charts',
+  //       showItem:false,
+  //       icon: <LineChartOutlined />
+  //     }
+  //   ]
+    // }
+  ]
+    );
   const { userData,setUserData } = React.useContext(UserContext);
   const currentMenuItem = sidebarNavFlat.find(({ url }) => url === location.pathname);
   const defaultSelectedKeys = currentMenuItem ? [currentMenuItem.key] : [];

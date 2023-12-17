@@ -41,7 +41,7 @@ export interface CategoryComponents {
   components: Component[];
 }
 
-const SetProduce: React.FC = () => {
+const SetSetsGroups: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -430,6 +430,7 @@ const SetProduce: React.FC = () => {
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
         "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
+        "CollectionId":1
 
 
 
@@ -779,4 +780,4 @@ const SetProduce: React.FC = () => {
   );
 };
 
-export default SetProduce;
+export default SetSetsGroups;
