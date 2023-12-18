@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -7,18 +6,21 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './SForm.styles';
+import * as S from './../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import Tables from './Tables';
+import Tables from './../Tables';
 import axios from 'axios';
-import { Config } from './../Database/Config';
+import { Config } from './../../Database/Config';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-
+import UserContext from './../UserContext';
+import Searchinput from '../Searchinput';
+import SearchinputKardex from '../SearchinputKardex';
+var moment = require('jalali-moment');
 
 
 interface DefinePostData {
@@ -33,21 +35,25 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const DefineSets: React.FC = () => {
+const Kardex2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
   const [AllData, setAllData] = useState([]);
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
+  const [SelectedItem, setSelectedItem] = useState(1);
   const [Titles, setTitles] = useState('');
   const [Code, setCode] = useState('');
-  const [Details, setDetails] = useState('');
   const [form] = BaseForm.useForm();
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
+  const [ProductData, setProductData] = useState([]);
+    const[selectedProductId,setselectedProductId] = useState(0)
+    const[selectedProductTitle,setselectedProductTitle] = useState('')
+    const { userData,setUserData } = React.useContext(UserContext);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -102,17 +108,6 @@ const DefineSets: React.FC = () => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            فیلتر
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
               close();
             }}
           >
@@ -150,178 +145,195 @@ const DefineSets: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'عنوان',
-      dataIndex: 'Title',
-      key: 'Title',
-      width: '30%',
-      hidden: false,
-      
-      ...getColumnSearchProps('Title'),
-
-
-    },
-    {
-      title: 'کد ',
-      dataIndex: 'Code',
-      key: 'Code',
-      width: '20%',
-      hidden: false,
-      ...getColumnSearchProps('Code'),
-    },
-    {
-      title: 'توضیحات ',
-      dataIndex: 'Details',
-      key: 'Details',
-      width: '20%',
-      hidden: false,
-      ...getColumnSearchProps('Details'),
-    },
-    {
-      title: 'Id',
+      title: 'شماره سند',
       dataIndex: 'Id',
       key: 'Id',
-      width: '0%',
-      hidden: true
-      // ...getColumnSearchProps('age'),
+      width: '10%',
+      hidden: false
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'Action',
-      width: '40%',
+      title: 'نوع سند',
+      dataIndex: 'StatesTitle',
+      key: 'StatesTitle',
+      width: '15%',
       hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
-        style={
-          {
-            width: "200px",
-          }
-        } > < Button
-          style={{ backgroundColor: 'green', color: 'white' }}
-          onClick={
-            (e) => {
-              form.setFieldsValue({
-                Title: record.Title.toString(),
-                Code: record.Code.toString(),
-                Details: record.Details.toString()
 
-              })
-              setTitles(record.Title.toString())
-              setCode(record.Code.toString())
-              setDetails(record.Details)
-              setId(record.Id.toString())
+      ...getColumnSearchProps('StatesTitle'),
+    },
+    {
+      title: 'StatesRef ',
+      dataIndex: 'StatesRef',
+      key: 'StatesRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'درخواست کننده',
+      dataIndex: 'SecondUsername',
+      key: 'SecondUsername',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'SecondUserRef ',
+      dataIndex: 'SecondUserRef',
+      key: 'SecondUserRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'سال مالی',
+      dataIndex: 'FiscalTitle',
+      key: 'FiscalTitle',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'FiscalYearRef ',
+      dataIndex: 'FiscalYearRef',
+      key: 'FiscalYearRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'نام محصول ',
+      dataIndex: 'ProductTitle',
+      key: 'ProductTitle',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'تاریخ سند',
+      dataIndex: 'Date',
+      key: 'Date',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'تاریخ سند',
+      dataIndex: 'Datevalue',
+      key: 'Datevalue',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'سند ورودی',
+      dataIndex: 'InsertValue',
+      key: 'InsertValue',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'سند خروجی',
+      dataIndex: 'ExitValue',
+      key: 'ExitValue',
+      width: '15%',
+      hidden: false,
+    },
 
+    {
+      title: 'مانده موجودی',
+      dataIndex: 'Deposit',
+      key: 'Deposit',
+      width: '15%',
+      hidden: false,
+      render: (text, record, index) =>
+
+        < div className="btn-wrap"
+          style={
+            {
+              width: "100px",
             }
-          } > ویرایش
-        </Button>
+          } >
 
-
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteSets(record.Id)}>
-            < Button
-          style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-          onClick={()=>
-            console.log('')
+          {
+            index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
           }
-          >حذف
-          </Button>
-          </Popconfirm>
-      </div >
-    }
+        </div >
+      ,
+
+    },
+
 
   ];
 
 
-  let AddSets = () => {
-    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-  setLoading(true)
-    var data = {
-
-      "Id": Id,
-      "Title": Titles,
-      "Code": Code.toString(),
-      "Details":Details
-
+  let SumData = (index, Data) => {
+    var datasum = 0;
+    for (let i = 0; i < index; i++) {
+      datasum += Data[i].InsertValue - Data[i].ExitValue
     }
+    return datasum;
+  }
 
-    axios.post(Config.URL +
-      Config.Defination.AddSets, data)
-      .then((response) => {
-        console.log('response data : ', response.data.data)
-        setLoading(false)
-        setCounter(Counter+1)
-        alert(' اطلاعات با موفقیت ثبت شد')
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-        setLoading(false)
-      })
+  let DeleteParts = (_id) => {
+
+
 
 
   }
 
-
-  let DeleteSets = (_id) => {
-
-    var data = {
-
-      "Id": _id
-
-    }
+  let GetProducts = () => {
 
     axios.post(Config.URL +
-      Config.Defination.DeleteSets, data)
+      Config.Defination.GetProducts)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setCounter(Counter+1)
+        setProductData(response.data.data)
       })
       .catch((error) => {
         console.log('Error : ', error)
       })
-
-
   }
 
 
+  let GetKardex = (_product, _fiscal) => {
 
-  let GetSets = () => {
+     setLoading(true)
+    var data = {
+     
+      "ProductRef": _product,
+      "FiscalYearRef": _fiscal,
+      "CollectionId":2
 
-    var axiosConfig = {
-      headers: {
-        Accept: 'application/json',
-        Content_Type: 'application/json'
-      }
     }
+
     axios.post(Config.URL +
-      Config.Defination.GetSets)
+      Config.Defination.GetKardex, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,
-            Details:response.data.data[i].Details
-            })
+          data1.push({
+            Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
+            StatesRef: response.data.data[i].StatesRef
+            , FiscalYearRef: response.data.data[i].FiscalYearRef,
+            FiscalTitle: response.data.data[i].FiscalTitle
+            , UserRef: response.data.data[i].UserRef,
+            Username: response.data.data[i].Username
+            , SecondUserRef: response.data.data[i].SecondUserRef,
+            SecondUsername: response.data.data[i].SecondUsername,
+            Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+            Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
+            ExitValue: response.data.data[i].ExitValue,ProductTitle:response.data.data[i].ProductTitle
+          })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
+        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
+        setLoading(false)
       })
 
 
   }
 
   useEffect(() => {
-    form.setFieldsValue({
-      Title: "",
-      Code: "",
-      Details:""
-    })
-    setId(0)
-    setTitles("")
-    setCode("")
-    setDetails("")
-    GetSets()
+    GetProducts()
+    
+
   }, [Counter])
 
 
@@ -331,61 +343,50 @@ const DefineSets: React.FC = () => {
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-    setTitles(events.target.value);
+   // setTitles(events.target.value);
+  }
+
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML =  new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    
+    return false;
   }
 
   return (
     <div >
-      <div style={{
+    
+
+
+<div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف  سِت</S.Title>
-            <Auth.FormItem
-              name="Title"
-              label="عنوان"
-              rules={[{ required: true, message: t('common.requiredField') }]}
-            >
-              <Auth.FormInput placeholder="عنوان" value={Titles} onChange={(e) => { setTitles(e.target.value) }} />
-            </Auth.FormItem>
-
-            <Auth.FormItem
-              label="کد "
-              name="Code"
-
-            // rules={[{ required: true, message: t('common.requiredField') }]}
-            >
-              <Auth.FormInput placeholder="کد "
-                value={Code} onChange={(e) => { setCode(e.target.value) }}
-              />
-            </Auth.FormItem>
-
-                     <Auth.FormItem
-          label="توضیحات "
-          name="Details"
-        >
-          <Auth.FormInputTextArea placeholder="توضیحات " value={Details} onChange={(e) => { setDetails(e.target.value) }}  />
-        </Auth.FormItem>
-
-
-
+          <SearchinputKardex list={ProductData} PlaceHolder="نام کالا"
+      // onChange={(e)=>{setselectedProductTitle(e)}}
+      setvalue={setselectedProductTitle}
+      setId ={setselectedProductId}
+      value = {selectedProductTitle}
+      setAllData={setAllData}
+       
+      />
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                console.log('test')
-                if (Titles.toString().trim().length > 0)
-                  AddSets()
-                else
-                {
-                  alert('لطفا اطلاعات را کامل پر کنید')
-                }
+                  console.log('userData[0].FiscalYearId.toString()',userData[0].FiscalYearId.toString())
+               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
               }}>
-                ثبت
+                جستجو
               </Auth.SubmitButton>
 
 
@@ -394,20 +395,23 @@ const DefineSets: React.FC = () => {
 
               <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
                 () => {
-                  form.setFieldsValue({
-                    Title: "",
-                    Code: "",
-                    Details:""
 
-                  })
-                  setId(0)
-                  setTitles("")
-                  setCode("")
-                  setDetails("")
-
+                  setAllData([])
+                  setselectedProductTitle('')
+                  setselectedProductId('')
                 }
               }>
                 بازیابی
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  printdiv("printelement")
+                  window.location.reload();
+                }
+              }>
+                چاپ
               </Auth.SubmitButton>
 
             </div>
@@ -418,12 +422,19 @@ const DefineSets: React.FC = () => {
           </BaseForm>
         </Auth.FormWrapper>
       </div>
+
+
+
+        <div id="printelement">
+
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
+      </div>
     </div>
   );
 };
 
-export default DefineSets;
+export default Kardex2;
+
 

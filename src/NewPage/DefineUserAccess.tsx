@@ -724,7 +724,7 @@ const DefineSetsofProducts: React.FC = () => {
     axios.post(Config.URL +
       Config.Defination.GetPosts)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        // console.log('response data : ', response.data.data)
         setPostData(response.data.data)
       })
       .catch((error) => {
@@ -740,7 +740,7 @@ const DefineSetsofProducts: React.FC = () => {
     axios.post(Config.URL +
       Config.Defination.GetParts)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        // console.log('response data : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({
@@ -748,7 +748,7 @@ const DefineSetsofProducts: React.FC = () => {
             Code: response.data.data[i].Code, Active: response.data.data[i].Active, Shower: 0, Edit: 0, Adds: 0, Prints: 0, Deletes: 0
           })
         }
-        console.log('data1 : ', data1)
+        // console.log('data1 : ', data1)
         setAllData(data1)
       })
       .catch((error) => {
@@ -760,9 +760,6 @@ const DefineSetsofProducts: React.FC = () => {
   let GetPostsAccessParts = (_PostRef) => {
 
 
-
-
-
     var data = {
       "PostRef": _PostRef
     }
@@ -770,26 +767,26 @@ const DefineSetsofProducts: React.FC = () => {
       Config.Defination.GetPostsAccessParts, data)
       .then((response) => {
         console.log('response data post access : ', response.data.data)
-        setUserAccessPart(response.data.data)
+        // setUserAccessPart(response.data.data)
         var x = []
+        const myNextList = [...AllData];
         for (let i = 0; i < response.data.data.length; i++) {
           x.push(response.data.data[i].PartRef.toString())
-          const myNextList = [...AllData];
+        
           const artwork = myNextList.find(
-            a => a.Id == response.data.data[i].PartRef.toString()
+            a => a.Id == response.data.data[i].PartRef
           );
 
-          console.log('artwork', artwork)
+          // console.log('artwork', artwork)
           artwork.Adds = response.data.data[i].Adds;
           artwork.Deletes = response.data.data[i].Deletes;
-
           artwork.Edit = response.data.data[i].Edit;
           artwork.Prints = response.data.data[i].Prints;
           artwork.Shower = response.data.data[i].Shower;
-          setAllData(myNextList);
-          console.log('myNextList', myNextList)
         }
 
+        
+        setAllData(myNextList);
         setSelectedRowKeys(x)
 
       })
@@ -826,12 +823,13 @@ const DefineSetsofProducts: React.FC = () => {
     axios.post(Config.URL +
       Config.Defination.AddUsersAccessParts, data)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        // console.log('response data : ', response.data.data)
         setLoading(false)
         setCounter(Counter + 1)
         form.setFieldsValue({
           Groups: '',
         })
+        alert(' اطلاعات با موفقیت ثبت شد')
 
       })
 
@@ -884,7 +882,20 @@ const DefineSetsofProducts: React.FC = () => {
             >
               <Select onChange={(v) => {
                 console.log('v : ', v)
-                setCounter(Counter + 1)
+                // setCounter(Counter + 1)
+                const myNextList = [...AllData];
+                for (let j = 0; j < AllData.length; j++) {
+            
+                  const artwork = myNextList[j];
+                  // console.log('artwork : ', artwork)
+                  artwork.Adds = 0;
+                  artwork.Deletes = 0;
+                  artwork.Edit = 0;
+                  artwork.Prints = 0;
+                  artwork.Shower = 0;
+                  setAllData(myNextList);
+            
+                }
                 setPostSelected(v)
                 GetPostsAccessParts(v)
 

@@ -139,6 +139,7 @@ type DataIndex = keyof DataType;
   const [isLoading, setisLoading] = useState(false);
   const [GroupsData, setGroupsData] = useState([]);
   const [GroupsSelectedItem, setGroupsSelectedItem] = useState('');
+  const [CollectionItemSelected, setCollectionItemSelected] = useState('');
   const [AllData, setAllData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -240,7 +241,7 @@ type DataIndex = keyof DataType;
       title: 'عنوان',
       dataIndex: 'Title',
       key: 'Title',
-      width: '30%',
+      width: '40%',
       hidden: false,
       
       ...getColumnSearchProps('Title'),
@@ -251,7 +252,7 @@ type DataIndex = keyof DataType;
       title: 'کد ',
       dataIndex: 'Code',
       key: 'Code',
-      width: '10%',
+      width: '30%',
       hidden: false,
       ...getColumnSearchProps('Code'),
     },
@@ -263,55 +264,30 @@ type DataIndex = keyof DataType;
       hidden: true
       // ...getColumnSearchProps('age'),
     },
-    {
-      title: 'تعداد',
-      dataIndex: 'Count',
-      key: 'Count',
-      width: '20%',
-      hidden: false,
-      render: (text, record, index) => < div className="btn-wrap"
-        style={
-          {
-            width: "100px",
-          }
-        } >     <Auth.FormInput placeholder="عدد"
-        type="number"
-         value={record.Count}
-        style={{ textAlign: 'center' }}
+    // {
+    //   title: 'تعداد',
+    //   dataIndex: 'Count',
+    //   key: 'Count',
+    //   width: '20%',
+    //   hidden: false,
+    //   render: (text, record, index) => < div className="btn-wrap"
+    //     style={
+    //       {
+    //         width: "100px",
+    //       }
+    //     } >     <Auth.FormInput placeholder="عدد"
+    //     type="number"
+    //      value={record.Count}
+    //     style={{ textAlign: 'center' }}
+    //     // onChange={(v) => {
 
-        onChange={(v) => {
+          
 
-          const myNextList = [...AllData];
-          const artwork = myNextList.find(
-            a => a.Id === record.Id
-          );
-          artwork.Count = v.target.value;
-          setAllData(myNextList);
+    //     // }}
+    //   />
 
-
-          if (DataProduct.filter(item1 => item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem ).length == 0) {
-            if(selectedRowKeys.filter(a=>a == record.Id).length>0)
-            DataProduct.push({ "SetsRef": record.Id, "GroupRef":GroupsSelectedItem  , "Count": v.target.value.toString() })
-            
-          }
-
-          else {
-            DataProduct = DataProduct.map(item1 => {
-              if (item1.SetsRef == record.Id && item1.GroupRef == GroupsSelectedItem) {
-                return { ...item1, "Count": v.target.value.toString() };
-              }
-              return item1;
-            })
-            console.log('text : ', DataProduct)
-
-          }
-
-
-        }}
-      />
-
-      </div >
-    }
+    //   </div >
+    // }
   ];
   
  
@@ -326,13 +302,32 @@ type DataIndex = keyof DataType;
   };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    // console.log('selectedRowKeys changed: ', newItem);
     setSelectedRowKeys(newSelectedRowKeys);
+
+    // const myNextList = [...AllData];
+    // const artwork = myNextList.find(
+    //   a => a.Id == record.Id
+    // );
+    // artwork.Count = v.target.value;
+    // setAllData(myNextList);
+    DataProduct=[];
+        for(let i =0 ;i<newSelectedRowKeys.length;i++)
+      DataProduct.push({ "SetsRef": newSelectedRowKeys[i].toString(), "GroupRef":GroupsSelectedItem ,
+    "CollectionId":CollectionItemSelected, "Count": "1" })
+      
+      console.log('DataProduce : ',DataProduct)
+
+   
   };
 
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    // onselect:(record) => {
+    
+    // }
+
   };
 
 
@@ -361,7 +356,7 @@ type DataIndex = keyof DataType;
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({KeySearch : response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,"Count":""})
+             Code: response.data.data[i].Code,"Count":"1"})
         }
         console.log('data1 sets : ', data1)
         setAllData(data1)
@@ -378,7 +373,7 @@ type DataIndex = keyof DataType;
     {
       if(selectedRowKeys.filter(a=>a == DataProduct[i].SetsRef).length == 0)
       {
-        DataProduct = DataProduct.filter(item => item.SetsRef != DataProduct[i].SetsRef);
+        DataProduct = DataProduct.filter(item => item.SetsRef != DataProduct[i].SetsRef && item.CollectionId !=DataProduct[i].CollectionId );
       }
     }
 
@@ -398,6 +393,7 @@ type DataIndex = keyof DataType;
         setGroupsSelectedItem('')
         setSelectedRowKeys([])
         DataProduct = [];
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -408,10 +404,11 @@ type DataIndex = keyof DataType;
   let DeleteGroupOfSets = () => {
     setLoading(true)
     var data = {
-      'GroupRef': GroupsSelectedItem
+      'GroupRef': GroupsSelectedItem,
+      "CollectionId":CollectionItemSelected
     }
     axios.post(Config.URL +
-      Config.Defination.DeleteGroupOfSets, data)
+      Config.Defination.DeleteGroupOfSetsCollection, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         AddGroupOfSets()
@@ -422,12 +419,15 @@ type DataIndex = keyof DataType;
       })
   }
 
-  let GetGroupOfS = (_v) => {
+  let GetGroupOfS = (_v,_v2) => {
+
     var data = {
-      "GroupRef": _v
+      "GroupRef": _v,
+      "CollectionId":_v2
     }
+    console.log('data : ',data)
     axios.post(Config.URL +
-      Config.Defination.GetGroupOfSets, data)
+      Config.Defination.GetGroupOfSetsCollection, data)
       .then((response) => {
         console.log('response data Groups : ', response.data.data)
         // setGroupsData(response.data.data)
@@ -437,24 +437,12 @@ type DataIndex = keyof DataType;
 
           x.push(response.data.data[i].SetsRef.toString())
           DataProduct.push({ "SetsRef": response.data.data[i].SetsRef.toString(), 
-          "GroupRef": response.data.data[i].GroupRef.toString(), "Count": response.data.data[i].Count.toString() })
-         
-          const myNextList = [...AllData];
-          const artwork = myNextList.find(
-            a => a.Id == response.data.data[i].SetsRef.toString()
-          );
-          console.log('artwork : ',artwork)
-          artwork.Count = response.data.data[i].Count.toString();
-          setAllData(myNextList);
-          console.log('x : ', x)
+          "GroupRef": response.data.data[i].GroupRef.toString(),"CollectionId":response.data.data[i].CollectionId.toString(), "Count": "1" })
         }
         // console.log('newdata : ',newdata)
         setSelectedRowKeys(x)
         // setCounter(Counter+1)
-       
-
-
-
+      
 
       })
       .catch((error) => {
@@ -480,6 +468,39 @@ type DataIndex = keyof DataType;
       <BaseForm layout="vertical" onFinish={handleSubmit}  form={form} >
         <S.Title>گروه هر سِت</S.Title>
       
+        <BaseButtonsForm.Item name="Collection" label="نام مجموعه"
+           rules={[{ required: true}]}
+        >
+      <Select
+       onChange={(v) => {
+        setSelectedRowKeys([])
+        setCollectionItemSelected(v)
+        console.log('')
+        if(GroupsSelectedItem !='')
+        {
+         GetGroupOfS(GroupsSelectedItem,v)
+        }
+      }}
+      >
+        
+        <Option value={1}>
+          <Space align="center">
+          تجهیزات پزشکی
+          </Space>
+        </Option>
+           
+        <Option value={2}>
+          <Space align="center">
+          تجهیزات CSR
+          </Space>
+        </Option>
+          
+        
+      </Select>
+    </BaseButtonsForm.Item>
+
+
+       
         <BaseButtonsForm.Item name="Groups" label="نام گروه"
            rules={[{ required: true}]}
         >
@@ -487,14 +508,13 @@ type DataIndex = keyof DataType;
        onChange={(v) => {
         console.log('v : ', v)
         setGroupsSelectedItem(v)
-        GetGroupOfS(v)
+         GetGroupOfS(v,CollectionItemSelected)
       }}
       >
-
         {
           GroupsData.map((item,index)=>(
            
-        <Option value={item.Id.toString()}>
+        <Option value={item.Id}>
           <Space align="center">
             {item.Title}
           </Space>
@@ -502,10 +522,7 @@ type DataIndex = keyof DataType;
             
           ))
         }
-
       </Select>
-
-      
     </BaseButtonsForm.Item>
 
 
@@ -532,6 +549,8 @@ type DataIndex = keyof DataType;
     </div>
      <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
      rowSelections={rowSelection}  
+     
+     
       />
 
      

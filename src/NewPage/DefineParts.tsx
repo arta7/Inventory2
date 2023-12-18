@@ -350,6 +350,7 @@ const DefineParts: React.FC = () => {
         console.log('response data : ', response.data.data)
         setLoading(false)
         setCounter(Counter+1)
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)

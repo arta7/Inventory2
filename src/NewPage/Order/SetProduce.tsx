@@ -419,9 +419,11 @@ const SetProduce: React.FC = () => {
   }
 
   let GetGroups = () => {
-
+    var Data={
+      "CollectionId":1
+    }
     axios.post(Config.URL +
-      Config.Defination.GetGroups)
+      Config.Defination.GetGroupsData,Data)
       .then((response) => {
         console.log('response data : ', response.data.data)
 
@@ -447,10 +449,11 @@ const SetProduce: React.FC = () => {
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
       "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
       "UserRef": _userRef,
-      "FiscalYearRef": _fiscalYearRef
+      "FiscalYearRef": _fiscalYearRef,
+      "CollectionId":1
     }
     axios.post(Config.URL +
-      Config.Defination.AddDocumentControls, data)
+      Config.Defination.AddDocumentControlsCollection, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         console.log('result Id : ', response.data.data)
@@ -545,6 +548,7 @@ const SetProduce: React.FC = () => {
         setselectedGroups('')
         setselectedStates('')
         setAllData([])
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)

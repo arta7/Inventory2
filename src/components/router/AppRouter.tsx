@@ -88,6 +88,14 @@ const SetsetsGroupsList = React.lazy(() => import('@app/NewPage/Order/SetsetsGro
 const SetSetsGroups = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups'));
 
 
+const SetProduce2 = React.lazy(() => import('@app/NewPage/Order/SetProduce2'));
+const Kardex2 = React.lazy(() => import('@app/NewPage/Dashboard/Kardex2'));
+const KardexSets2 = React.lazy(() => import('@app/NewPage/Dashboard/KardexSets2'));
+const SetProduceList2 = React.lazy(() => import('@app/NewPage/Order/SetProduceList2'));
+const SetsetsGroupsList2 = React.lazy(() => import('@app/NewPage/Order/SetsetsGroupsList2'));
+const SetSetsGroups2 = React.lazy(() => import('@app/NewPage/Order/SetSetsGroups2'));
+
+
 const Charts = React.lazy(() => import('@app/NewPage/Dashboard/Charts'));
 
 // export const NFT_DASHBOARD_PATH = '/';
@@ -171,6 +179,15 @@ const KardexFallback = withLoading(Kardex)
 const KardexSetsFallback = withLoading(KardexSets)
 
 
+
+const SetProduceFallback2 = withLoading(SetProduce2)
+const SetSetsGroupsFallback2 = withLoading(SetSetsGroups2)
+const SetProduceListFallback2 = withLoading(SetProduceList2)
+const SetsetsGroupsListFallback2 = withLoading(SetsetsGroupsList2)
+const KardexFallback2 = withLoading(Kardex2)
+const KardexSetsFallback2 = withLoading(KardexSets2)
+
+
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
     <RequireAuth>
@@ -200,9 +217,15 @@ export const AppRouter: React.FC = () => {
           <Route path="Kardex" element={<KardexFallback />} />
           <Route path="KardexSets" element={<KardexSetsFallback />} />
 
+          <Route path="Kardex2" element={<KardexFallback2 />} />
+          <Route path="KardexSets2" element={<KardexSetsFallback2 />} />
+
 
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
           <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />
+
+          <Route path="SetProduceList2" element={<SetProduceListFallback2 />} />
+          <Route path="SetsetsGroupsList2" element={<SetsetsGroupsListFallback2 />} />
 
           <Route path="DefineStates" element={<DefineStatesFallback />} />
           <Route path="DefinePost" element={<DefinePostFallback />} />
@@ -217,8 +240,10 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineSetsofProducts" element={<DefineSetsofProductsFallback />} />
 
           <Route path="SetProduce" element={<SetProduceFallback />} />
+          <Route path="SetProduce2" element={<SetProduceFallback2 />} />
 
           <Route path="SetSetsGroups" element={<SetSetsGroupsFallback />} />
+          <Route path="SetSetsGroups2" element={<SetSetsGroupsFallback2 />} />
 
           
           <Route path="Charts" element={<ChartsFallBack />} />

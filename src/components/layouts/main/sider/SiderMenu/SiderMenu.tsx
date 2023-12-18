@@ -55,9 +55,15 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     showItem:true,
     children: [
       {
-        title: 'تعریف کاربر',
-        key: 'DefineUser',
-        url: '/DefineUsers',
+        title: 'تعریف سال مالی',
+        key: 'FiscalYears',
+        url: '/FiscalYears',
+        showItem:false
+      },
+      {
+        title: 'تعریف واحد کالا',
+        key: 'DefineUnit',
+        url: '/DefineUnit',
         showItem:false
       },
       {
@@ -85,21 +91,28 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف سال مالی',
-        key: 'FiscalYears',
-        url: '/FiscalYears',
+        title: 'تعریف دسترسی ست ابزار',
+        key: 'DefineSetsofProducts',
+        url: '/DefineSetsofProducts',
         showItem:false
       },
       {
-        title: 'تعریف واحد کالا',
-        key: 'DefineUnit',
-        url: '/DefineUnit',
+        title: ' تعریف دسترسی گروه کالا ',
+        key: 'DefineGroupsofSets',
+        url: '/DefineGroupsofSets',
         showItem:false
       },
+     
       {
         title: 'تعریف نوع سند',
         key: 'DefineStates',
         url: '/DefineStates',
+        showItem:false
+      },
+      {
+        title: 'تعریف کاربر',
+        key: 'DefineUser',
+        url: '/DefineUsers',
         showItem:false
       },
       {
@@ -108,18 +121,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefinePost',
         showItem:false
       },
-      {
-        title: 'تعریف دسترسی ست ابزار',
-        key: 'DefineSetsofProducts',
-        url: '/DefineSetsofProducts',
-        showItem:false
-      },
-      {
-        title: 'تعریف دسترسی گروه ',
-        key: 'DefineGroupsofSets',
-        url: '/DefineGroupsofSets',
-        showItem:false
-      },
+    
       {
         title: 'تعریف دسترسی کاربران',
         key: 'DefineUserAccess',
@@ -130,43 +132,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     ],
   },
   {
-    title: 'لیست اسناد',
-    key: 'auth',
+     title: 'تجهیزات پزشکی',
+    key: 'DoctorsAccess',
     icon: <UserOutlined />,
     showItem:true,
     children: [
-      // {
-      //   title: 'ثبت سند محصول',
-      //   key: 'setproduce',
-      //   url: '/setproduce',
-      // },
-      // {
-      //   title: 'ثبت سند ست محصول',
-      //   key: 'SetSetsGroups',
-      //   url: '/SetSetsGroups',
-      // },
       {
-        title: 'لیست اسناد محصولات ',
+        title: 'لیست محصول',
         key: 'SetProduceList',
         url: '/SetProduceList',
-        showItem:false
+        showItem:true
       },
       {
-        title: 'لیست اسناد ست ',
+        title: 'لیست ست محصول',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
-        showItem:false
-      }
-    ],
-  },
-  {
-    title: 'دسترسی مدیریت',
-    key: 'Dashboard',
-    icon: <FormOutlined />,
-    showItem:true,
-    children: [
+        showItem:true
+      },
       {
-        title: 'کاردکس تعدادی',
+        title: 'کاردکس محصول',
         key: 'kardex',
         url: '/kardex',
         showItem:false
@@ -184,8 +168,97 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false,
         icon: <LineChartOutlined />
       }
-    ]
-    }]);
+    ],
+  },
+    {
+     title: 'تجهیزات CSR',
+    key: 'CSR',
+    icon: <UserOutlined />,
+    showItem:true,
+    children: [
+      {
+        title: 'لیست محصول',
+        key: 'SetProduceList2',
+        url: '/SetProduceList2',
+        showItem:true
+      },
+      {
+        title: 'لیست ست محصول',
+        key: 'SetsetsGroupsList2',
+        url: '/SetsetsGroupsList2',
+        showItem:true
+      },
+      {
+        title: 'کاردکس محصول',
+        key: 'kardex2',
+        url: '/kardex2',
+        showItem:false
+      },
+      {
+        title: 'کاردکس ست محصول',
+        key: 'kardexSets2',
+        url: '/kardexSets2',
+        showItem:false
+      },
+      {
+        title: 'نمودار',
+        key: 'charts',
+        url: '/charts',
+        showItem:false,
+        icon: <LineChartOutlined />
+      }
+    ],
+  },
+
+  // {
+  //   title: 'لیست اسناد',
+  //   key: 'auth',
+  //   icon: <UserOutlined />,
+  //   showItem:true,
+  //   children: [
+  //     {
+  //       title: 'لیست اسناد محصولات ',
+  //       key: 'SetProduceList',
+  //       url: '/SetProduceList',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'لیست اسناد ست ',
+  //       key: 'SetsetsGroupsList',
+  //       url: '/SetsetsGroupsList',
+  //       showItem:false
+  //     }
+  //   ],
+  // },
+  // {
+  //   title: 'دسترسی مدیریت',
+  //   key: 'Dashboard',
+  //   icon: <FormOutlined />,
+  //   showItem:true,
+  //   children: [
+  //     {
+  //       title: 'کاردکس تعدادی',
+  //       key: 'kardex',
+  //       url: '/kardex',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'کاردکس ست محصول',
+  //       key: 'kardexSets',
+  //       url: '/kardexSets',
+  //       showItem:false
+  //     },
+  //     {
+  //       title: 'نمودار',
+  //       key: 'charts',
+  //       url: '/charts',
+  //       showItem:false,
+  //       icon: <LineChartOutlined />
+  //     }
+  //   ]
+    // }
+  ]
+    );
   const { userData,setUserData } = React.useContext(UserContext);
   const currentMenuItem = sidebarNavFlat.find(({ url }) => url === location.pathname);
   const defaultSelectedKeys = currentMenuItem ? [currentMenuItem.key] : [];

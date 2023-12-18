@@ -22,12 +22,12 @@ const App: React.FC = () => {
   const [userData, setUserData] = useState([
     {
 
-      UserId: localStorage.getItem("UserId"),
-      Username: localStorage.getItem("Username"),
+      UserId: localStorage.getItem("UserId") != null ? localStorage.getItem("UserId") : '',
+      Username: localStorage.getItem("Username")!=null ? localStorage.getItem("Username") : '',
       selectedProductId: '',
       selectedSetsId: '',
-      FiscalYearId: localStorage.getItem("FiscalYearId"),
-      FiscalYearTitle:localStorage.getItem("FiscalYearTitle")
+      FiscalYearId: localStorage.getItem("FiscalYearId")!=null ? localStorage.getItem("FiscalYearId") : '',
+      FiscalYearTitle:localStorage.getItem("FiscalYearTitle")!=null ? localStorage.getItem("FiscalYearTitle") : ''
     }]);
   usePWA();
 

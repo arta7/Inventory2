@@ -277,7 +277,16 @@ const DefineSetsofProducts: React.FC = () => {
   }
 
   let GetSetsofP = (_v) => {
-
+    const myNextList = [...AllData];
+      for(let j=0;j<AllData.length;j++)
+      {
+      
+        const artwork = myNextList[j];
+        console.log('artwork : ', artwork)
+        artwork.Counts = "";
+       
+      }
+      setAllData(myNextList);
 
     var data = {
       "SetsRef": _v
@@ -299,13 +308,11 @@ const DefineSetsofProducts: React.FC = () => {
           //  for(let j=0;j<AllData.length;j++)
           //  {
           if (AllData.filter(item1 => item1.Id == response.data.data[i].ProductRef).length > 0) {
-            console.log('ProductRef : ', response.data.data[i].ProductRef.toString(),
-              'Counts : ', response.data.data[i].Counts.toString())
 
             const myNextList = [...AllData];
             const artwork = myNextList.find(
               a => a.Id == response.data.data[i].ProductRef.toString()
-            );
+            )
 
             console.log('artwork : ', artwork)
             artwork.Counts = response.data.data[i].Counts.toString();
@@ -381,6 +388,7 @@ const DefineSetsofProducts: React.FC = () => {
         setCounter(Counter+1)
         setSelectedRowKeys([])
         DataProduct = [];
+        alert(' اطلاعات با موفقیت ثبت شد')
 
       })
       .catch((error) => {
@@ -434,6 +442,7 @@ const DefineSetsofProducts: React.FC = () => {
             >
               <Select
                 onChange={(v) => {
+                  setSelectedRowKeys([])
                   setSetsSelectedItem(v)
                   console.log('v : ', v)
 

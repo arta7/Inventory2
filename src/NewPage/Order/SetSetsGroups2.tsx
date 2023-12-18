@@ -41,7 +41,7 @@ export interface CategoryComponents {
   components: Component[];
 }
 
-const SetSetsGroups: React.FC = () => {
+const SetSetsGroups2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -430,8 +430,7 @@ const SetSetsGroups: React.FC = () => {
       "RegisterDate":
         new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
         "Date":  new Date(date).toLocaleDateString('zh-Hans-CN'),
-        "CollectionId":1
-
+        "CollectionId":2
 
 
     }
@@ -523,6 +522,7 @@ const SetSetsGroups: React.FC = () => {
         setCode('')
         setselectedGroups('')
         setselectedStates('')
+
         alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
@@ -555,7 +555,7 @@ const SetSetsGroups: React.FC = () => {
 
   let GetGroups = () => {
     var Data={
-      "CollectionId":1
+      "CollectionId":2
     }
     axios.post(Config.URL +
       Config.Defination.GetGroupsData,Data)
@@ -783,4 +783,4 @@ const SetSetsGroups: React.FC = () => {
   );
 };
 
-export default SetSetsGroups;
+export default SetSetsGroups2;

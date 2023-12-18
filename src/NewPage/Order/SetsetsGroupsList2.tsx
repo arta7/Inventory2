@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -7,19 +6,19 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './SForm.styles';
+import * as S from './../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import Tables from './Tables';
+import Tables from './../Tables';
 import axios from 'axios';
-import { Config } from './../Database/Config';
+import { Config } from './../../Database/Config';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-
-
+var moment = require('jalali-moment');
+import UserContext from './../UserContext';
 
 interface DefinePostData {
   Id: string;
@@ -33,22 +32,22 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const DefineSets: React.FC = () => {
+const SetsetsGroupsList2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
   const [AllData, setAllData] = useState([]);
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
+  const [SelectedItem, setSelectedItem] = useState(1);
   const [Titles, setTitles] = useState('');
   const [Code, setCode] = useState('');
-  const [Details, setDetails] = useState('');
   const [form] = BaseForm.useForm();
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-
+  const { userData,setUserData } = React.useContext(UserContext);
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -102,17 +101,6 @@ const DefineSets: React.FC = () => {
             type="link"
             size="small"
             onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            فیلتر
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
               close();
             }}
           >
@@ -150,72 +138,112 @@ const DefineSets: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'عنوان',
-      dataIndex: 'Title',
-      key: 'Title',
-      width: '30%',
-      hidden: false,
-      
-      ...getColumnSearchProps('Title'),
-
-
-    },
-    {
-      title: 'کد ',
-      dataIndex: 'Code',
-      key: 'Code',
-      width: '20%',
-      hidden: false,
-      ...getColumnSearchProps('Code'),
-    },
-    {
-      title: 'توضیحات ',
-      dataIndex: 'Details',
-      key: 'Details',
-      width: '20%',
-      hidden: false,
-      ...getColumnSearchProps('Details'),
-    },
-    {
-      title: 'Id',
+      title: 'شماره سند',
       dataIndex: 'Id',
       key: 'Id',
+      width: '10%',
+      hidden: false
+    },
+    {
+      title: 'نوع سند',
+      dataIndex: 'StatesTitle',
+      key: 'StatesTitle',
+      width: '15%',
+      hidden: false,
+      
+      ...getColumnSearchProps('StatesTitle'),
+    },
+    {
+      title: 'StatesRef ',
+      dataIndex: 'StatesRef',
+      key: 'StatesRef',
       width: '0%',
-      hidden: true
-      // ...getColumnSearchProps('age'),
+      hidden: true,
+    },
+    {
+      title: 'درخواست کننده',
+      dataIndex: 'SecondUsername',
+      key: 'SecondUsername',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'SecondUserRef ',
+      dataIndex: 'SecondUserRef',
+      key: 'SecondUserRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'سال مالی',
+      dataIndex: 'FiscalTitle',
+      key: 'FiscalTitle',
+      width: '10%',
+      hidden: true,
+    },
+    {
+      title: 'FiscalYearRef ',
+      dataIndex: 'FiscalYearRef',
+      key: 'FiscalYearRef',
+      width: '0%',
+      hidden: true,
+    },
+    {
+      title: 'تاریخ سند',
+      dataIndex: 'Date',
+      key: 'Date',
+      width: '20%',
+      hidden: false,
+    },
+    {
+      title: 'تاریخ سند',
+      dataIndex: 'Datevalue',
+      key: 'Datevalue',
+      width: '20%',
+      hidden: true,
+    },
+   
+    {
+      title: 'ثبت کننده ',
+      dataIndex: 'Username',
+      key: 'Username',
+      width: '15%',
+      hidden: false,
+    },
+    {
+      title: 'UserRef ',
+      dataIndex: 'UserRef',
+      key: 'UserRef',
+      width: '0%',
+      hidden: true,
     },
     {
       title: '',
       dataIndex: '',
       key: 'Action',
-      width: '40%',
+      width: '50%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
         style={
           {
-            width: "200px",
+            width: "300px",
           }
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={
             (e) => {
-              form.setFieldsValue({
-                Title: record.Title.toString(),
-                Code: record.Code.toString(),
-                Details: record.Details.toString()
-
-              })
-              setTitles(record.Title.toString())
-              setCode(record.Code.toString())
-              setDetails(record.Details)
-              setId(record.Id.toString())
-
+              const myNextList = [...userData];
+              const artwork = myNextList;
+              console.log('artwork change selected product Id : ',artwork)
+              artwork[0].selectedSetsId = record.Id;
+              setUserData(myNextList);
+              navigate('/SetSetsGroups')
             }
           } > ویرایش
         </Button>
 
-
-        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteSets(record.Id)}>
+     
+            <Popconfirm title="آیا مطمئن هستید?" onConfirm={() =>  DeleteDocuments(record.Id)}>
             < Button
           style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
           onClick={()=>
@@ -224,81 +252,68 @@ const DefineSets: React.FC = () => {
           >حذف
           </Button>
           </Popconfirm>
+
+          {/* < Button
+            style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
+          onClick={()=>
+            console.log('')
+          }
+          >چاپ
+          </Button> */}
+           
+      
       </div >
     }
 
   ];
 
 
-  let AddSets = () => {
-    console.log('Id : ', Id,"Titles : ",Titles,"Code :",Code)
-  setLoading(true)
-    var data = {
 
-      "Id": Id,
-      "Title": Titles,
-      "Code": Code.toString(),
-      "Details":Details
-
-    }
-
-    axios.post(Config.URL +
-      Config.Defination.AddSets, data)
-      .then((response) => {
-        console.log('response data : ', response.data.data)
-        setLoading(false)
-        setCounter(Counter+1)
-        alert(' اطلاعات با موفقیت ثبت شد')
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-        setLoading(false)
-      })
-
-
-  }
-
-
-  let DeleteSets = (_id) => {
+  let DeleteDocuments = (_id) => {
 
     var data = {
-
-      "Id": _id
+      "Id":_id
 
     }
-
     axios.post(Config.URL +
-      Config.Defination.DeleteSets, data)
+      Config.Defination.DeleteDocumentControls, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
+
+        console.log('result Id : ', response.data)
         setCounter(Counter+1)
+  
       })
       .catch((error) => {
         console.log('Error : ', error)
       })
 
-
   }
 
 
+  let GetSetsDocuments = (_fiscal) => {
 
-  let GetSets = () => {
-
-    var axiosConfig = {
-      headers: {
-        Accept: 'application/json',
-        Content_Type: 'application/json'
-      }
-    }
+var data={
+  "FiscalYearRef":_fiscal,
+  "CollectionId":2
+}
+ 
     axios.post(Config.URL +
-      Config.Defination.GetSets)
+      Config.Defination.GetSetsDocuments,data)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        console.log('response data group sets : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
-          data1.push({ Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
-             Code: response.data.data[i].Code,
-            Details:response.data.data[i].Details
+          data1.push({ Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
+            StatesRef: response.data.data[i].StatesRef
+             ,FiscalYearRef:response.data.data[i].FiscalYearRef,
+             FiscalTitle: response.data.data[i].FiscalTitle
+             ,UserRef:response.data.data[i].UserRef,
+             Username: response.data.data[i].Username
+             ,SecondUserRef:response.data.data[i].SecondUserRef,
+             SecondUsername: response.data.data[i].SecondUsername,
+             Date:moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+             Datevalue:response.data.data[i].Date
             })
         }
         console.log('data1 : ', data1)
@@ -312,17 +327,21 @@ const DefineSets: React.FC = () => {
   }
 
   useEffect(() => {
-    form.setFieldsValue({
-      Title: "",
-      Code: "",
-      Details:""
-    })
-    setId(0)
-    setTitles("")
-    setCode("")
-    setDetails("")
-    GetSets()
+
+    GetSetsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
+
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML =  new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    
+    return false;
+  }
 
 
 
@@ -336,56 +355,15 @@ const DefineSets: React.FC = () => {
 
   return (
     <div >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Auth.FormWrapper >
-          <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف  سِت</S.Title>
-            <Auth.FormItem
-              name="Title"
-              label="عنوان"
-              rules={[{ required: true, message: t('common.requiredField') }]}
-            >
-              <Auth.FormInput placeholder="عنوان" value={Titles} onChange={(e) => { setTitles(e.target.value) }} />
-            </Auth.FormItem>
-
-            <Auth.FormItem
-              label="کد "
-              name="Code"
-
-            // rules={[{ required: true, message: t('common.requiredField') }]}
-            >
-              <Auth.FormInput placeholder="کد "
-                value={Code} onChange={(e) => { setCode(e.target.value) }}
-              />
-            </Auth.FormItem>
-
-                     <Auth.FormItem
-          label="توضیحات "
-          name="Details"
-        >
-          <Auth.FormInputTextArea placeholder="توضیحات " value={Details} onChange={(e) => { setDetails(e.target.value) }}  />
-        </Auth.FormItem>
-
-
-
+               <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                console.log('test')
-                if (Titles.toString().trim().length > 0)
-                  AddSets()
-                else
-                {
-                  alert('لطفا اطلاعات را کامل پر کنید')
-                }
+                 navigate('/SetSetsGroups2')
               }}>
-                ثبت
+                سند جدید
               </Auth.SubmitButton>
 
 
@@ -394,20 +372,20 @@ const DefineSets: React.FC = () => {
 
               <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
                 () => {
-                  form.setFieldsValue({
-                    Title: "",
-                    Code: "",
-                    Details:""
-
-                  })
-                  setId(0)
-                  setTitles("")
-                  setCode("")
-                  setDetails("")
-
+                  setCounter(Counter+1)
                 }
               }>
                 بازیابی
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+                () => {
+
+                  printdiv("printelement")
+                  window.location.reload();
+                }
+              }>
+                چاپ
               </Auth.SubmitButton>
 
             </div>
@@ -416,14 +394,15 @@ const DefineSets: React.FC = () => {
 
 
           </BaseForm>
-        </Auth.FormWrapper>
-      </div>
+          <div id="printelement">
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
+      </div>
     </div>
   );
 };
 
-export default DefineSets;
+export default SetsetsGroupsList2;
+
 

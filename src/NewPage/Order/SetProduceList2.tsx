@@ -17,12 +17,12 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-import UserContext from './../UserContext';
-import Searchinput from '../Searchinput';
-import SearchinputKardex from '../SearchinputKardex';
 var moment = require('jalali-moment');
+import UserContext from './../UserContext';
 
 
+import { useReactToPrint } from 'react-to-print';
+ 
 interface DefinePostData {
   Id: string;
   Title: string;
@@ -33,9 +33,35 @@ interface DataType {
 }
 
 type DataIndex = keyof DataType;
+// let viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
+// let report = new Stimulsoft.Report.StiReport();
 
+export class ComponentToPrint1 extends React.PureComponent {
+  render() {
+    return (
+      <table>
+        <thead>
+          <th>column 1</th>
+          <th>column 2</th>
+          <th>column 3</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>data 1</td>
+            <td>data 2</td>
+            <td>data 3</td>
+          </tr>
+        </tbody>
+      </table>
 
-const Kardex: React.FC = () => {
+      
+       
+      
+    );
+  }
+}
+
+const SetProduceList2: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -50,11 +76,18 @@ const Kardex: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  const [ProductData, setProductData] = useState([]);
-    const[selectedProductId,setselectedProductId] = useState(0)
-    const[selectedProductTitle,setselectedProductTitle] = useState('')
-    const { userData,setUserData } = React.useContext(UserContext);
-
+  const componentRef = useRef();
+  const { userData,setUserData } = React.useContext(UserContext);
+  const handlePrint = useReactToPrint({
+    
+        content: () => componentRef.current,
+      })
+  
+  
+  // useReactToPrint({
+    
+  //   content: () => componentRef.current,
+  // });
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -143,13 +176,46 @@ const Kardex: React.FC = () => {
       ),
   });
 
+   let GetReport =async ()=>{
+
+
+    // var viewer = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
+    // //  Stimulsoft.Base.StiFontCollection.addOpentypeFontFile();
+		// 	console.log('Creating a new report instance');
+ 
+		// 	var report = new Stimulsoft.Report.StiReport();
+    //   // Stimulsoft.Base.StiLicense.Key = "6vJhGtLLLz2GNviWmUTrhSqnOItdDwjBylQzQcAOiHl2AD0gPVknKsaW0un+3PuM6TTcPMUAWEURKXNso0e5OFPaZYasFtsxNoDemsFOXbvf7SIcnyAkFX/4u37NTfx7g+0IqLXw6QIPolr1PvCSZz8Z5wjBNakeCVozGGOiuCOQDy60XNqfbgrOjxgQ5y/u54K4g7R/xuWmpdx5OMAbUbcy3WbhPCbJJYTI5Hg8C/gsbHSnC2EeOCuyA9ImrNyjsUHkLEh9y4WoRw7lRIc1x+dli8jSJxt9C+NYVUIqK7MEeCmmVyFEGN8mNnqZp4vTe98kxAr4dWSmhcQahHGuFBhKQLlVOdlJ/OT+WPX1zS2UmnkTrxun+FWpCC5bLDlwhlslxtyaN9pV3sRLO6KXM88ZkefRrH21DdR+4j79HA7VLTAsebI79t9nMgmXJ5hB1JKcJMUAgWpxT7C7JUGcWCPIG10NuCd9XQ7H4ykQ4Ve6J2LuNo9SbvP6jPwdfQJB6fJBnKg4mtNuLMlQ4pnXDc+wJmqgw25NfHpFmrZYACZOtLEJoPtMWxxwDzZEYYfT"
+      
+      
+    //   //  Stimulsoft.Base.StiLicense.loadFromFile('./../Report/license.key');
+		// 	console.log('Load report from url');
+		// 	report.loadFile('./../Report/test.mrt');
+
+    //   report.renderedPages.clear();
+      
+		// 	viewer.report = report;
+    //   viewer.renderHtml();
+    //   console.log('Rendering the viewer to selected element');
+   }
+
+     const  ComponentToPrint =()=> {
+
+      return (
+        
+          <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay != '0')}   />
+        
+      );
+    }
+  
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'شماره سند',
       dataIndex: 'Id',
       key: 'Id',
       width: '10%',
-      hidden: false
+      hidden: false,
+      disaplay:1
     },
     {
       title: 'نوع سند',
@@ -159,6 +225,7 @@ const Kardex: React.FC = () => {
       hidden: false,
 
       ...getColumnSearchProps('StatesTitle'),
+      disaplay:1
     },
     {
       title: 'StatesRef ',
@@ -166,13 +233,15 @@ const Kardex: React.FC = () => {
       key: 'StatesRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'درخواست کننده',
       dataIndex: 'SecondUsername',
       key: 'SecondUsername',
-      width: '15%',
+      width: '20%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'SecondUserRef ',
@@ -180,6 +249,7 @@ const Kardex: React.FC = () => {
       key: 'SecondUserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'سال مالی',
@@ -187,6 +257,7 @@ const Kardex: React.FC = () => {
       key: 'FiscalTitle',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'FiscalYearRef ',
@@ -194,13 +265,7 @@ const Kardex: React.FC = () => {
       key: 'FiscalYearRef',
       width: '0%',
       hidden: true,
-    },
-    {
-      title: 'نام محصول ',
-      dataIndex: 'ProductTitle',
-      key: 'ProductTitle',
-      width: '15%',
-      hidden: false,
+      disaplay:0
     },
     {
       title: 'تاریخ سند',
@@ -208,98 +273,120 @@ const Kardex: React.FC = () => {
       key: 'Date',
       width: '15%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'تاریخ سند',
       dataIndex: 'Datevalue',
       key: 'Datevalue',
+      width: '20%',
+      hidden: true,
+      disaplay:0
+    },
+    {
+      title: 'ثبت کننده ',
+      dataIndex: 'Username',
+      key: 'Username',
+      width: '15%',
+      hidden: false,
+      disaplay:1
+    },
+    {
+      title: 'UserRef ',
+      dataIndex: 'UserRef',
+      key: 'UserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
-      title: 'سند ورودی',
-      dataIndex: 'InsertValue',
-      key: 'InsertValue',
-      width: '15%',
+      title: '',
+      dataIndex: '',
+      key: 'Action',
+      width: '50%',
       hidden: false,
-    },
-    {
-      title: 'سند خروجی',
-      dataIndex: 'ExitValue',
-      key: 'ExitValue',
-      width: '15%',
-      hidden: false,
-    },
-
-    {
-      title: 'مانده موجودی',
-      dataIndex: 'Deposit',
-      key: 'Deposit',
-      width: '15%',
-      hidden: false,
-      render: (text, record, index) =>
-
-        < div className="btn-wrap"
-          style={
-            {
-              width: "100px",
-            }
-          } >
-
+      disaplay:0,
+      render: (text, record, index) => < div className="btn-wrap"
+        style={
           {
-            index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
+            width: "300px",
           }
-        </div >
-      ,
+        } > < Button
+          style={{ backgroundColor: 'green', color: 'white' }}
+          onClick={e=>{
+           
+            const myNextList = [...userData];
+            const artwork = myNextList;
+            console.log('artwork change selected product Id : ',artwork)
+            artwork[0].selectedProductId = record.Id;
+            setUserData(myNextList);
+            navigate('/SetProduce')
+          } 
+          } > ویرایش
+        </Button>
 
-    },
 
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteDocuments(record.Id)}>
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+            onClick={() =>
+              console.log('')
+
+            }
+          >حذف
+          </Button>
+        </Popconfirm>
+
+        {/* < Button
+          style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
+          onClick={e=>{
+            printdiv('printitem')
+          }
+        }
+          >چاپ
+          </Button> */}
+
+
+      </div >
+    }
 
   ];
 
 
-  let SumData = (index, Data) => {
-    var datasum = 0;
-    for (let i = 0; i < index; i++) {
-      datasum += Data[i].InsertValue - Data[i].ExitValue
+
+
+  let DeleteDocuments = (_id) => {
+
+    var data = {
+      "Id":_id
+
     }
-    return datasum;
-  }
-
-  let DeleteParts = (_id) => {
-
-
-
-
-  }
-
-  let GetProducts = () => {
-
     axios.post(Config.URL +
-      Config.Defination.GetProducts)
+      Config.Defination.DeleteDocumentControls, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setProductData(response.data.data)
+
+        console.log('result Id : ', response.data)
+        setCounter(Counter+1)
+  
       })
       .catch((error) => {
         console.log('Error : ', error)
       })
+
   }
 
 
-  let GetKardex = (_product, _fiscal) => {
 
-     setLoading(true)
+  let GetProductsDocuments = (_fiscal) => {
+
     var data = {
-     
-      "ProductRef": _product,
       "FiscalYearRef": _fiscal,
-      "CollectionId":1
-
+      "CollectionId":2
     }
 
     axios.post(Config.URL +
-      Config.Defination.GetKardex, data)
+      Config.Defination.GetProductsDocuments, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
@@ -314,26 +401,22 @@ const Kardex: React.FC = () => {
             , SecondUserRef: response.data.data[i].SecondUserRef,
             SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-            Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue,ProductTitle:response.data.data[i].ProductTitle
+            Datevalue: response.data.data[i].Date
           })
         }
         console.log('data1 : ', data1)
         setAllData(data1)
-        setLoading(false)
       })
       .catch((error) => {
         console.log('Error : ', error)
-        setLoading(false)
       })
 
 
   }
 
   useEffect(() => {
-    GetProducts()
-    
 
+    GetProductsDocuments(userData[0].FiscalYearId.toString())
   }, [Counter])
 
 
@@ -343,98 +426,85 @@ const Kardex: React.FC = () => {
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-   // setTitles(events.target.value);
+    setTitles(events.target.value);
   }
+
+
+
 
   function printdiv(elem) {
     var header_str = '<html><head><title>تست</title></head><body>';
     var footer_str = '</body></html>';
     var new_str = document.getElementById(elem).innerHTML;
     var old_str = document.body.innerHTML;
-    document.body.innerHTML =  new_str + footer_str;
+    document.body.innerHTML = header_str + new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
-    
     return false;
   }
 
+
+
+  
   return (
     <div >
-    
 
-
-<div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Auth.FormWrapper >
-          <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-          <SearchinputKardex list={ProductData} PlaceHolder="نام کالا"
-      // onChange={(e)=>{setselectedProductTitle(e)}}
-      setvalue={setselectedProductTitle}
-      setId ={setselectedProductId}
-      value = {selectedProductTitle}
-      setAllData={setAllData}
-       
-      />
-
-            <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
-
-
-              <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                  console.log('userData[0].FiscalYearId.toString()',userData[0].FiscalYearId.toString())
-               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
-              }}>
-                جستجو
-              </Auth.SubmitButton>
-
-
-
-
-
-              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
-                () => {
-
-                  setAllData([])
-                  setselectedProductTitle('')
-                  setselectedProductId('')
-                }
-              }>
-                بازیابی
-              </Auth.SubmitButton>
-
-              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
-                () => {
-
-                  printdiv("printelement")
-                  window.location.reload();
-                }
-              }>
-                چاپ
-              </Auth.SubmitButton>
-
-            </div>
-
-
-
-
-          </BaseForm>
-        </Auth.FormWrapper>
+      <div
+      style={{ display: "none" }}
+      id='printitem'
+      > 
+      <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay!=0)} />
       </div>
 
+      <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
+
+<div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
-        <div id="printelement">
+  <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+    navigate('/setProduce2')
+  }}>
+    سند جدید
+  </Auth.SubmitButton>
 
+
+
+
+
+  <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+    () => {
+   setCounter(Counter+1)
+    }
+  }>
+    بازیابی
+  </Auth.SubmitButton>
+
+  <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+    () => {
+
+      printdiv("printitem")
+      window.location.reload();
+    }
+  }>
+    چاپ
+  </Auth.SubmitButton>
+
+</div>
+
+
+
+
+</BaseForm>
+    
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
-      </div>
+
+      
     </div>
   );
 };
 
-export default Kardex;
+export default SetProduceList2;
 
 
