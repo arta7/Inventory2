@@ -128,6 +128,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefineUserAccess',
         showItem:false
       },
+      {
+        title: 'ثبت خبر',
+        key: 'HtmlEditor',
+        url: '/HtmlEditor',
+        showItem:true
+      },
 
     ],
   },
