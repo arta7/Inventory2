@@ -233,6 +233,7 @@ const DefineUnit: React.FC = () => {
         console.log('response data : ', response.data.data)
         setCounter(Counter+1)
         setLoading(false)
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)

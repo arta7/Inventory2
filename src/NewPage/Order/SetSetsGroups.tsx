@@ -436,7 +436,7 @@ const SetSetsGroups: React.FC = () => {
 
     }
     axios.post(Config.URL +
-      Config.Defination.AddDocumentControls, data)
+      Config.Defination.AddDocumentControlsCollection, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         console.log('result Id : ', response.data.data)
@@ -523,6 +523,7 @@ const SetSetsGroups: React.FC = () => {
         setCode('')
         setselectedGroups('')
         setselectedStates('')
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         setLoading(false)
@@ -553,9 +554,11 @@ const SetSetsGroups: React.FC = () => {
   }
 
   let GetGroups = () => {
-
+    var Data={
+      "CollectionId":1
+    }
     axios.post(Config.URL +
-      Config.Defination.GetGroups)
+      Config.Defination.GetGroupsData,Data)
       .then((response) => {
         console.log('response data : ', response.data.data)
 

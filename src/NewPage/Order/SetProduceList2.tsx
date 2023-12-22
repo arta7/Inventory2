@@ -381,7 +381,8 @@ const SetProduceList2: React.FC = () => {
   let GetProductsDocuments = (_fiscal) => {
 
     var data = {
-      "FiscalYearRef": _fiscal
+      "FiscalYearRef": _fiscal,
+      "CollectionId":2
     }
 
     axios.post(Config.URL +

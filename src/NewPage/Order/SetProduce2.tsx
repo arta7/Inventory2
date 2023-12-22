@@ -419,9 +419,11 @@ const SetProduce2: React.FC = () => {
   }
 
   let GetGroups = () => {
-
+    var Data={
+      "CollectionId":2
+    }
     axios.post(Config.URL +
-      Config.Defination.GetGroups)
+      Config.Defination.GetGroupsData,Data)
       .then((response) => {
         console.log('response data : ', response.data.data)
 
@@ -451,7 +453,7 @@ const SetProduce2: React.FC = () => {
       "CollectionId":2
     }
     axios.post(Config.URL +
-      Config.Defination.AddDocumentControls, data)
+      Config.Defination.AddDocumentControlsCollection, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         console.log('result Id : ', response.data.data)
@@ -546,6 +548,7 @@ const SetProduce2: React.FC = () => {
         setselectedGroups('')
         setselectedStates('')
         setAllData([])
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)

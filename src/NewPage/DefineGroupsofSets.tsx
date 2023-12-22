@@ -393,6 +393,7 @@ type DataIndex = keyof DataType;
         setGroupsSelectedItem('')
         setSelectedRowKeys([])
         DataProduct = [];
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)

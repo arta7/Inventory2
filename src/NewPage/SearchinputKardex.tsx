@@ -30,7 +30,9 @@ const SearchinputKardex  : React.FC<DataType> = ({ list,PlaceHolder="",value="",
 
   const handleChange = e => {
         console.log('E value : ',e.target.value)
-        
+
+        setSearchValue(e.target.value);
+
         setvalue(e.target.value);
         
      

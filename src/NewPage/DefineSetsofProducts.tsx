@@ -388,6 +388,7 @@ const DefineSetsofProducts: React.FC = () => {
         setCounter(Counter+1)
         setSelectedRowKeys([])
         DataProduct = [];
+        alert(' اطلاعات با موفقیت ثبت شد')
 
       })
       .catch((error) => {

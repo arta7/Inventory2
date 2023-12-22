@@ -115,6 +115,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         url: '/DefineUserAccess',
         showItem:true
       },
+      {
+        title: 'ثبت خبر',
+        key: 'HtmlEditor',
+        url: '/HtmlEditor',
+        showItem:false
+      },
 
     ],
   },

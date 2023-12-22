@@ -294,7 +294,8 @@ const SetsetsGroupsList2: React.FC = () => {
   let GetSetsDocuments = (_fiscal) => {
 
 var data={
-  "FiscalYearRef":_fiscal
+  "FiscalYearRef":_fiscal,
+  "CollectionId":2
 }
  
     axios.post(Config.URL +

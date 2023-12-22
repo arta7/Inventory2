@@ -829,6 +829,7 @@ const DefineSetsofProducts: React.FC = () => {
         form.setFieldsValue({
           Groups: '',
         })
+        alert(' اطلاعات با موفقیت ثبت شد')
 
       })
 

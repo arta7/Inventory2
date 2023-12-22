@@ -294,6 +294,7 @@ const Kardex: React.FC = () => {
      
       "ProductRef": _product,
       "FiscalYearRef": _fiscal,
+      "CollectionId":1
 
     }
 

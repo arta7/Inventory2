@@ -55,9 +55,15 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     showItem:true,
     children: [
       {
-        title: 'تعریف کاربر',
-        key: 'DefineUser',
-        url: '/DefineUsers',
+        title: 'تعریف سال مالی',
+        key: 'FiscalYears',
+        url: '/FiscalYears',
+        showItem:false
+      },
+      {
+        title: 'تعریف واحد کالا',
+        key: 'DefineUnit',
+        url: '/DefineUnit',
         showItem:false
       },
       {
@@ -85,21 +91,28 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف سال مالی',
-        key: 'FiscalYears',
-        url: '/FiscalYears',
+        title: 'تعریف دسترسی ست ابزار',
+        key: 'DefineSetsofProducts',
+        url: '/DefineSetsofProducts',
         showItem:false
       },
       {
-        title: 'تعریف واحد کالا',
-        key: 'DefineUnit',
-        url: '/DefineUnit',
+        title: ' تعریف دسترسی گروه کالا ',
+        key: 'DefineGroupsofSets',
+        url: '/DefineGroupsofSets',
         showItem:false
       },
+     
       {
         title: 'تعریف نوع سند',
         key: 'DefineStates',
         url: '/DefineStates',
+        showItem:false
+      },
+      {
+        title: 'تعریف کاربر',
+        key: 'DefineUser',
+        url: '/DefineUsers',
         showItem:false
       },
       {
@@ -108,30 +121,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefinePost',
         showItem:false
       },
-      {
-        title: 'تعریف دسترسی ست ابزار',
-        key: 'DefineSetsofProducts',
-        url: '/DefineSetsofProducts',
-        showItem:false
-      },
-      {
-        title: 'تعریف دسترسی گروه ',
-        key: 'DefineGroupsofSets',
-        url: '/DefineGroupsofSets',
-        showItem:false
-      },
+    
       {
         title: 'تعریف دسترسی کاربران',
         key: 'DefineUserAccess',
         url: '/DefineUserAccess',
         showItem:false
       },
+      {
+        title: 'ثبت خبر',
+        key: 'HtmlEditor',
+        url: '/HtmlEditor',
+        showItem:true
+      },
 
     ],
   },
   {
      title: 'تجهیزات پزشکی',
-    key: 'auth',
+    key: 'DoctorsAccess',
     icon: <UserOutlined />,
     showItem:true,
     children: [
@@ -148,7 +156,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:true
       },
       {
-        title: 'کاردکس تعدادی',
+        title: 'کاردکس محصول',
         key: 'kardex',
         url: '/kardex',
         showItem:false
@@ -170,7 +178,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
   },
     {
      title: 'تجهیزات CSR',
-    key: 'auth',
+    key: 'CSR',
     icon: <UserOutlined />,
     showItem:true,
     children: [
@@ -187,7 +195,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:true
       },
       {
-        title: 'کاردکس تعدادی',
+        title: 'کاردکس محصول',
         key: 'kardex2',
         url: '/kardex2',
         showItem:false

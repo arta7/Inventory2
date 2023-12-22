@@ -454,6 +454,7 @@ const DefineGroups: React.FC = () => {
         console.log('response data : ', response.data.data)
         setCounter(Counter+1)
         setLoading(false)
+        alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -537,7 +538,7 @@ const DefineGroups: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف گروه ابزار</S.Title>
+            <S.Title>تعریف گروه کالا</S.Title>
             <Auth.FormItem
               name="Title"
               label="عنوان"

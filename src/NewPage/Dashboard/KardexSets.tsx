@@ -292,6 +292,7 @@ const KardexSets: React.FC = () => {
     var data = {
       "SetsRef": _sets,
       "FiscalYearRef": _fiscal,
+      "CollectionId":1
     }
 
     axios.post(Config.URL +
