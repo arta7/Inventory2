@@ -324,7 +324,7 @@ const DefineUnit: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف واحد کالا</S.Title>
+            <S.Title>تعریف واحد ابزار</S.Title>
             <Auth.FormItem
               name="Title"
               label="عنوان"

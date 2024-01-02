@@ -61,13 +61,13 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف واحد کالا',
+        title: 'تعریف واحد ابزار',
         key: 'DefineUnit',
         url: '/DefineUnit',
         showItem:false
       },
       {
-        title: 'تعریف کالا',
+        title: 'تعریف ابزار',
         key: 'DefineProduct',
         url: '/DefineProduct',
         showItem:false
@@ -85,7 +85,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف گروه کالا',
+        title: 'تعریف گروه ابزار',
         key: 'DefineGroups',
         url: '/DefineGroups',
         showItem:false
@@ -97,7 +97,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: ' تعریف دسترسی گروه کالا ',
+        title: ' تعریف دسترسی گروه ابزار ',
         key: 'DefineGroupsofSets',
         url: '/DefineGroupsofSets',
         showItem:false
@@ -144,25 +144,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     showItem:true,
     children: [
       {
-        title: 'لیست محصول',
+        title: 'لیست ابزار',
         key: 'SetProduceList',
         url: '/SetProduceList',
         showItem:true
       },
       {
-        title: 'لیست ست محصول',
+        title: 'لیست ست ابزار',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
         showItem:true
       },
       {
-        title: 'کاردکس محصول',
+        title: 'کاردکس ابزار',
         key: 'kardex',
         url: '/kardex',
         showItem:false
       },
       {
-        title: 'کاردکس ست محصول',
+        title: 'کاردکس ست ابزار',
         key: 'kardexSets',
         url: '/kardexSets',
         showItem:false
@@ -183,25 +183,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     showItem:true,
     children: [
       {
-        title: 'لیست محصول',
+        title: 'لیست ابزار',
         key: 'SetProduceList2',
         url: '/SetProduceList2',
         showItem:true
       },
       {
-        title: 'لیست ست محصول',
+        title: 'لیست ست ابزار',
         key: 'SetsetsGroupsList2',
         url: '/SetsetsGroupsList2',
         showItem:true
       },
       {
-        title: 'کاردکس محصول',
+        title: 'کاردکس ابزار',
         key: 'kardex2',
         url: '/kardex2',
         showItem:false
       },
       {
-        title: 'کاردکس ست محصول',
+        title: 'کاردکس ست ابزار',
         key: 'kardexSets2',
         url: '/kardexSets2',
         showItem:false

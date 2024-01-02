@@ -367,7 +367,7 @@ const KardexSets2: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <SearchinputKardex list={ProductData} PlaceHolder="نام ست کالا"
+            <SearchinputKardex list={ProductData} PlaceHolder="نام ست ابزار"
               // onChange={(e)=>{setselectedProductTitle(e)}}
               setvalue={setselectedProductTitle}
               setId={setselectedProductId}
