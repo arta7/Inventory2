@@ -160,7 +160,7 @@ const DefineSetsofProducts: React.FC = () => {
       // ...getColumnSearchProps('StateType'),
     },
     {
-      title: 'واحد کالا',
+      title: 'واحد ابزار',
       dataIndex: 'UnitTitle',
       key: 'UnitTitle',
       width: '20%',
@@ -435,7 +435,7 @@ const DefineSetsofProducts: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>محصولات هر سِت </S.Title>
+            <S.Title>ابزار هر سِت </S.Title>
 
             <BaseButtonsForm.Item name="Sets" label="نام ست"
               rules={[{ required: true }]}

@@ -278,7 +278,7 @@ const DefineProduct: React.FC = () => {
       // ...getColumnSearchProps('StateType'),
     },
     {
-      title: 'واحد کالا',
+      title: 'واحد ابزار',
       dataIndex: 'UnitTitle',
       key: 'UnitTitle',
       width: '0%',
@@ -464,7 +464,7 @@ const DefineProduct: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف کالا </S.Title>
+            <S.Title>تعریف ابزار </S.Title>
             <Auth.FormItem
               name="Title"
               label="عنوان"
@@ -485,7 +485,7 @@ const DefineProduct: React.FC = () => {
               />
             </Auth.FormItem>
 
-            <BaseButtonsForm.Item name="State" label="واحد کالا"
+            <BaseButtonsForm.Item name="State" label="واحد ابزار"
               rules={[{ required: true }]}>
               <Select
                 value={SelectedItem}

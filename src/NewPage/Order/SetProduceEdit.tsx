@@ -79,7 +79,7 @@ const SetProduceEdit: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'نام کالا ',
+      title: 'نام ابزار ',
       dataIndex: 'Name',
       key: 'Name',
       width: '30%',
@@ -91,7 +91,7 @@ const SetProduceEdit: React.FC = () => {
           }
         } >
 
-        <Searchinput list={ProductData} PlaceHolder="نام کالا" value={record.Name}
+        <Searchinput list={ProductData} PlaceHolder="نام ابزار" value={record.Name}
           CurrentId={record.Id}
           setAllData={setAllData}
           AllData={AllData}
@@ -100,7 +100,7 @@ const SetProduceEdit: React.FC = () => {
       </div>
     },
     {
-      title: 'کد کالا',
+      title: 'کد ابزار',
       dataIndex: 'Code',
       key: 'Code',
       width: '20%',
@@ -111,7 +111,7 @@ const SetProduceEdit: React.FC = () => {
             width: "100%",
           }
         } >
-        <Auth.FormInput placeholder="کد کالا"
+        <Auth.FormInput placeholder="کد ابزار"
           value={record.Code}
           readOnly={true}
           style={{ textAlign: 'center' }}
@@ -144,7 +144,7 @@ const SetProduceEdit: React.FC = () => {
     },
 
     {
-      title: 'واحد کالا ',
+      title: 'واحد ابزار ',
       dataIndex: 'Units',
       key: 'Units',
       width: '15%',
@@ -155,7 +155,7 @@ const SetProduceEdit: React.FC = () => {
             width: "100%",
           }
         } >
-        <Auth.FormInput placeholder="واحد کالا"
+        <Auth.FormInput placeholder="واحد ابزار"
           value={record.Units}
           style={{ textAlign: 'center' }}
 
@@ -173,7 +173,7 @@ const SetProduceEdit: React.FC = () => {
       </div>
     },
     {
-      title: 'واحد کالا ',
+      title: 'واحد ابزار ',
       dataIndex: 'UnitsRef',
       key: 'UnitsRef',
       width: '0%',

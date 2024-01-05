@@ -196,7 +196,7 @@ const Kardex: React.FC = () => {
       hidden: true,
     },
     {
-      title: 'نام محصول ',
+      title: 'نام ابزار ',
       dataIndex: 'ProductTitle',
       key: 'ProductTitle',
       width: '15%',
@@ -370,7 +370,7 @@ const Kardex: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-          <SearchinputKardex list={ProductData} PlaceHolder="نام کالا"
+          <SearchinputKardex list={ProductData} PlaceHolder="نام ابزار"
       // onChange={(e)=>{setselectedProductTitle(e)}}
       setvalue={setselectedProductTitle}
       setId ={setselectedProductId}
