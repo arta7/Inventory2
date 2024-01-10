@@ -469,7 +469,7 @@ var data={
 
       {
       <div style={{display:'none'}}  id='printItem2'>
-        <div style={{borderWidth:1,borderColor:'red',width:'80vw',height:100,borderRadius:5,justifyContent:'center',alignItems:'center',padding:5,marginTop:10,marginRight:20}}>
+        <div style={{borderWidth:1,borderColor:'black',borderStyle:'solid',width:'80vw',height:100,borderRadius:5,justifyContent:'center',alignItems:'center',padding:5,marginTop:10,marginRight:20}}>
         <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
           <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
             <label >شماره سند  :  </label>

@@ -422,15 +422,18 @@ const Kardex: React.FC = () => {
           </BaseForm>
         </Auth.FormWrapper>
       </div>
-
-
-
+      
         <div id="printelement">
 
       {columns.length > 0 &&
         <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
       }
       </div>
+
+
+
+
+
     </div>
   );
 };
