@@ -61,13 +61,13 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف واحد ابزار',
+        title: 'تعریف واحد تجهیزات پزشکی',
         key: 'DefineUnit',
         url: '/DefineUnit',
         showItem:false
       },
       {
-        title: 'تعریف ابزار',
+        title: 'تعریف تجهیزات پزشکی',
         key: 'DefineProduct',
         url: '/DefineProduct',
         showItem:false
@@ -85,7 +85,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف گروه ابزار',
+        title: 'تعریف گروه جراحی',
         key: 'DefineGroups',
         url: '/DefineGroups',
         showItem:false
@@ -97,7 +97,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: ' تعریف دسترسی گروه ابزار ',
+        title: 'ایجاد گروه جراحی',
         key: 'DefineGroupsofSets',
         url: '/DefineGroupsofSets',
         showItem:false

@@ -20,13 +20,19 @@ const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[],ref }) => {
   
 
   useEffect(()=>{
-    console.log('data resid : ',columns)
+    console.log('data resid : ',filteredData)
   },[])
-
+  const [filteredData, setFilteredData] = useState([])
+  const handleChange = (pagination, filters, sorter, extra) => {
+    if (extra.action === "filter" || extra.action === "sort") {
+      setFilteredData(extra.currentDataSource)
+    }
+  }
 
 
   return <Table columns={columns} dataSource={DataSource} style={{marginTop:20,justifyContent:'center',alignItems:'center'}} bordered
   ref={ref}
+  onChange={handleChange}
   />;
 };
 

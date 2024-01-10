@@ -70,26 +70,8 @@ import { Config } from '@app/Database/Config';
 const FirstScreen: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
-  const[datahtml,setdatahtml] = useState('')
+ 
   const { t } = useTranslation();
-  let GetHtmlData = () => {
-    
-    axios.post(Config.URL +
-      Config.Defination.GetHtmlData)
-      .then((response) => {
-        console.log('response.data.data[0] : ', '<div>'+(response.data.data[0].Context)+'</div>')
-        setdatahtml(`<div>`+(response.data.data[0].Context)+`</div>`)
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-      })
-  }
-
-
- useEffect(()=>{
-  GetHtmlData()
- },[])
-
 
   const desktopLayout = (
     <Row>
@@ -139,11 +121,10 @@ const FirstScreen: React.FC = () => {
       <S.RightSideCol xl={8} xxl={7}>
         <S.Space />
         <S.ScrollWrapper id="patient-timeline">
-        {/* <NewsCard data={datahtml}/> */}
+        <NewsCard />
      
-          {
-            datahtml
-          }
+        
+
        
         </S.ScrollWrapper>
       </S.RightSideCol>

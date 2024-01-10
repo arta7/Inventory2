@@ -466,7 +466,7 @@ type DataIndex = keyof DataType;
       }}>
     <Auth.FormWrapper >
       <BaseForm layout="vertical" onFinish={handleSubmit}  form={form} >
-        <S.Title>گروه هر سِت</S.Title>
+        <S.Title>گروه  جراحی</S.Title>
       
         <BaseButtonsForm.Item name="Collection" label="نام مجموعه"
            rules={[{ required: true}]}

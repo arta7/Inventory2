@@ -78,6 +78,11 @@ const SetProduceList2: React.FC = () => {
   const searchInput = useRef<InputRef>(null);
   const componentRef = useRef();
   const { userData,setUserData } = React.useContext(UserContext);
+  const[Prints,setPrints]= useState(false)
+
+  const [DataPrint,setDataPrint] = useState({})
+  const [RowDataPrint,setRowDataPrint] = useState([])
+  const [SumCounts,setSumCounts] = useState(0)
   const handlePrint = useReactToPrint({
     
         content: () => componentRef.current,
@@ -112,16 +117,20 @@ const SetProduceList2: React.FC = () => {
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`جستجو`}
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+          onPressEnter={() => {handleSearch(selectedKeys as string[], confirm, dataIndex)
+            console.log('data',searchText)
+          }}
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            onClick={() => {handleSearch(selectedKeys as string[], confirm, dataIndex)
+              console.log('data',searchText)
+            }}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
@@ -241,6 +250,7 @@ const SetProduceList2: React.FC = () => {
       key: 'SecondUsername',
       width: '20%',
       hidden: false,
+      ...getColumnSearchProps('SecondUsername'),
       disaplay:1
     },
     {
@@ -337,14 +347,15 @@ const SetProduceList2: React.FC = () => {
           </Button>
         </Popconfirm>
 
-        {/* < Button
+        < Button
           style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
           onClick={e=>{
-            printdiv('printitem')
+            setDataPrint({"Id":record.Id,"StatesTitle":record.StatesTitle,"SecondUsername":record.SecondUsername,"Date":record.Date })
+           GetProductDocumentData(record.Id)
           }
         }
           >چاپ
-          </Button> */}
+          </Button>
 
 
       </div >
@@ -353,6 +364,45 @@ const SetProduceList2: React.FC = () => {
   ];
 
 
+
+  let GetProductDocumentData = (_Id) => {
+
+    var data = {
+      "DocumentsRef": _Id
+    }
+
+    axios.post(Config.URL +
+      Config.Defination.GetProductDocumentData, data)
+      .then((response) => {
+        var datapush = [];
+        var id = 0;
+        var Counters = 0;
+        if (response.data.data.length > 0) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            id = i + 1;
+            datapush.push({
+              Code: response.data.data[i].ProductCode
+              , Name: response.data.data[i].ProductTitle, ProductId: response.data.data[i].ProductId
+              , Units: response.data.data[i].UnitTitle, UnitsRef: response.data.data[i].UnitRef, Counts: response.data.data[i].Counts
+              , Details: response.data.data[i].Details, Id: id
+            })
+            Counters = Counters + response.data.data[i].Counts
+          }
+        }
+        setSumCounts(Counters)
+        setRowDataPrint(datapush)
+        console.log('datapush',datapush)
+        setTimeout(() => {
+          printdiv("printItem2")
+          window.location.reload();
+         }, 200);
+      })
+      .catch((error) => {
+        console.log('Error data document GetProductDocumentData : ', error)
+      })
+
+
+  }
 
 
   let DeleteDocuments = (_id) => {
@@ -440,6 +490,7 @@ const SetProduceList2: React.FC = () => {
     document.body.innerHTML = header_str + new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
+    setPrints(false)
     return false;
   }
 
@@ -449,12 +500,7 @@ const SetProduceList2: React.FC = () => {
   return (
     <div >
 
-      <div
-      style={{ display: "none" }}
-      id='printitem'
-      > 
-      <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden && item.disaplay!=0)} />
-      </div>
+     
 
       <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
 
@@ -481,9 +527,14 @@ const SetProduceList2: React.FC = () => {
 
   <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
     () => {
-
-      printdiv("printitem")
-      window.location.reload();
+      setPrints(true)
+      setTimeout(() => {
+        printdiv("printitem")
+        window.location.reload();
+      }, 500);
+      
+     
+     
     }
   }>
     چاپ
@@ -497,8 +548,77 @@ const SetProduceList2: React.FC = () => {
 </BaseForm>
     
       {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+       <div
+     
+       id='printitem'
+       > 
+         <Tables DataSource={AllData} columns={ Prints == false  ?  columns.filter(item => !item.hidden) : columns.filter(item => !item.hidden && item.disaplay!=0)}  />
+       </div>
+      
       }
+
+{
+      <div style={{display:'none'}}  id='printItem2'>
+        <div style={{borderWidth:1,borderColor:'red',width:'80vw',height:100,borderRadius:5,justifyContent:'center',alignItems:'center',padding:5,marginTop:10,marginRight:20}}>
+        <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
+          <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >شماره سند  :  </label>
+            <label >{DataPrint?.Id}</label>
+            </div>
+
+            <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >نوع سند  :  </label>
+            <label >{DataPrint?.StatesTitle}</label>
+            </div>
+        </div>
+
+        <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
+          <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label > درخواست کننده  :  </label>
+            <label >{DataPrint?.SecondUsername}</label>
+            </div>
+
+            <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >تاریخ  :  </label>
+            <label >{DataPrint?.Date}</label>
+            </div>
+        </div>
+      </div>
+      <table style={{borderWidth:1,borderStyle:'solid',width:'90vw',marginTop:20,justifyContent:'center',alignItems:'center'}}>
+        <thead style={{height:70}}>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>نام </th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>کد</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>واحد </th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>تعداد</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>توضیحات</th>
+        </thead>
+        <tbody>
+{RowDataPrint.map((item,index)=>
+   <tr style={{textAlign:'center',height:70}}>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw'}}>{index+1}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Name}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Code}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>{item.Units}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Counts}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'30vw'}}>{item.Details}</td>
+ </tr>
+)
+       
+}
+<tr style={{textAlign:'center',height:70}}>
+<td ></td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>جمع کل </td>
+   <td ></td>
+   <td ></td>
+   <td style={{width:'20vw'}}>{SumCounts}</td>
+   <td ></td>
+</tr>
+
+        </tbody>
+      </table>
+</div>
+}
 
       
     </div>

@@ -48,6 +48,13 @@ const SetsetsGroupsList2: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const { userData,setUserData } = React.useContext(UserContext);
+  const[Prints,setPrints]= useState(false)
+
+  const [DataPrint,setDataPrint] = useState({})
+  const [RowDataPrint,setRowDataPrint] = useState([])
+  const [SumCounts,setSumCounts] = useState(0)
+
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -72,7 +79,7 @@ const SetsetsGroupsList2: React.FC = () => {
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`جستجو`}
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
@@ -142,7 +149,8 @@ const SetsetsGroupsList2: React.FC = () => {
       dataIndex: 'Id',
       key: 'Id',
       width: '10%',
-      hidden: false
+      hidden: false,
+      disaplay:1
     },
     {
       title: 'نوع سند',
@@ -150,6 +158,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'StatesTitle',
       width: '15%',
       hidden: false,
+      disaplay:1,
       
       ...getColumnSearchProps('StatesTitle'),
     },
@@ -159,6 +168,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'StatesRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'درخواست کننده',
@@ -166,6 +176,8 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'SecondUsername',
       width: '20%',
       hidden: false,
+      ...getColumnSearchProps('SecondUsername'),
+      disaplay:1
     },
     {
       title: 'SecondUserRef ',
@@ -173,6 +185,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'SecondUserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'سال مالی',
@@ -180,6 +193,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'FiscalTitle',
       width: '10%',
       hidden: true,
+      disaplay:1
     },
     {
       title: 'FiscalYearRef ',
@@ -187,6 +201,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'FiscalYearRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: 'تاریخ سند',
@@ -194,6 +209,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'Date',
       width: '20%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'تاریخ سند',
@@ -201,6 +217,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'Datevalue',
       width: '20%',
       hidden: true,
+      disaplay:1
     },
    
     {
@@ -209,6 +226,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'Username',
       width: '15%',
       hidden: false,
+      disaplay:1
     },
     {
       title: 'UserRef ',
@@ -216,6 +234,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'UserRef',
       width: '0%',
       hidden: true,
+      disaplay:0
     },
     {
       title: '',
@@ -223,6 +242,7 @@ const SetsetsGroupsList2: React.FC = () => {
       key: 'Action',
       width: '50%',
       hidden: false,
+      disaplay:0,
       render: (text, record, index) => < div className="btn-wrap"
         style={
           {
@@ -253,13 +273,12 @@ const SetsetsGroupsList2: React.FC = () => {
           </Button>
           </Popconfirm>
 
-          {/* < Button
+          <Button
             style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
-          onClick={()=>
-            console.log('')
-          }
-          >چاپ
-          </Button> */}
+          onClick={(e)=>{
+            setDataPrint({"Id":record.Id,"StatesTitle":record.StatesTitle,"SecondUsername":record.SecondUsername,"Date":record.Date })
+            GetSetsDocumentData(record.Id)
+          }}>چاپ </Button>
            
       
       </div >
@@ -267,6 +286,49 @@ const SetsetsGroupsList2: React.FC = () => {
 
   ];
 
+
+
+  let GetSetsDocumentData = (_Id) => {
+
+    var data = {
+      "DocumentsRef": _Id
+    }
+
+    console.log('Data GetSetsDocumentData : ', data)
+    axios.post(Config.URL +
+      Config.Defination.GetSetsDocumentData, data)
+      .then((response) => {
+        console.log('response   GetSetsDocumentData : ', response.data.data)
+        var datapush = [];
+        var id = 0;
+        var Counters = 0;
+        if (response.data.data.length > 0) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            id = i + 1;
+            datapush.push({
+              Code: response.data.data[i].SetsCode
+              , Name: response.data.data[i].SetsTitle, SetsId: response.data.data[i].SetsId
+              , Counts: response.data.data[i].Counts
+              , Details: response.data.data[i].Details, Id: response.data.data[i].Id
+            })
+            Counters = Counters + response.data.data[i].Counts
+          }
+        }
+        setSumCounts(Counters)
+        setRowDataPrint(datapush)
+        console.log('datapush',datapush)
+        setTimeout(() => {
+          printdiv("printItem2")
+          window.location.reload();
+         }, 200);
+
+      })
+      .catch((error) => {
+        console.log('Error data document GetProductDocumentData : ', error)
+      })
+
+
+  }
 
 
   let DeleteDocuments = (_id) => {
@@ -339,7 +401,7 @@ var data={
     document.body.innerHTML =  new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
-    
+    setPrints(false)
     return false;
   }
 
@@ -381,8 +443,11 @@ var data={
               <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
                 () => {
 
-                  printdiv("printelement")
-                  window.location.reload();
+                  setPrints(true)
+                  setTimeout(() => {
+                    printdiv("printelement")
+                    window.location.reload();
+                  }, 500);
                 }
               }>
                 چاپ
@@ -396,9 +461,73 @@ var data={
           </BaseForm>
           <div id="printelement">
       {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+        <Tables DataSource={AllData} columns={ Prints == false  ?  columns.filter(item => !item.hidden) : columns.filter(item => !item.hidden && item.disaplay!=0)} />
       }
       </div>
+
+
+      {
+      <div style={{display:'none'}}  id='printItem2'>
+        <div style={{borderWidth:1,borderColor:'black',borderStyle:'solid',width:'80vw',height:100,borderRadius:5,justifyContent:'center',alignItems:'center',padding:5,marginTop:10,marginRight:20}}>
+        <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
+          <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >شماره سند  :  </label>
+            <label >{DataPrint?.Id}</label>
+            </div>
+
+            <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >نوع سند  :  </label>
+            <label >{DataPrint?.StatesTitle}</label>
+            </div>
+        </div>
+
+        <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
+          <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label > درخواست کننده  :  </label>
+            <label >{DataPrint?.SecondUsername}</label>
+            </div>
+
+            <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+            <label >تاریخ  :  </label>
+            <label >{DataPrint?.Date}</label>
+            </div>
+        </div>
+      </div>
+      <table style={{borderWidth:1,borderStyle:'solid',width:'90vw',marginTop:20,justifyContent:'center',alignItems:'center'}}>
+        <thead style={{height:70}}>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>نام </th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>کد</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>تعداد</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>توضیحات</th>
+        </thead>
+        <tbody>
+{RowDataPrint.map((item,index)=>
+   <tr style={{textAlign:'center',height:70}}>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw'}}>{index+1}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Name}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Code}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Counts}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'30vw'}}>{item.Details}</td>
+ </tr>
+)
+       
+}
+<tr style={{textAlign:'center',height:70}}>
+<td ></td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>جمع کل </td>
+   <td ></td>
+   <td style={{width:'20vw'}}>{SumCounts}</td>
+   <td ></td>
+</tr>
+
+        </tbody>
+      </table>
+</div>
+}
+
+
+
     </div>
   );
 };
