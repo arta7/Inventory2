@@ -117,8 +117,8 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       },
       {
         title: 'ثبت خبر',
-        key: 'HtmlEditor',
-        url: '/HtmlEditor',
+        key: 'NewsList',
+        url: '/NewsList',
         showItem:false
       },
 

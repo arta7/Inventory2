@@ -44,6 +44,12 @@ const DefineSetsofProducts: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
+
+  const [DataPrint,setDataPrint] = useState({})
+  const [RowDataPrint,setRowDataPrint] = useState([])
+  const [SumCounts,setSumCounts] = useState(0)
+
+
   const { t } = useTranslation();
   const [form] = BaseForm.useForm();
 
@@ -298,6 +304,7 @@ const DefineSetsofProducts: React.FC = () => {
         // setSetofProductData(response.data.data)
         var x = [];
         DataProduct = [];
+        var Counters = 0;
         for (let i = 0; i < response.data.data.length; i++) {
 
           x.push(response.data.data[i].ProductRef.toString())
@@ -318,7 +325,7 @@ const DefineSetsofProducts: React.FC = () => {
             artwork.Counts = response.data.data[i].Counts.toString();
             setAllData(myNextList);
           }
-          // }
+          Counters = Counters + response.data.data[i].Counts
           console.log('x : ', x)
         }
         // console.log('newdata : ',newdata)
@@ -351,6 +358,47 @@ const DefineSetsofProducts: React.FC = () => {
         }
         console.log('data1 : ', data1)
         setAllData(data1)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+
+
+
+  let GetPrint = (_v) => {
+    var data = {
+      "SetsRef": _v
+    }
+    axios.post(Config.URL +
+      Config.Defination.GetSetsOfProducts, data)
+      .then((response) => {
+        console.log('response data Sets : ', response.data.data)
+        // setSetofProductData(response.data.data)
+        var x = [];
+
+        var Counters = 0;
+        for (let i = 0; i < response.data.data.length; i++) {
+
+          x.push({
+            "SetsRef": response.data.data[i].SetsRef,
+            "ProductRef": response.data.data[i].ProductRef,
+            "ProductTitle": response.data.data[i].ProductTitle,
+            "Code":response.data.data[i].Code.toString(), "Counts": response.data.data[i].Counts,"UnitTitle" : response.data.data[i].UnitTitle
+          })
+
+          Counters = Counters + response.data.data[i].Counts
+     
+        }
+        setSumCounts(Counters)
+        setRowDataPrint(x)
+        setTimeout(() => {
+          printdiv("printItem2")
+          window.location.reload();
+         }, 200);
+       
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -418,6 +466,16 @@ const DefineSetsofProducts: React.FC = () => {
       })
   }
 
+  function printdiv(elem) {
+    var header_str = '<html><head><title>تست</title></head><body>';
+    var footer_str = '</body></html>';
+    var new_str = document.getElementById(elem).innerHTML;
+    var old_str = document.body.innerHTML;
+    document.body.innerHTML = header_str + new_str + footer_str;
+    window.print();
+    document.body.innerHTML = old_str;
+    return false;
+  }
 
 
   useEffect(() => {
@@ -444,7 +502,7 @@ const DefineSetsofProducts: React.FC = () => {
                 onChange={(v) => {
                   setSelectedRowKeys([])
                   setSetsSelectedItem(v)
-                  console.log('v : ', v)
+                
 
                   GetSetsofP(v)
                 }}
@@ -468,8 +526,8 @@ const DefineSetsofProducts: React.FC = () => {
             </BaseButtonsForm.Item>
 
 
-            <BaseForm.Item noStyle>
-              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
+            <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+              <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading} style={{ marginLeft: 10 }}
 
                 onClick={() => {
                   console.log('test')
@@ -484,7 +542,18 @@ const DefineSetsofProducts: React.FC = () => {
               >
                 ثبت
               </Auth.SubmitButton>
-            </BaseForm.Item>
+
+              <Auth.SubmitButton type="default"  loading={isLoading}
+
+onClick={() => {
+  console.log('test',SetsSelectedItem)
+  GetPrint(SetsSelectedItem)
+ 
+}}
+>
+چاپ
+</Auth.SubmitButton>
+            </div>
 
           </BaseForm>
         </Auth.FormWrapper>
@@ -493,6 +562,52 @@ const DefineSetsofProducts: React.FC = () => {
         rowSelections={rowSelection}
 
       />
+
+{
+      <div style={{display:'none'}}  id='printItem2'>
+        <div style={{borderWidth:1,width:'85vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20}}>
+        
+          <div style={{justifyContent:'center',alignItems:'center',display:'flex'}}>
+           
+            <label style={{fontSize:25}}>{SetsData.filter(items=>items.Id == SetsSelectedItem).length > 0 ? SetsData.filter(items=>items.Id == SetsSelectedItem)[0].Title : ''}</label>
+            </div>
+
+      </div>
+      <table style={{borderWidth:1,borderStyle:'solid',width:'90vw',marginTop:20,justifyContent:'center',alignItems:'center',borderRadius:5}}>
+        <thead style={{height:70}}>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>عنوان </th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>کد</th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>واحد </th>
+          <th style={{borderWidth:1,borderStyle:'solid'}}>تعداد</th>
+        </thead>
+        <tbody>
+{RowDataPrint.map((item,index)=>
+   <tr style={{textAlign:'center',height:70}}>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw'}}>{index+1}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.ProductTitle}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Code}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>{item.UnitTitle}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Counts}</td>
+ </tr>
+)
+       
+}
+<tr style={{textAlign:'center',height:70}}>
+<td ></td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>جمع کل </td>
+   <td ></td> 
+   <td ></td>
+   <td style={{width:'20vw'}}>{SumCounts}</td>
+ 
+</tr>
+
+        </tbody>
+      </table>
+</div>
+}
+
+
 
 
     </div>

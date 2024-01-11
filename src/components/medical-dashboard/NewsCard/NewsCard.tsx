@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { dashboardNews } from '@app/constants/dashboardNews';
 import { DashboardCard } from '../DashboardCard/DashboardCard';
 import * as S from './NewsCard.styles';
@@ -9,14 +9,14 @@ import { Config } from '@app/Database/Config';
 
 export const NewsCard: React.FC = (data) => {
   const { t } = useTranslation();
-  const[datahtml,setdatahtml] = useState([])
+  const [datahtml, setdatahtml] = useState([])
 
   let GetHtmlData = () => {
-      
+
     axios.post(Config.URL +
       Config.Defination.GetHtmlData)
       .then((response) => {
-        console.log('datahtml',response.data.data)
+        console.log('datahtml', 'data:image/png;base64,' + btoa(response.data.data[2].ImageLocation))
         setdatahtml(response.data.data)
       })
       .catch((error) => {
@@ -25,22 +25,24 @@ export const NewsCard: React.FC = (data) => {
   }
 
 
- useEffect(()=>{
-  GetHtmlData()
- },[])
+  const blobToBase64 = blob => {
+    const atob =  Buffer.from(blob, 'base64').toString('ascii');
+    return atob;
+    //  
+  };
+
+  useEffect(() => {
+    GetHtmlData()
+  }, [])
   return (
     <DashboardCard title='خبرهای جدید'>
       <S.Wrapper>
         {datahtml?.map((item, index) => (
           <ArticleCard
             key={index}
-            // imgUrl={null}
+            imgUrl={item.ImageLocation != null ? blobToBase64(item.ImageLocation) : ''}
             title={item.Title}
-            // date={advice.date}
-            description={ <div dangerouslySetInnerHTML={{ __html: `<div>`+item.Context + `</div>` }}></div>}
-            // avatar={advice.avatarUrl}
-            // author={advice.author}
-            // tags={advice.tags}
+            description={<div dangerouslySetInnerHTML={{ __html: `<div>` + item.Context + `</div>` }}></div>}
           />
         ))}
       </S.Wrapper>

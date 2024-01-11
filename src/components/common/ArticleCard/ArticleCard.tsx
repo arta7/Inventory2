@@ -27,14 +27,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => {
   return (
     <S.Wrapper className={className}>
-      <S.Header>
-        {!!avatar && <Avatar src={avatar} alt="author" size={43} />}
-        {/* <S.AuthorWrapper>
-          {author && <S.Author>{author}</S.Author>}
-          <S.DateTime>{Dates.format(date, 'L')}</S.DateTime>
-        </S.AuthorWrapper> */}
-      </S.Header>
-      {/* <Image src={imgUrl} alt="article" preview={false} /> */}
+
+      { imgUrl != '' &&
+      <Image src={imgUrl} alt="img"  preview={false} />
+        }
       <S.InfoWrapper>
         <S.InfoHeader>
           <S.Title>{title}</S.Title>

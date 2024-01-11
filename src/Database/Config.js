@@ -59,7 +59,8 @@ URL:'https://api.docshafa.ir/api',
         ResetPassword:'/ResetPassword',
         DeleteDocumentControlsSets:'/DeleteDocumentControlsSets',
         DeleteDocumentControlsProduct:'/DeleteDocumentControlsProduct',
-        DeleteDocumentControls:"/DeleteDocumentControls"
+        DeleteDocumentControls:"/DeleteDocumentControls",
+        DeleteHtmlData:"/DeleteHtmlData"
     }
   
 

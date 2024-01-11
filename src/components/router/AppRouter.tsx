@@ -100,6 +100,8 @@ const Charts = React.lazy(() => import('@app/NewPage/Dashboard/Charts'));
 
 const HtmlEditor = React.lazy(() => import('@app/NewPage/HtmlEditor'));
 
+const NewsList = React.lazy(() => import('@app/NewPage/Order/NewsList'));
+
 // export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/';
 
@@ -189,6 +191,7 @@ const SetsetsGroupsListFallback2 = withLoading(SetsetsGroupsList2)
 const KardexFallback2 = withLoading(Kardex2)
 const KardexSetsFallback2 = withLoading(KardexSets2)
 const HtmlEditorFallback = withLoading(HtmlEditor)
+const NewsListFallback = withLoading(NewsList)
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -224,6 +227,8 @@ export const AppRouter: React.FC = () => {
 
 
           <Route path="HtmlEditor" element={<HtmlEditorFallback />} />
+          <Route path="NewsList" element={<NewsListFallback />} />
+
 
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
           <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />

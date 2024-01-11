@@ -129,10 +129,10 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'ثبت خبر',
-        key: 'HtmlEditor',
-        url: '/HtmlEditor',
-        showItem:true
+        title: 'تعریف خبر',
+        key: 'NewsList',
+        url: '/NewsList',
+        showItem:false
       },
 
     ],

@@ -99,9 +99,9 @@ const FirstScreen: React.FC = () => {
             <CovidCard />
           </Col> */}
 
-          <Col id="activity" xl={24} xxl={12}>
+          {/* <Col id="activity" xl={24} xxl={12}>
             <ActivityCard />
-          </Col>
+          </Col> */}
 
           {/* <Col id="health" xl={24} xxl={12}>
             <HealthCard />
@@ -133,9 +133,9 @@ const FirstScreen: React.FC = () => {
 
   const mobileAndTabletLayout = (
     <Row gutter={[20, 20]}>
-      <StatisticsCards />
+      {/* <StatisticsCards /> */}
 
-      {isTablet && (
+      {/* {isTablet && (
         <Col id="map" md={24} order={4}>
           <MapCard />
         </Col>
@@ -171,7 +171,7 @@ const FirstScreen: React.FC = () => {
 
       <Col id="covid" xs={24} md={12} order={(isTablet && 12) || 0}>
         <CovidCard />
-      </Col>
+      </Col> */}
 
       <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
         <NewsCard />
