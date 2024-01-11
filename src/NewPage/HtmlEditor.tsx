@@ -45,8 +45,8 @@ const resizeFile = (file) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      200,
-      200,
+      100,
+      300,
       "PNG",
       100,
       0,
@@ -70,6 +70,11 @@ let AddHtmlData = (_title,_image,_context,_id) => {
     "Id":_id
   }
 
+  // var headers = {
+  //   'Access-Control-Allow-Credentials':true,
+  //   "Access-Control-Allow-Origin": "*"
+  // }
+
 
   
   axios.post(Config.URL +
@@ -83,10 +88,7 @@ let AddHtmlData = (_title,_image,_context,_id) => {
 }
 
 
-   let ConvertData=(htmlData)=>{
-    const blocks = convertFromHTML(htmlData);
-setEditorState(EditorState.createWithContent(ContentState.createFromBlockArray(blocks.contentBlocks, blocks.entityMap)))
-   }
+
 
   return (
     <div style={{backgroundColor:'white'}}>
