@@ -56,6 +56,7 @@
     "react-router-dom": "^6.0.2",
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "4.0.3",
+    "react-show-more-text": "^1.7.1",
     "react-simple-maps": "^2.3.0",
     "react-slick": "^0.28.1",
     "react-to-print": "^2.14.15",

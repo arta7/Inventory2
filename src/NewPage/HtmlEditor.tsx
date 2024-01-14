@@ -33,11 +33,6 @@ const HtmlEditor: React.FC = () => {
     setTimeout(() => {
         console.log('datauri',dataUri)
     }, 1200);
-  //   fileToDataUri(image)
-  // .then(dataUri => {
-  //   console.log('datauri',dataUri)
-  //   setDataUri(dataUri)
-  // })
 }
 
 
@@ -45,7 +40,7 @@ const resizeFile = (file) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      100,
+      200,
       300,
       "PNG",
       100,
@@ -70,19 +65,18 @@ let AddHtmlData = (_title,_image,_context,_id) => {
     "Id":_id
   }
 
-  // var headers = {
-  //   'Access-Control-Allow-Credentials':true,
-  //   "Access-Control-Allow-Origin": "*"
-  // }
 
-
-  
   axios.post(Config.URL +
-    Config.Defination.AddHtmlData, data)
+    Config.Defination.AddHtmlData, data,{
+      headers: { 'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*"},
+})
     .then((response) => {
       console.log('response data : ', response.data.data)
+      alert('با موفقیت ثبت شد');
     })
     .catch((error) => {
+      alert('حجم عکس زیاد می باشد لطفا حجم عکس را کم تر کنید. ');
       console.log('Error : ', error)
     })
 }
@@ -120,7 +114,7 @@ onClick={()=>{
     {
       //console.log('datauri : ',dataUri)
       AddHtmlData(Title,file,text,0)
-      alert('با موفقیت ثبت شد');
+     
     }
     else
     alert('لطفا اطلاعات را کامل پر کنید');

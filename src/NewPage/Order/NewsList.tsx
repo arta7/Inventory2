@@ -198,38 +198,38 @@ const NewsList: React.FC = () => {
       ...getColumnSearchProps('Title'),
       disaplay:1
     },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   key: 'Action',
-    //   width: '50%',
-    //   hidden: false,
-    //   disaplay:0,
-    //   render: (text, record, index) => < div className="btn-wrap"
-    //     style={
-    //       {
-    //         width: "300px",
-    //       }
-    //     } > < Button
-    //       style={{ backgroundColor: 'green', color: 'white' }}
-    //       onClick={e=>{
-    //       } 
-    //       } > ویرایش
-    //     </Button>
+    {
+      title: '',
+      dataIndex: '',
+      key: 'Action',
+      width: '50%',
+      hidden: false,
+      disaplay:0,
+      render: (text, record, index) => < div className="btn-wrap"
+        style={
+          {
+            width: "300px",
+          }
+        } > < Button
+          style={{ backgroundColor: 'green', color: 'white' }}
+          onClick={e=>{
+          } 
+          } > ویرایش
+        </Button>
 
 
-    //     <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteHtmlData(record.Id)}>
-    //       < Button
-    //         style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
-    //         onClick={() =>
-    //           console.log('')
+        <Popconfirm title="آیا مطمئن هستید?" onConfirm={() => DeleteHtmlData(record.Id)}>
+          < Button
+            style={{ marginRight: 20, backgroundColor: 'red', color: 'white' }}
+            onClick={() =>
+              console.log('')
 
-    //         }
-    //       >حذف
-    //       </Button>
-    //     </Popconfirm>
-    //   </div >
-    // }
+            }
+          >حذف
+          </Button>
+        </Popconfirm>
+      </div >
+    }
 
   ];
 
@@ -270,6 +270,8 @@ const NewsList: React.FC = () => {
       "Id":_id
 
     }
+
+    console.log('id',_id)
     axios.post(Config.URL +
       Config.Defination.DeleteHtmlData, data)
       .then((response) => {

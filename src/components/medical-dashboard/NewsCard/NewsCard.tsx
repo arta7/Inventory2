@@ -6,17 +6,18 @@ import { useTranslation } from 'react-i18next';
 import { ArticleCard } from 'components/common/ArticleCard/ArticleCard';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
-
+import { useNavigate } from 'react-router-dom';
 export const NewsCard: React.FC = (data) => {
   const { t } = useTranslation();
   const [datahtml, setdatahtml] = useState([])
+  const navigate = useNavigate();
 
   let GetHtmlData = () => {
 
     axios.post(Config.URL +
       Config.Defination.GetHtmlData)
       .then((response) => {
-        console.log('datahtml', 'data:image/png;base64,' + btoa(response.data.data[2].ImageLocation))
+        //console.log('datahtml', 'data:image/png;base64,' + btoa(response.data.data[2].ImageLocation))
         setdatahtml(response.data.data)
       })
       .catch((error) => {
@@ -36,7 +37,9 @@ export const NewsCard: React.FC = (data) => {
   }, [])
   return (
     <DashboardCard title='خبرهای جدید'>
-      <S.Wrapper>
+
+      <S.Wrapper >
+
         {datahtml?.map((item, index) => (
           <ArticleCard
             key={index}

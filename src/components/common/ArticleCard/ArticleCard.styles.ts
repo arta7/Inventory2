@@ -89,6 +89,11 @@ export const Description = styled.div`
   font-size: ${FONT_SIZE.xs};
   color: var(--text-main-color);
 
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+
   @media only screen and ${media.xxl} {
     font-size: 1rem;
   }

@@ -3,7 +3,8 @@ import { Dates } from '@app/constants/Dates';
 import { Avatar, Image } from 'antd';
 import { Tag, ITag } from '../Tag/Tag';
 import * as S from './ArticleCard.styles';
-
+import { useNavigate } from 'react-router-dom';
+import ShowMoreText from "react-show-more-text";
 interface ArticleCardProps {
   author?: React.ReactNode;
   imgUrl: string;
@@ -25,26 +26,22 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   tags,
   className = 'article-card',
 }) => {
+
+  const navigate = useNavigate();
   return (
     <S.Wrapper className={className}>
 
       { imgUrl != '' &&
-      <Image src={imgUrl} alt="img"  preview={false} />
+      <Image src={imgUrl} alt="img"  preview={false}  onClick={()=>{
+        navigate('/HtmlEditor')
+       }}/>
         }
       <S.InfoWrapper>
-        <S.InfoHeader>
+        <S.InfoHeader >
           <S.Title>{title}</S.Title>
         </S.InfoHeader>
-        <S.Description>{description}</S.Description>
+        <S.Description >{description}</S.Description>
       </S.InfoWrapper>
-
-      {/* {!!tags?.length && (
-        <S.TagsWrapper>
-          {tags.map((tag) => (
-            <Tag key={tag.bgColor} title={tag.title} bgColor={tag.bgColor} />
-          ))}
-        </S.TagsWrapper>
-      )} */}
     </S.Wrapper>
   );
 };
