@@ -7,7 +7,7 @@ import { ArticleCard } from 'components/common/ArticleCard/ArticleCard';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
 import { useNavigate } from 'react-router-dom';
-export const NewsCard: React.FC = (data) => {
+export const NewsCard: React.FC = () => {
   const { t } = useTranslation();
   const [datahtml, setdatahtml] = useState([])
   const navigate = useNavigate();

@@ -40,7 +40,7 @@ const resizeFile = (file) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      200,
+      300,
       300,
       "PNG",
       100,

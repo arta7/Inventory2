@@ -102,6 +102,9 @@ const HtmlEditor = React.lazy(() => import('@app/NewPage/HtmlEditor'));
 
 const NewsList = React.lazy(() => import('@app/NewPage/Order/NewsList'));
 
+const ShowNews = React.lazy(() => import('@app/NewPage/ShowNews'));
+
+
 // export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/';
 
@@ -192,7 +195,7 @@ const KardexFallback2 = withLoading(Kardex2)
 const KardexSetsFallback2 = withLoading(KardexSets2)
 const HtmlEditorFallback = withLoading(HtmlEditor)
 const NewsListFallback = withLoading(NewsList)
-
+const ShowNewsFallback = withLoading(ShowNews)
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
     <RequireAuth>
@@ -227,7 +230,9 @@ export const AppRouter: React.FC = () => {
 
 
           <Route path="HtmlEditor" element={<HtmlEditorFallback />} />
+          
           <Route path="NewsList" element={<NewsListFallback />} />
+          <Route path="ShowNews" element={<ShowNewsFallback />} />
 
 
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
