@@ -75,7 +75,7 @@ const FirstScreen: React.FC = () => {
 
   const desktopLayout = (
     <Row>
-      <S.LeftSideCol xl={16} xxl={17}>
+      <S.LeftSideCol xl={8} xxl={7} >
         <Row gutter={[30, 30]}>
           <Col span={24}>
             {/* <Row gutter={[30, 30]}>
@@ -114,14 +114,15 @@ const FirstScreen: React.FC = () => {
           {/* <Col id="news" span={24}>
             <NewsCard />
           </Col> */}
+               <NewsCard />
         </Row>
         <References />
       </S.LeftSideCol>
 
-      <S.RightSideCol xl={8} xxl={7}>
+      <S.RightSideCol xl={16} xxl={17}>
         <S.Space />
         <S.ScrollWrapper id="patient-timeline">
-        <NewsCard />
+   
      
         
 

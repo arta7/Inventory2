@@ -5,6 +5,7 @@ import { Tag, ITag } from '../Tag/Tag';
 import * as S from './ArticleCard.styles';
 import { useNavigate } from 'react-router-dom';
 interface ArticleCardProps {
+  id:string,
   author?: React.ReactNode;
   imgUrl: string;
   title: string;
@@ -16,6 +17,7 @@ interface ArticleCardProps {
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({
+  id,
   imgUrl,
   title,
   date,
@@ -31,8 +33,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     <S.Wrapper className={className}>
 
       { imgUrl != '' &&
-      <Image src={imgUrl} alt="img"  preview={false}  onClick={()=>{
-        navigate('/ShowNews')
+      <Image src={imgUrl} alt="img"  preview={false}  style={{height:300}} onClick={()=>{
+          console.log('id : ', id)
+        navigate('/ShowNews',{ state: { Id:id } })
        }}/>
         }
       <S.InfoWrapper>

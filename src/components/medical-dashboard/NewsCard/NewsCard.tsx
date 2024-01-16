@@ -46,6 +46,7 @@ export const NewsCard: React.FC = () => {
             imgUrl={item.ImageLocation != null ? blobToBase64(item.ImageLocation) : ''}
             title={item.Title}
             description={<div dangerouslySetInnerHTML={{ __html: `<div>` + item.Context + `</div>` }}></div>}
+            id={item.Id}
           />
         ))}
       </S.Wrapper>

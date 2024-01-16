@@ -5,6 +5,7 @@ import * as S from './ArticleCard.styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
+import {useLocation} from 'react-router-dom';
 interface ArticleCardProps {
   author?: React.ReactNode;
   imgUrl: string;
@@ -15,17 +16,9 @@ interface ArticleCardProps {
   className?: string;
 }
 
-  const ShowNews: React.FC<ArticleCardProps> = ({
-  imgUrl,
-  title,
-  date,
-  description,
-  author,
-  avatar,
-  className = 'article-card',
-}) => {
+  const ShowNews: React.FC = () => {
     const [datahtml, setdatahtml] = useState([])
-
+    const location = useLocation();
     let GetHtmlDataWithId = (_Id) => {
         
         var data={
@@ -50,15 +43,15 @@ interface ArticleCardProps {
       };
     
       useEffect(() => {
-        console.log('start')
-        GetHtmlDataWithId(23)
+       
+        GetHtmlDataWithId(location.state.Id)
       }, [])
 
   return (
     <S.Wrapper >
 
       {  datahtml[0]?.ImageLocation != null && 
-      <Image src={blobToBase64(datahtml[0]?.ImageLocation) } alt="img"  preview={true} />
+      <Image src={blobToBase64(datahtml[0]?.ImageLocation) } alt="img" style={{height:500}}  preview={true} />
         }
       <S.InfoWrapper>
         <S.InfoHeader >

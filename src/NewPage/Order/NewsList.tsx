@@ -213,6 +213,7 @@ const NewsList: React.FC = () => {
         } > < Button
           style={{ backgroundColor: 'green', color: 'white' }}
           onClick={e=>{
+            navigate('/HtmlEditor',{state:{Id:record.Id}})
           } 
           } > ویرایش
         </Button>
@@ -287,10 +288,6 @@ const NewsList: React.FC = () => {
 
   }
 
-
-
-
-
   useEffect(() => {
     GetHTMLData()
   }, [Counter])
@@ -306,10 +303,6 @@ const NewsList: React.FC = () => {
   }
 
 
-
-
-
-  
   return (
     <div >
 
