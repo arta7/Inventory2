@@ -33,6 +33,7 @@ const  Tables: React.FC<DataType> = ({ DataSource=[],columns=[],ref }) => {
   return <Table columns={columns} dataSource={DataSource} style={{marginTop:20,justifyContent:'center',alignItems:'center'}} bordered
   ref={ref}
   onChange={handleChange}
+  pagination={{ pageSize: 20 }}
   />;
 };
 

@@ -426,7 +426,7 @@ const Kardex: React.FC = () => {
         <div id="printelement">
 
       {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)}  />
       }
       </div>
 

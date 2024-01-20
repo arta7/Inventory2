@@ -26,7 +26,7 @@ const CheckBoxTables: React.FC<DataType> = ({ DataSource=[],columns=[],rowSelect
       </div>
       <Table rowSelection={rowSelections} columns={columns} dataSource={DataSource} style={{marginTop:20}} 
        rowKey="KeySearch"
-       
+       pagination={{ pageSize: 20 }}
        
        />
     </div>
