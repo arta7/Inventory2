@@ -67,11 +67,37 @@ import * as S from './DashboardPage.styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
+import UserContext from './UserContext';
+
 const FirstScreen: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
- 
+  const { userData,setUserData } = React.useContext(UserContext);
   const { t } = useTranslation();
+
+  let GetCSRSetsProduct=()=>{
+ 
+var data={
+  "FiscalYearRef":userData[0].FiscalYearId.toString(),
+  "CollectionId":1
+}
+ 
+    axios.post(Config.URL +
+      Config.Defination.GetSetsDocuments,data)
+      .then((response) => {
+        console.log('data setsdoduments : ', response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+  useEffect(()=>{
+    GetCSRSetsProduct()
+  },[])
+
+
 
   const desktopLayout = (
     <Row>
@@ -123,7 +149,9 @@ const FirstScreen: React.FC = () => {
         <S.Space />
         <S.ScrollWrapper id="patient-timeline">
    
-     
+          <Col id="activity" xl={24} xxl={12}>
+            <ActivityCard  />
+          </Col>
         
 
        
