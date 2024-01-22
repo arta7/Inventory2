@@ -78,12 +78,12 @@ const FirstScreen: React.FC = () => {
   let GetCSRSetsProduct=()=>{
  
 var data={
-  "FiscalYearRef":userData[0].FiscalYearId.toString(),
+  "FiscalYear":userData[0].FiscalYearId.toString(),
   "CollectionId":1
 }
  
     axios.post(Config.URL +
-      Config.Defination.GetSetsDocuments,data)
+      Config.Defination.GetKardexProduct,data)
       .then((response) => {
         console.log('data setsdoduments : ', response.data.data)
       })
