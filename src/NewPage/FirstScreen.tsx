@@ -29,7 +29,7 @@
 //   },[])
 
 
- 
+
 //   return (
 //    <div style={{backgroundImage:`url(${image})`,backgroundPosition: 'center',
 //    backgroundSize: 'cover',
@@ -44,7 +44,7 @@
 // export default FirstScreen;
 
 import draftToHtml from 'draftjs-to-html';
-import React, { useEffect ,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
@@ -72,20 +72,54 @@ import UserContext from './UserContext';
 const FirstScreen: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
-  const { userData,setUserData } = React.useContext(UserContext);
+  const { userData, setUserData } = React.useContext(UserContext);
   const { t } = useTranslation();
+  const [CSRData, setCSRData] = useState([])
+  const [PTitle, setPTitle] = useState([])
 
-  let GetCSRSetsProduct=()=>{
- 
-var data={
-  "FiscalYear":userData[0].FiscalYearId.toString(),
-  "CollectionId":1
-}
- 
+  const [CSRDataInsert, setCSRDataInsert] = useState([])
+  const [PTitleInsert, setPTitleInsert] = useState([])
+
+
+
+  const [DoctorData, setDoctorData] = useState([])
+  const [PTitleDoctor, setPTitleDoctor] = useState([])
+
+  const [DoctorDataInsert, setDoctorDataInsert] = useState([])
+  const [PTitleDoctorInsert, setPTitleDoctorInsert] = useState([])
+
+
+  let GetCSRSetsProduct = () => {
+    var data = {
+      "FiscalYear": userData[0].FiscalYearId.toString(),
+      "CollectionId": 2
+    }
     axios.post(Config.URL +
-      Config.Defination.GetKardexProduct,data)
+      Config.Defination.GetKardexProduct, data)
       .then((response) => {
         console.log('data setsdoduments : ', response.data.data)
+        // setCSRData(response.data.data)
+        var data = [];
+        var database = []
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i].ExitValue > 0) {
+            data.push(response.data.data[i].ProductTitle)
+            database.push(response.data.data[i].ExitValue)
+          }
+        }
+        setPTitle(data)
+        setCSRData(database)
+
+        var data1 = [];
+        var database1 = []
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i].InsertValue > 0) {
+            data1.push(response.data.data[i].ProductTitle)
+            database1.push(response.data.data[i].InsertValue)
+          }
+        }
+        setPTitleInsert(data1)
+        setCSRDataInsert(database1)
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -93,9 +127,56 @@ var data={
   }
 
 
-  useEffect(()=>{
+
+
+
+
+  let GetDoctorSetsProduct = () => {
+    var data = {
+      "FiscalYear": userData[0].FiscalYearId.toString(),
+      "CollectionId": 1
+    }
+    axios.post(Config.URL +
+      Config.Defination.GetKardexProduct, data)
+      .then((response) => {
+        console.log('data setsdoduments : ', response.data.data)
+        // setCSRData(response.data.data)
+        var data = [];
+        var database = []
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i].ExitValue > 0) {
+            data.push(response.data.data[i].ProductTitle)
+            database.push(response.data.data[i].ExitValue)
+          }
+        }
+        setPTitleDoctor(data)
+        setDoctorData(database)
+
+        var data1 = [];
+        var database1 = []
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i].InsertValue > 0) {
+            data1.push(response.data.data[i].ProductTitle)
+            database1.push(response.data.data[i].InsertValue)
+          }
+        }
+        setPTitleDoctorInsert(data1)
+        setDoctorDataInsert(database1)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+  }
+
+
+
+
+
+
+  useEffect(() => {
+    GetDoctorSetsProduct()
     GetCSRSetsProduct()
-  },[])
+  }, [])
 
 
 
@@ -140,7 +221,7 @@ var data={
           {/* <Col id="news" span={24}>
             <NewsCard />
           </Col> */}
-               <NewsCard />
+          <NewsCard />
         </Row>
         <References />
       </S.LeftSideCol>
@@ -148,13 +229,29 @@ var data={
       <S.RightSideCol xl={16} xxl={17}>
         <S.Space />
         <S.ScrollWrapper id="patient-timeline">
-   
-          <Col id="activity" xl={24} xxl={12}>
-            <ActivityCard  />
-          </Col>
-        
 
-       
+          <Col id="activity" xl={24}  >
+            <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
+          </Col>
+
+          <Col id="activity" xl={24}>
+            <ActivityCard database={DoctorData} PTitle={PTitleDoctor} Title={'خروجی تجهیزات پزشکی'} />
+          </Col>
+
+
+
+          <Col id="activity" xl={24}  >
+            <ActivityCard database={CSRDataInsert} PTitle={PTitleInsert} Title='ورودی CSR' />
+          </Col>
+
+          <Col id="activity" xl={24}>
+            <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
+          </Col>
+
+
+
+
+
         </S.ScrollWrapper>
       </S.RightSideCol>
     </Row>
@@ -201,6 +298,26 @@ var data={
       <Col id="covid" xs={24} md={12} order={(isTablet && 12) || 0}>
         <CovidCard />
       </Col> */}
+
+
+      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
+      <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
+      </Col>
+
+      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
+      <ActivityCard database={DoctorData} PTitle={PTitleDoctor} Title={'خروجی تجهیزات پزشکی'} />
+      </Col>
+
+
+      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
+        <ActivityCard database={CSRDataInsert} PTitle={PTitleInsert} Title='ورودی CSR' />
+      </Col>
+
+      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
+        <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
+      </Col>
+
+
 
       <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
         <NewsCard />

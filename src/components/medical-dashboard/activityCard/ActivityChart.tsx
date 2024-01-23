@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BaseChart, getDefaultTooltipStyles } from '@app/components/common/charts/BaseChart';
 import { dashboardPaddings } from '@app/components/medical-dashboard/DashboardCard/DashboardCard';
@@ -11,14 +11,20 @@ import { graphic } from 'echarts';
 
 interface ActivityChartProps {
   data: ChartData;
+  PTitle:any
 }
 
-export const ActivityChart: React.FC<ActivityChartProps> = ({ data }) => {
+export const ActivityChart: React.FC<ActivityChartProps> = ({ data,PTitle }) => {
   const theme = useAppSelector((state) => state.theme.theme);
+
+
+    useEffect(()=>{
+      console.log('database : ',PTitle)
+    },[])
 
   const { t } = useTranslation();
 
-  const days = Dates.getDays();
+  const days = PTitle;// Dates.getDays();
 
   const { isTablet, isDesktop, isMobile } = useResponsive();
 
@@ -38,34 +44,40 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ data }) => {
     grid: {
       top: dashboardPaddings[size][0],
       right: dashboardPaddings[size][1],
-      bottom: dashboardPaddings[size][1],
+      // bottom: dashboardPaddings[size][1],
       left: dashboardPaddings[size][0],
       containLabel: true,
+      bottom: 50,
     },
     xAxis: {
       type: 'category',
       axisTick: {
         show: false,
+        
       },
       axisLine: {
         show: false,
       },
       data: days,
-      position: 'top',
+      position: 'bottom',
       axisLabel: {
         color: themeObject[theme].primary,
-        fontWeight: 500,
-        fontSize: 14,
+        fontWeight: 300,
+        fontSize: 12,
+        interval: 0,
+        rotate: 45,
+        
+        
       },
     },
     yAxis: {
       type: 'value',
-      min: 1500,
+      min: 0,
       axisLabel: {
         formatter: '{value}',
         color: themeObject[theme].textLight,
-        fontWeight: 500,
-        fontSize: 14,
+        fontWeight: 300,
+        fontSize: 12,
       },
     },
     series: [
@@ -84,7 +96,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({ data }) => {
       formatter: (data: ChartSeriesData) => {
         const currentItem = data[0];
 
-        return `${currentItem.value} ${t('medical-dashboard.activity.kcalBurned')} ${currentItem.name}`;
+        return `${currentItem.value}`;
       },
     },
   };

@@ -5,14 +5,14 @@ import { ActivityChart } from './ActivityChart';
 import { ChartData } from 'interfaces/interfaces';
 import styled from 'styled-components';
 
-export const ActivityCard: React.FC = ({ database }) => {
-  const [data] = useState<ChartData>([1840, 1927, 1793, 1757, 1934, 1620, 1754]);
+export const ActivityCard: React.FC = ({ database,PTitle,Title }) => {
+  // const [data] = useState<ChartData>([1840, 1927, 1793, 1757, 1934, 1620, 1754]);
 
   const { t } = useTranslation();
 
   return (
-    <ActivityCardStyled id="activity" title={''} padding={0}>
-      <ActivityChart data={data} />
+    <ActivityCardStyled id="activity" title={Title} padding={0}>
+      <ActivityChart data={database} PTitle={PTitle} />
     </ActivityCardStyled>
   );
 };
