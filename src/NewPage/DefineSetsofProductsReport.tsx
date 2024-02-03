@@ -366,6 +366,38 @@ const DefineSetsofProductsReport: React.FC = () => {
 
 
 
+let UpdateData=(_v)=>{
+  var data = {
+    "SetsRef": _v
+  }
+  axios.post(Config.URL +
+    Config.Defination.GetSetsOfProducts, data)
+    .then((response) => {
+      console.log('response data Sets : ', response.data.data)
+      // setSetofProductData(response.data.data)
+      var x = [];
+
+      var Counters = 0;
+      for (let i = 0; i < response.data.data.length; i++) {
+
+        x.push({
+          "SetsRef": response.data.data[i].SetsRef,
+          "ProductRef": response.data.data[i].ProductRef,
+          "ProductTitle": response.data.data[i].ProductTitle,
+          "Code":response.data.data[i].Code.toString(), "Counts": response.data.data[i].Counts,"UnitTitle" : response.data.data[i].UnitTitle
+        })
+
+        Counters = Counters + response.data.data[i].Counts
+   
+      }
+      setSumCounts(Counters)
+      setRowDataPrint(x)
+      
+})
+.catch((error) => {
+  console.log('Error : ', error)
+})
+}
 
 
   let GetPrint = (_v) => {
@@ -505,6 +537,8 @@ const DefineSetsofProductsReport: React.FC = () => {
                 
 
                   GetSetsofP(v)
+
+                  UpdateData(v)
                 }}
               >
 
@@ -558,13 +592,13 @@ onClick={() => {
           </BaseForm>
         </Auth.FormWrapper>
       </div>
-      <div style={{display:'none'}}>
+      {/* <div style={{display:'none'}}>
       <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
         rowSelections={rowSelection} />
-</div>
+</div> */}
 {
-      <div style={{display:'none'}}  id='printItem2'>
-        <div style={{borderWidth:1,width:'85vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20}}>
+      <div   id='printItem2'>
+        <div style={{borderWidth:1,width:'80vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20,marginLeft:20}}>
         
           <div style={{justifyContent:'center',alignItems:'center',display:'flex'}}>
            
@@ -572,7 +606,7 @@ onClick={() => {
             </div>
 
       </div>
-      <table style={{borderWidth:1,borderStyle:'solid',width:'90vw',marginTop:20,justifyContent:'center',alignItems:'center',borderRadius:5}}>
+      <table style={{borderWidth:0.5,borderStyle:'solid',width:'82vw',marginTop:20,justifyContent:'center',alignItems:'center',borderRadius:5}}>
         <thead style={{height:70}}>
           <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
           <th style={{borderWidth:1,borderStyle:'solid'}}>عنوان </th>
