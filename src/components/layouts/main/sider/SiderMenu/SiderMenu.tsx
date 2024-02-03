@@ -147,13 +147,13 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'لیست ابزار',
         key: 'SetProduceList',
         url: '/SetProduceList',
-        showItem:true
+        showItem:false
       },
       {
         title: 'لیست ست ابزار',
         key: 'SetsetsGroupsList',
         url: '/SetsetsGroupsList',
-        showItem:true
+        showItem:false
       },
       {
         title: 'کاردکس ابزار',
@@ -186,13 +186,13 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'لیست ابزار',
         key: 'SetProduceList2',
         url: '/SetProduceList2',
-        showItem:true
+        showItem:false
       },
       {
         title: 'لیست ست ابزار',
         key: 'SetsetsGroupsList2',
         url: '/SetsetsGroupsList2',
-        showItem:true
+        showItem:false
       },
       {
         title: 'کاردکس ابزار',
@@ -215,6 +215,32 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       }
     ],
   },
+  {
+    title: 'گزارشات',
+   key: 'Reports',
+   icon: <UserOutlined />,
+   showItem:true,
+   children: [
+     {
+       title: 'گزارش CSR',
+       key: 'CSRReports',
+       url: '/CSRReports',
+       showItem:true
+     },
+     {
+       title: 'گزارش تجهیزات پزشکی',
+       key: 'DoctorReports',
+       url: '/DoctorReports',
+       showItem:true
+     },
+     {
+       title: 'گزارش دسترسی ست ابزار',
+       key: 'DefineSetsofProductsReport',
+       url: '/DefineSetsofProductsReport',
+       showItem:true
+     },
+   ],
+ },
 
   // {
   //   title: 'لیست اسناد',

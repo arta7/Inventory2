@@ -8,12 +8,12 @@ import axios from 'axios';
 import { Col, Row } from 'antd';
 import { Config } from '@app/Database/Config';
 import { useNavigate } from 'react-router-dom';
-export const NewsCard: React.FC = () => {
+export const Weblog: React.FC = () => {
   const { t } = useTranslation();
   const [datahtml, setdatahtml] = useState([])
   const navigate = useNavigate();
 
-  let GetHtmlData = () => {
+  let Weblog = () => {
 
     axios.post(Config.URL +
       Config.Defination.GetHtmlData)
@@ -66,27 +66,3 @@ export const NewsCard: React.FC = () => {
     </DashboardCard>
   );
 };
-
-
-// import React,{useState,useEffect} from 'react';
-// import { dashboardNews } from '@app/constants/dashboardNews';
-// import { DashboardCard } from '../DashboardCard/DashboardCard';
-// import * as S from './NewsCard.styles';
-// import { useTranslation } from 'react-i18next';
-// import { ArticleCard } from 'components/common/ArticleCard/ArticleCard';
-// import axios from 'axios';
-// import { Config } from '@app/Database/Config';
-
-// export const NewsCard: React.FC = () => {
-//   const { t } = useTranslation();
-
-//   return (
-//     <DashboardCard title='خبرهای جدید'>
-//       <S.Wrapper>
-//         {datahtml?.map((item, index) => (
-//        <div dangerouslySetInnerHTML={{ __html: `<div>`+item.Context + `</div>` }}></div>
-//         ))}
-//       </S.Wrapper>
-//     </DashboardCard>
-//   );
-// };

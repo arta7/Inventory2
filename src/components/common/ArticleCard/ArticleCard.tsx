@@ -30,13 +30,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 
   const navigate = useNavigate();
   return (
-    <S.Wrapper className={className}>
+    <S.Wrapper className={className} style={{marginRight:10,marginLeft:10,height:200,width:330}} onClick={()=>{
+      console.log('id : ', id)
+    navigate('/ShowNews',{ state: { Id:id } })
+   }}>
 
       { imgUrl != '' &&
-      <Image src={imgUrl} alt="img"  preview={false}  style={{height:300}} onClick={()=>{
-          console.log('id : ', id)
-        navigate('/ShowNews',{ state: { Id:id } })
-       }}/>
+      <Image src={imgUrl} alt="img"  preview={false}  style={{height:120,width:'100%'}} />
         }
       <S.InfoWrapper>
         <S.InfoHeader >

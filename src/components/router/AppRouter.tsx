@@ -75,6 +75,7 @@ const DefineGroups = React.lazy(() => import('@app/NewPage/DefineGroups'));
 const FiscalYears = React.lazy(() => import('@app/NewPage/FiscalYears'));
 const DefineParts = React.lazy(() => import('@app/NewPage/DefineParts'));
 const DefineSetsofProducts = React.lazy(() => import('@app/NewPage/DefineSetsofProducts'));
+const DefineSetsofProductsReport = React.lazy(() => import('@app/NewPage/DefineSetsofProductsReport'));
 const DefineGroupsofSets = React.lazy(() => import('@app/NewPage/DefineGroupsofSets'));
 
 const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
@@ -103,6 +104,10 @@ const HtmlEditor = React.lazy(() => import('@app/NewPage/HtmlEditor'));
 const NewsList = React.lazy(() => import('@app/NewPage/Order/NewsList'));
 
 const ShowNews = React.lazy(() => import('@app/NewPage/ShowNews'));
+
+
+const CSRReports = React.lazy(() => import('@app/NewPage/CSRReports'));
+const DoctorReports = React.lazy(() => import('@app/NewPage/DoctorReports'));
 
 
 // export const NFT_DASHBOARD_PATH = '/';
@@ -146,6 +151,10 @@ const Skeletons = withLoading(SkeletonsPage);
 const DataTables = withLoading(DataTablesPage);
 const ChartsFallBack = withLoading(Charts);
 
+const CSRReportsFallBack = withLoading(CSRReports);
+
+const DcotorReportsFallBack = withLoading(DoctorReports);
+
 // Maps
 const Google = withLoading(GoogleMaps);
 const Leaflet = withLoading(LeafletMaps);
@@ -177,6 +186,8 @@ const DefinePartsFallback = withLoading(DefineParts)
 const DefineUnitFallback = withLoading(DefineUnit)
 const DefineGroupsofSetsFallback = withLoading(DefineGroupsofSets)
 const DefineSetsofProductsFallback = withLoading(DefineSetsofProducts)
+
+const DefineSetsofProductsReportFallback = withLoading(DefineSetsofProductsReport)
 const SetProduceFallback = withLoading(SetProduce)
 const SetSetsGroupsFallback = withLoading(SetSetsGroups)
 const FirstScreenFallback = withLoading(FirstScreen)
@@ -223,6 +234,10 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineUsers" element={<DefineUsersFallback />} />
 
           <Route path="Kardex" element={<KardexFallback />} />
+
+          <Route path="CSRReports" element={<CSRReportsFallBack />} />
+          <Route path="DoctorReports" element={<DcotorReportsFallBack />} />
+
           <Route path="KardexSets" element={<KardexSetsFallback />} />
 
           <Route path="Kardex2" element={<KardexFallback2 />} />
@@ -252,6 +267,8 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineParts" element={<DefinePartsFallback />} />
           <Route path="DefineGroupsofSets" element={<DefineGroupsofSetsFallback />} />
           <Route path="DefineSetsofProducts" element={<DefineSetsofProductsFallback />} />
+
+          <Route path="DefineSetsofProductsReport" element={<DefineSetsofProductsReportFallback />} />
 
           <Route path="SetProduce" element={<SetProduceFallback />} />
           <Route path="SetProduce2" element={<SetProduceFallback2 />} />

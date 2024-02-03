@@ -62,14 +62,12 @@ import { NewsCard } from '@app/components/medical-dashboard/NewsCard/NewsCard';
 import { References } from '@app/components/common/References/References';
 import { useResponsive } from '@app/hooks/useResponsive';
 import * as S from './DashboardPage.styles';
-// import { DataUsers } from '@app/NewPage/DataUsers';
-// import UserContext from './../../NewPage/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
 import UserContext from './UserContext';
 
-const FirstScreen: React.FC = () => {
+const DoctorReports: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
   const { userData, setUserData } = React.useContext(UserContext);
@@ -87,48 +85,6 @@ const FirstScreen: React.FC = () => {
 
   const [DoctorDataInsert, setDoctorDataInsert] = useState([])
   const [PTitleDoctorInsert, setPTitleDoctorInsert] = useState([])
-
-
-  let GetCSRSetsProduct = () => {
-    var data = {
-      "FiscalYear": userData[0].FiscalYearId.toString(),
-      "CollectionId": 2
-    }
-    axios.post(Config.URL +
-      Config.Defination.GetKardexProduct, data)
-      .then((response) => {
-        console.log('data setsdoduments : ', response.data.data)
-        // setCSRData(response.data.data)
-        var data = [];
-        var database = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].ExitValue > 0) {
-            data.push(response.data.data[i].ProductTitle)
-            database.push(response.data.data[i].ExitValue)
-          }
-        }
-        setPTitle(data)
-        setCSRData(database)
-
-        var data1 = [];
-        var database1 = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].InsertValue > 0) {
-            data1.push(response.data.data[i].ProductTitle)
-            database1.push(response.data.data[i].InsertValue)
-          }
-        }
-        setPTitleInsert(data1)
-        setCSRDataInsert(database1)
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-      })
-  }
-
-
-
-
 
 
   let GetDoctorSetsProduct = () => {
@@ -168,48 +124,28 @@ const FirstScreen: React.FC = () => {
       })
   }
 
-
-
-
-
-
   useEffect(() => {
-    GetDoctorSetsProduct()
-    GetCSRSetsProduct()
+     GetDoctorSetsProduct()
   }, [])
 
 
 
   const desktopLayout = (
     <>
-    
-        <Row gutter={[30, 30]} >
-     
-          <NewsCard />
-        </Row>
-        <References />
+
 
 
       <S.RightSideCol >
         <S.Space />
         <S.ScrollWrapper id="patient-timeline">
 
+
           <Col id="activity" xl={24}  >
-            <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
+          <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
           </Col>
 
           <Col id="activity" xl={24}>
-            <ActivityCard database={DoctorData} PTitle={PTitleDoctor} Title={'خروجی تجهیزات پزشکی'} />
-          </Col>
-
-
-
-          <Col id="activity" xl={24}  >
-            <ActivityCard database={CSRDataInsert} PTitle={PTitleInsert} Title='ورودی CSR' />
-          </Col>
-
-          <Col id="activity" xl={24}>
-            <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
+          <ActivityCard database={DoctorData} PTitle={PTitleDoctor} Title={'خروجی تجهیزات پزشکی'} />
           </Col>
 
 
@@ -273,19 +209,8 @@ const FirstScreen: React.FC = () => {
       </Col>
 
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard database={CSRDataInsert} PTitle={PTitleInsert} Title='ورودی CSR' />
-      </Col>
+    
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
-      </Col>
-
-
-
-      <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
-        <NewsCard />
-      </Col>
     </Row>
   );
 
@@ -297,4 +222,4 @@ const FirstScreen: React.FC = () => {
   );
 };
 
-export default FirstScreen;
+export default DoctorReports;

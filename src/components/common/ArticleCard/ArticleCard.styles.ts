@@ -69,8 +69,9 @@ export const InfoHeader = styled.div`
 export const Title = styled.div`
   font-size: ${FONT_SIZE.xl};
   font-weight: ${FONT_WEIGHT.semibold};
-  width: 80%;
-  line-height: 1.375rem;
+  width: 50%;
+  height:'10%';
+  line-height: 1rem;
 
   color: var(--text-main-color);
 

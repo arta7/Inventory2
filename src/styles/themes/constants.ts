@@ -40,7 +40,7 @@ export const FONT_SIZE = {
   md: '1rem',
   lg: '1.125rem',
   xl: '1.25rem',
-  xxl: '1.5rem',
+  xxl: '1rem',
   xxxl: '1.625rem',
   xxxxl: '2rem',
 };
