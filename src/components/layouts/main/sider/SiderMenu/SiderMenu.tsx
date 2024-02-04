@@ -225,22 +225,36 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
        title: 'گزارش CSR',
        key: 'CSRReports',
        url: '/CSRReports',
-       showItem:true
+       showItem:false
      },
      {
        title: 'گزارش تجهیزات پزشکی',
        key: 'DoctorReports',
        url: '/DoctorReports',
-       showItem:true
+       showItem:false
      },
      {
        title: 'گزارش دسترسی ست ابزار',
        key: 'DefineSetsofProductsReport',
        url: '/DefineSetsofProductsReport',
-       showItem:true
+       showItem:false
      },
    ],
  },
+ {
+  title: 'متفرقه',
+ key: 'Other',
+ icon: <UserOutlined />,
+ showItem:true,
+ children: [
+   {
+     title: 'وبلاگ',
+     key: 'Weblog',
+     url: '/Weblog',
+     showItem:false
+   },
+ ],
+},
 
   // {
   //   title: 'لیست اسناد',

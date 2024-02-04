@@ -13,6 +13,8 @@ interface ArticleCardProps {
   description: string;
   avatar?: string;
   tags?: ITag[];
+  wrapstyle:any,
+  imageStyle:any,
   className?: string;
 }
 
@@ -25,18 +27,20 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   author,
   avatar,
   tags,
+  wrapstyle,
+  imageStyle,
   className = 'article-card',
 }) => {
 
   const navigate = useNavigate();
   return (
-    <S.Wrapper className={className} style={{marginRight:10,marginLeft:10,height:200,width:330}} onClick={()=>{
+    <S.Wrapper className={className} style={wrapstyle} onClick={()=>{
       console.log('id : ', id)
     navigate('/ShowNews',{ state: { Id:id } })
    }}>
 
       { imgUrl != '' &&
-      <Image src={imgUrl} alt="img"  preview={false}  style={{height:120,width:'100%'}} />
+      <Image src={imgUrl} alt="img"  preview={false}  style={imageStyle} />
         }
       <S.InfoWrapper>
         <S.InfoHeader >

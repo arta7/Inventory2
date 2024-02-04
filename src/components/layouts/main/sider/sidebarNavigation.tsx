@@ -65,7 +65,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         title: 'تعریف بخش ها',
         key: 'DefineParts',
         url: '/DefineParts',
-        showItem:false
+        showItem:true
       },
       {
         title: 'تعریف گروه کالا',

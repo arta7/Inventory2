@@ -8,9 +8,10 @@ import axios from 'axios';
 import { Col, Row } from 'antd';
 import { Config } from '@app/Database/Config';
 import { useNavigate } from 'react-router-dom';
-export const NewsCard: React.FC = () => {
+export const NewsCard: React.FC = (activeMobile:boolean) => {
   const { t } = useTranslation();
   const [datahtml, setdatahtml] = useState([])
+  const [active, setactive] = useState(false)
   const navigate = useNavigate();
 
   let GetHtmlData = () => {
@@ -43,25 +44,50 @@ export const NewsCard: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log('activemobile',activeMobile.activeMobile)
+    setactive(activeMobile.activeMobile)
     GetHtmlData()
+
+   
   }, [])
   return (
     <DashboardCard title='وبلاگ' style={{marginTop:30,marginRight:30}}>
 
       <S.Wrapper >
-      <Row justify="space-between" align="middle" wrap={false} >
+        {active ? 
+       <Row justify="space-between" align="middle" wrap={false} >
         {datahtml?.map((item, index) => (
           <ArticleCard
             key={index}
             imgUrl={item.ImageLocation != null ? blobToBase64(item.ImageLocation) : ''}
             title={item.Title}
+            wrapstyle={{marginRight:10,marginLeft:10,height:200,width:330}}
+            imageStyle={{height:120,width:'100%'}}
             // description={<div dangerouslySetInnerHTML={{ __html: `<div>` + item.Context + `</div>` }}></div>}
             id={item.Id}
             
             
           />
         ))}
-        </Row>
+         </Row> 
+         :
+         <>
+        {datahtml?.map((item, index) => (
+          <ArticleCard
+            key={index}
+            imgUrl={item.ImageLocation != null ? blobToBase64(item.ImageLocation) : ''}
+            title={item.Title}
+            wrapstyle={{marginRight:10,marginLeft:10,height:200,width:330}}
+            imageStyle={{height:120,width:'100%'}}
+            // description={<div dangerouslySetInnerHTML={{ __html: `<div>` + item.Context + `</div>` }}></div>}
+            id={item.Id}
+            
+            
+          />
+        ))
+}
+        </>
+         }
       </S.Wrapper>
     </DashboardCard>
   );

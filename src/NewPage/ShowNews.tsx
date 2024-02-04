@@ -51,7 +51,7 @@ interface ArticleCardProps {
     <S.Wrapper >
 
       {  datahtml[0]?.ImageLocation != null && 
-      <Image src={blobToBase64(datahtml[0]?.ImageLocation) } alt="img" style={{height:500}}  preview={true} />
+      <Image src={blobToBase64(datahtml[0]?.ImageLocation) } alt="img" style={{height:500}}  preview={false} />
         }
       <S.InfoWrapper>
         <S.InfoHeader >

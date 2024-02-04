@@ -104,7 +104,7 @@ const HtmlEditor = React.lazy(() => import('@app/NewPage/HtmlEditor'));
 const NewsList = React.lazy(() => import('@app/NewPage/Order/NewsList'));
 
 const ShowNews = React.lazy(() => import('@app/NewPage/ShowNews'));
-
+const Weblog = React.lazy(() => import('@app/NewPage/Weblog'));
 
 const CSRReports = React.lazy(() => import('@app/NewPage/CSRReports'));
 const DoctorReports = React.lazy(() => import('@app/NewPage/DoctorReports'));
@@ -150,6 +150,8 @@ const Skeletons = withLoading(SkeletonsPage);
 
 const DataTables = withLoading(DataTablesPage);
 const ChartsFallBack = withLoading(Charts);
+
+const WeblogFallBack = withLoading(Weblog);
 
 const CSRReportsFallBack = withLoading(CSRReports);
 
@@ -247,6 +249,8 @@ export const AppRouter: React.FC = () => {
           <Route path="HtmlEditor" element={<HtmlEditorFallback />} />
           
           <Route path="NewsList" element={<NewsListFallback />} />
+
+          <Route path="Weblog" element={<WeblogFallBack />} />
           <Route path="ShowNews" element={<ShowNewsFallback />} />
 
 

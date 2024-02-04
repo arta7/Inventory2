@@ -42,7 +42,7 @@
 //   );
 // };
 // export default FirstScreen;
-
+import { DashboardCard } from './DashboardCard';
 import draftToHtml from 'draftjs-to-html';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
@@ -68,7 +68,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Config } from '@app/Database/Config';
 import UserContext from './UserContext';
-
+import * as SS from './SForm.styles';
 const FirstScreen: React.FC = () => {
   const { isTablet, isDesktop } = useResponsive();
   const navigate = useNavigate();
@@ -99,26 +99,39 @@ const FirstScreen: React.FC = () => {
       .then((response) => {
         console.log('data setsdoduments : ', response.data.data)
         // setCSRData(response.data.data)
-        var data = [];
         var database = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].ExitValue > 0) {
-            data.push(response.data.data[i].ProductTitle)
-            database.push(response.data.data[i].ExitValue)
+        if (response.data.data.length < 5) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].ExitValue > 0) {
+              database.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].ExitValue})
+            }
           }
         }
-        setPTitle(data)
+        else {
+          for (let i = 0; i < 5; i++) {
+            if (response.data.data[i].ExitValue > 0) {
+              database.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].ExitValue})
+            }
+          }
+        }
+        // setPTitle(data)
         setCSRData(database)
 
-        var data1 = [];
         var database1 = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].InsertValue > 0) {
-            data1.push(response.data.data[i].ProductTitle)
-            database1.push(response.data.data[i].InsertValue)
+        if (response.data.data.length < 5) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].InsertValue > 0) {
+              database1.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].InsertValue})
+            }
           }
         }
-        setPTitleInsert(data1)
+        else {
+          for (let i = 0; i < 5; i++) {
+            if (response.data.data[i].InsertValue > 0) {
+              database1.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].InsertValue})
+            }
+          }
+        }
         setCSRDataInsert(database1)
       })
       .catch((error) => {
@@ -141,26 +154,38 @@ const FirstScreen: React.FC = () => {
       .then((response) => {
         console.log('data setsdoduments : ', response.data.data)
         // setCSRData(response.data.data)
-        var data = [];
         var database = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].ExitValue > 0) {
-            data.push(response.data.data[i].ProductTitle)
-            database.push(response.data.data[i].ExitValue)
+        if (response.data.data.length < 5) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].ExitValue > 0) {
+              database.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].ExitValue})
+            }
+          }
+        } else {
+          for (let i = 0; i < 5; i++) {
+            if (response.data.data[i].ExitValue > 0) {
+              database.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].ExitValue})
+            }
           }
         }
-        setPTitleDoctor(data)
         setDoctorData(database)
 
         var data1 = [];
         var database1 = []
-        for (let i = 0; i < response.data.data.length; i++) {
-          if (response.data.data[i].InsertValue > 0) {
-            data1.push(response.data.data[i].ProductTitle)
-            database1.push(response.data.data[i].InsertValue)
+        if (response.data.data.length < 5) {
+          for (let i = 0; i < response.data.data.length; i++) {
+            if (response.data.data[i].InsertValue > 0) {
+              database1.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].InsertValue})
+            }
           }
         }
-        setPTitleDoctorInsert(data1)
+        else {
+          for (let i = 0; i < 5; i++) {
+            if (response.data.data[i].InsertValue > 0) {
+              database1.push({Title:response.data.data[i].ProductTitle,Value:response.data.data[i].InsertValue})
+            }
+          }
+        }
         setDoctorDataInsert(database1)
       })
       .catch((error) => {
@@ -182,19 +207,74 @@ const FirstScreen: React.FC = () => {
 
   const desktopLayout = (
     <>
-    
-        <Row gutter={[30, 30]} >
-     
-          <NewsCard />
-        </Row>
-        <References />
+
+      <div style={{ width: '99%', height: '35vh' }} >
+
+        <NewsCard activeMobile={true} />
+      </div>
+      <References />
 
 
-      <S.RightSideCol >
-        <S.Space />
-        <S.ScrollWrapper id="patient-timeline">
 
-          <Col id="activity" xl={24}  >
+      <div style={{
+        width: '99%', marginRight: '0.5%',marginLeft:'0.5%', height: '45vh', backgroundColor: 'white',borderRadius:10, flexDirection: 'row'
+        , display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: 10
+      }}>
+                <div style={{ width: '24%', height: '100%', backgroundColor: 'white' }}>
+                <DashboardCard title='5 ورودی آخر تجهیزات CSR'>
+        {CSRDataInsert.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </div>
+
+
+        <div style={{ width: '24%', height: '100%', backgroundColor: 'white' }}>
+        <DashboardCard title='5 خروجی آخر تجهیزات CSR'>
+          {CSRData.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </div>
+
+        <div style={{ width: '24%', height: '100%', backgroundColor: 'white' }}>
+        <DashboardCard title='5 ورودی آخر تجهیزات پزشکی'>
+        {DoctorDataInsert.map((item,index)=>
+            <div style={styles.divStyle}>
+             <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+             <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </div>
+
+
+        <div style={{ width: '24%', height: '100%', backgroundColor: 'white' }}>
+        <DashboardCard title='5 خروجی آخر تجهیزات پزشکی'>
+        {DoctorData.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </div>
+
+   
+      </div>
+
+
+      {/* <Col id="activity" xl={24}  >
             <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
           </Col>
 
@@ -210,83 +290,96 @@ const FirstScreen: React.FC = () => {
 
           <Col id="activity" xl={24}>
             <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
-          </Col>
+          </Col> */}
 
 
 
 
-
-        </S.ScrollWrapper>
-      </S.RightSideCol>
     </>
   );
 
   const mobileAndTabletLayout = (
-    <Row gutter={[20, 20]}>
-      {/* <StatisticsCards /> */}
+    //  <Row gutter={[20, 20]}>
 
-      {/* {isTablet && (
-        <Col id="map" md={24} order={4}>
-          <MapCard />
+
+      <>
+
+
+    <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
+      <NewsCard activeMobile={false} />
+    </Col>
+  
+                <Col
+                xl={24} md={24} 
+                order={(isTablet && 14) || 0}
+                style={{marginTop:10,marginBottom:10}}
+                >
+                <DashboardCard title='5 ورودی آخر تجهیزات CSR'>
+        {CSRDataInsert.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
         </Col>
-      )}
-
-      <Col id="latest-screenings" xs={24} md={12} order={(isTablet && 5) || 0}>
-        <ScreeningsCard />
-      </Col>
-
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard />
-      </Col>
-
-      <Col id="treatment-plan" xs={24} md={24} order={(isTablet && 10) || 0}>
-        <TreatmentCard />
-      </Col>
-
-      <Col id="health" xs={24} md={12} order={(isTablet && 9) || 0}>
-        <HealthCard />
-      </Col>
-
-      <Col id="patient-timeline" xs={24} md={12} order={(isTablet && 11) || 0}>
-        <PatientResultsCard />
-      </Col>
-
-      <Col id="blood-screening" xs={24} md={12} order={(isTablet && 6) || 0}>
-        <BloodScreeningCard />
-      </Col>
-
-      <Col id="favorite-doctors" xs={24} md={24} order={(isTablet && 13) || 0}>
-        <FavoritesDoctorsCard />
-      </Col>
-
-      <Col id="covid" xs={24} md={12} order={(isTablet && 12) || 0}>
-        <CovidCard />
-      </Col> */}
 
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-      <ActivityCard database={DoctorDataInsert} PTitle={PTitleDoctorInsert} Title='ورودی تجهیزات پزشکی' />
-      </Col>
+        <Col
+                xs={24} md={24} 
+                order={(isTablet && 14) || 0}
+                style={{marginTop:10,marginBottom:10}}
+                >
+        <DashboardCard title='5 خروجی آخر تجهیزات CSR'>
+          {CSRData.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </Col>
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-      <ActivityCard database={DoctorData} PTitle={PTitleDoctor} Title={'خروجی تجهیزات پزشکی'} />
-      </Col>
+        <Col
+                xs={24} md={24} 
+                order={(isTablet && 14) || 0}
+                style={{marginTop:10,marginBottom:10}}
+                >
+        <DashboardCard title='5 ورودی آخر تجهیزات پزشکی'>
+        {DoctorDataInsert.map((item,index)=>
+            <div style={styles.divStyle}>
+             <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+             <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </Col>
 
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard database={CSRDataInsert} PTitle={PTitleInsert} Title='ورودی CSR' />
-      </Col>
+        <Col
+                xs={24} md={24} 
+                order={(isTablet && 14) || 0}
+                style={{marginTop:10,marginBottom:10}}
+                >
+        <DashboardCard title='5 خروجی آخر تجهیزات پزشکی'>
+        {DoctorData.map((item,index)=>
+            <div style={styles.divStyle}>
+              <SS.Title style={styles.TitleStyle}>{item.Title}</SS.Title>
+              <SS.Title style={styles.TitleStyle}>{item.Value}</SS.Title>
+            </div>
+          )
+          }
+          </DashboardCard>
+        </Col>
 
-      <Col id="activity" xs={24} md={12} order={(isTablet && 8) || 0}>
-        <ActivityCard database={CSRData} PTitle={PTitle} Title={'خروجی CSR'} />
-      </Col>
+   
+  
 
-
-
-      <Col id="news" xs={24} md={24} order={(isTablet && 14) || 0}>
-        <NewsCard />
-      </Col>
-    </Row>
+    </>
+    // {/* </Row> */}
   );
 
   return (
@@ -298,3 +391,12 @@ const FirstScreen: React.FC = () => {
 };
 
 export default FirstScreen;
+
+
+const styles = {
+  divStyle: {
+    flexDirection: 'row', justifyContent: 'space-between', width: '80%'
+    , marginRight: '10%', marginLeft: '10%', display: 'flex', height: '10%',marginBottom:5
+  },
+  TitleStyle:{fontSize:14,color:'black'}
+}
