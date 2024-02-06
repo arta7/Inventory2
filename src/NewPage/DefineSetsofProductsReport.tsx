@@ -597,41 +597,41 @@ onClick={() => {
         rowSelections={rowSelection} />
 </div> */}
 {
-      <div   id='printItem2'>
-        <div style={{borderWidth:1,width:'80vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20,marginLeft:20}}>
+      <div   id='printItem2' >
+        <div style={{borderWidth:1,width:'80vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20,marginLeft:20,borderColor:'black'}}>
         
           <div style={{justifyContent:'center',alignItems:'center',display:'flex'}}>
            
-            <label style={{fontSize:25}}>{SetsData.filter(items=>items.Id == SetsSelectedItem).length > 0 ? SetsData.filter(items=>items.Id == SetsSelectedItem)[0].Title : ''}</label>
+            <label style={{fontSize:25,color:'black'}}>{SetsData.filter(items=>items.Id == SetsSelectedItem).length > 0 ? SetsData.filter(items=>items.Id == SetsSelectedItem)[0].Title : ''}</label>
             </div>
 
       </div>
       <table style={{borderWidth:0.5,borderStyle:'solid',width:'82vw',marginTop:20,justifyContent:'center',alignItems:'center',borderRadius:5}}>
         <thead style={{height:70}}>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>عنوان </th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>کد</th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>واحد </th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>تعداد</th>
+          <th style={{borderWidth:1,borderStyle:'solid',color:'black'}}>ردیف</th>
+          <th style={{borderWidth:1,borderStyle:'solid',color:'black'}}>عنوان </th>
+          <th style={{borderWidth:1,borderStyle:'solid',color:'black'}}>کد</th>
+          <th style={{borderWidth:1,borderStyle:'solid',color:'black'}}>واحد </th>
+          <th style={{borderWidth:1,borderStyle:'solid',color:'black'}}>تعداد</th>
         </thead>
         <tbody>
 {RowDataPrint.map((item,index)=>
    <tr style={{textAlign:'center',height:70}}>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw'}}>{index+1}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.ProductTitle}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Code}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>{item.UnitTitle}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Counts}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw',color:'black'}}>{index+1}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw',color:'black'}}>{item.ProductTitle}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw',color:'black'}}>{item.Code}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw',color:'black'}}>{item.UnitTitle}</td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw',color:'black'}}>{item.Counts}</td>
  </tr>
 )
        
 }
 <tr style={{textAlign:'center',height:70}}>
 <td ></td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>جمع کل </td>
+   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw',color:'black'}}>جمع کل </td>
    <td ></td> 
    <td ></td>
-   <td style={{width:'20vw'}}>{SumCounts}</td>
+   <td style={{width:'20vw',color:'black'}}>{SumCounts}</td>
  
 </tr>
 

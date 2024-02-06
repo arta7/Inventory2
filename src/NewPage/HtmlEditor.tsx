@@ -157,7 +157,7 @@ const HtmlEditor: React.FC = () => {
               }
 
             </BaseForm.Item>
-            <div>
+            {/* <div>
           <BaseForm.Item style={{ width: '350px' }}  >
               { location.state == null &&
                 <Auth.FormInput
@@ -167,7 +167,7 @@ const HtmlEditor: React.FC = () => {
               }
 
             </BaseForm.Item>
-          </div>
+          </div> */}
           </div>
       
           <img src={file} style={{ width: '300px', height: '190px', borderWidth: 1, borderColor: 'black', marginTop: '5px', marginRight: '5px', marginLeft: '5px' }} id="image" />
@@ -212,7 +212,7 @@ const HtmlEditor: React.FC = () => {
         </div>
 
 
-
+            <div style={{minHeight:'40vh'}}>
         <Editor
           editorState={editorState}
           toolbarClassName="toolbarClassName"
@@ -220,6 +220,7 @@ const HtmlEditor: React.FC = () => {
           editorClassName="editorClassName"
           onEditorStateChange={onEditorStateChange}
         />
+        </div>
       </BaseForm>
     </div>
   );

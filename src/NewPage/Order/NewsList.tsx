@@ -315,16 +315,16 @@ const NewsList: React.FC = () => {
   <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
     navigate('/HtmlEditor')
   }}>
-    سند جدید
+     پست جدید
   </Auth.SubmitButton>
 
-  <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
+  {/* <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
     () => {
    setCounter(Counter+1)
     }
   }>
     بازیابی
-  </Auth.SubmitButton>
+  </Auth.SubmitButton> */}
 
 
 </div>

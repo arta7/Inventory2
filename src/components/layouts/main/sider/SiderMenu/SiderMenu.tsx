@@ -129,7 +129,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف خبر',
+        title: 'تعریف وبلاگ',
         key: 'NewsList',
         url: '/NewsList',
         showItem:false
@@ -155,18 +155,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetsetsGroupsList',
         showItem:false
       },
-      {
-        title: 'کاردکس ابزار',
-        key: 'kardex',
-        url: '/kardex',
-        showItem:false
-      },
-      {
-        title: 'کاردکس ست ابزار',
-        key: 'kardexSets',
-        url: '/kardexSets',
-        showItem:false
-      },
+  
       {
         title: 'نمودار',
         key: 'charts',
@@ -194,18 +183,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetsetsGroupsList2',
         showItem:false
       },
-      {
-        title: 'کاردکس ابزار',
-        key: 'kardex2',
-        url: '/kardex2',
-        showItem:false
-      },
-      {
-        title: 'کاردکس ست ابزار',
-        key: 'kardexSets2',
-        url: '/kardexSets2',
-        showItem:false
-      },
+   
       {
         title: 'نمودار',
         key: 'charts',
@@ -239,6 +217,30 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
        url: '/DefineSetsofProductsReport',
        showItem:false
      },
+     {
+      title: ' کاردکس ابزار  پزشکی' ,
+      key: 'kardex',
+      url: '/kardex',
+      showItem:false
+    },
+    {
+      title: 'کاردکس ست ابزار  پزشکی',
+      key: 'kardexSets',
+      url: '/kardexSets',
+      showItem:false
+    },
+    {
+      title: 'کاردکس ابزار CSR ',
+      key: 'kardex2',
+      url: '/kardex2',
+      showItem:false
+    },
+    {
+      title: 'کاردکس ست ابزار CSR',
+      key: 'kardexSets2',
+      url: '/kardexSets2',
+      showItem:false
+    },
    ],
  },
  {
