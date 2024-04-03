@@ -109,6 +109,8 @@ const Weblog = React.lazy(() => import('@app/NewPage/Weblog'));
 const CSRReports = React.lazy(() => import('@app/NewPage/CSRReports'));
 const DoctorReports = React.lazy(() => import('@app/NewPage/DoctorReports'));
 
+const MovesWarehouse = React.lazy(() => import('@app/NewPage/Moves/MovesWarehouse'));
+
 
 // export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/';
@@ -188,6 +190,7 @@ const DefinePartsFallback = withLoading(DefineParts)
 const DefineUnitFallback = withLoading(DefineUnit)
 const DefineGroupsofSetsFallback = withLoading(DefineGroupsofSets)
 const DefineSetsofProductsFallback = withLoading(DefineSetsofProducts)
+const MovesWarehouseFallback = withLoading(MovesWarehouse)
 
 const DefineSetsofProductsReportFallback = withLoading(DefineSetsofProductsReport)
 const SetProduceFallback = withLoading(SetProduce)
@@ -271,6 +274,8 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineParts" element={<DefinePartsFallback />} />
           <Route path="DefineGroupsofSets" element={<DefineGroupsofSetsFallback />} />
           <Route path="DefineSetsofProducts" element={<DefineSetsofProductsFallback />} />
+          
+          <Route path="MovesWarehouse" element={<MovesWarehouseFallback />} />
 
           <Route path="DefineSetsofProductsReport" element={<DefineSetsofProductsReportFallback />} />
 

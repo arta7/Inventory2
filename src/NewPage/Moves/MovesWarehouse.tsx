@@ -1,104 +1,3 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import { useTranslation } from 'react-i18next';
-// import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
-// import { useAppDispatch } from '@app/hooks/reduxHooks';
-// import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-// import * as S from './SForm.styles';
-// import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-// import { Select, Option } from '@app/components/common/selects/Select/Select';
-// import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-// import { Space } from 'antd';
-// import CheckBoxTables from './CheckBoxTables';
-// interface DefinePostData {
-//   Title: string;
-//   Code: string;
-
-// }
-
-
-//  const DefineGroupsofSets: React.FC = () => {
-//   const navigate = useNavigate();
-//   const dispatch = useAppDispatch();
-//   const [isLoading, setLoading] = useState(false);
-
-//   const { t } = useTranslation();
-
-//   const handleSubmit = (values: DefinePostData) => {
-//     // setLoading(true);
-//     // dispatch(doSignUp(values))
-//     //   .unwrap()
-//     //   .then(() => {
-//     //     notificationController.success({
-//     //       message: t('auth.signUpSuccessMessage'),
-//     //       description: t('auth.signUpSuccessDescription'),
-//     //     });
-//     //     navigate('/auth/login');
-//     //   })
-//     //   .catch((err) => {
-//     //     notificationController.error({ message: err.message });
-//     //     setLoading(false);
-//     //   });
-//   };
-
-//   return (
-//     <div >
-//       <div style={{
-//         display: 'flex',
-//         alignItems: 'center',
-//         justifyContent: 'center'
-//       }}>
-//     <Auth.FormWrapper >
-//       <BaseForm layout="vertical" onFinish={handleSubmit}  >
-//         <S.Title>دسترسی گروه ها</S.Title>
-      
-//         <BaseButtonsForm.Item name="Groups" label="گروه ها"
-//            rules={[{ required: true}]}
-//         >
-//       <Select>
-//         <Option value="1">
-//           <Space align="center">
-//             {/* <ManOutlined /> */}
-//             گروه 1
-//           </Space>
-//         </Option>
-//         <Option value="2">
-//           <Space align="center">
-//             {/* <WomanOutlined /> */}
-//              گروه 2 
-//           </Space>
-//         </Option>
-//         <Option value="3">
-//           <Space align="center">
-//             {/* <WomanOutlined /> */}
-//              گروه 3 
-//           </Space>
-//         </Option>
-//       </Select>
-
-      
-//     </BaseButtonsForm.Item>
-
-
-//     <BaseForm.Item noStyle>
-//           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
-//            ثبت
-//           </Auth.SubmitButton>
-//         </BaseForm.Item>
-        
-//       </BaseForm>
-//     </Auth.FormWrapper>
-//     </div>
-//      <CheckBoxTables />
-
-     
-//      </div>
-//   );
-// };
-
-// export default DefineGroupsofSets;
-
 
 import React, { useEffect, useState,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -107,15 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './SForm.styles';
+import * as S from './../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import { Space,Button, Table,InputRef,Input  } from 'antd';
-import CheckBoxTables from './CheckBoxTables';
+import CheckBoxTables from './../CheckBoxTables';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
-import { Config } from './../Database/Config';
+import { Config } from './../../Database/Config';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -137,10 +36,12 @@ type DataIndex = keyof DataType;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isLoading, setisLoading] = useState(false);
-  const [GroupsData, setGroupsData] = useState([]);
+  const [SetsData, setSetsData] = useState([]);
   const [GroupsSelectedItem, setGroupsSelectedItem] = useState('');
   const [CollectionItemSelected, setCollectionItemSelected] = useState('');
   const [AllData, setAllData] = useState([]);
+  const [SecondItems,setSecondItems] = useState([{Id:3,value:'تجهیزات پزشکی'},{Id:4,value:'تجهیزات CSR'}])
+  const [SecondValue,setSecondValue] = useState(4)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -334,10 +235,10 @@ type DataIndex = keyof DataType;
   let GetGroups = () => {
 
     axios.post(Config.URL +
-      Config.Defination.GetGroups)
+      Config.Defination.GetSets)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        setGroupsData(response.data.data)
+        setSetsData(response.data.data)
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -473,13 +374,18 @@ type DataIndex = keyof DataType;
         >
       <Select
        onChange={(v) => {
-        setSelectedRowKeys([])
-        setCollectionItemSelected(v)
-        console.log('')
-        if(GroupsSelectedItem !='')
-        {
-         GetGroupOfS(GroupsSelectedItem,v)
-        }
+         console.log('v',v)
+         if(v == 1)
+         {
+          setSecondValue(4)
+          form.setFieldsValue({SecondWarehouse: 4})
+         }
+         else if(v==2)
+         {
+          setSecondValue(3)
+          form.setFieldsValue({SecondWarehouse: 3})
+         }
+
       }}
       >
         
@@ -501,20 +407,38 @@ type DataIndex = keyof DataType;
 
 
        
-        <BaseButtonsForm.Item name="Groups" label="نام انبار ثانویه"
+        <BaseButtonsForm.Item name="SecondWarehouse" label="نام انبار ثانویه"
            rules={[{ required: true}]}
         >
-     <Option value={1}>
-          <Space align="center">
-          تجهیزات پزشکی
-          </Space>
-        </Option>
+   <Select
+       onChange={(v) => {
+        console.log('v2',v)
+        // setSelectedRowKeys([])
+        // setCollectionItemSelected(v)
+        // console.log('')
+        // if(GroupsSelectedItem !='')
+        // {
+        //  GetGroupOfS(GroupsSelectedItem,v)
+        // }
+      }}
+        disabled={true}
+       value ={SecondValue}
+      >
+        
+        {
+          SecondItems.map((item,index)=>(
            
-        <Option value={2}>
+        <Option value={item.Id}>
           <Space align="center">
-          تجهیزات CSR
+            {item.value}
           </Space>
         </Option>
+            
+          ))
+        }
+          
+        
+      </Select>
         
     </BaseButtonsForm.Item>
 
@@ -524,13 +448,12 @@ type DataIndex = keyof DataType;
         >
       <Select
        onChange={(v) => {
-        console.log('v : ', v)
-        setGroupsSelectedItem(v)
-         GetGroupOfS(v,CollectionItemSelected)
+       
       }}
+      
       >
         {
-          GroupsData.map((item,index)=>(
+          SetsData.map((item,index)=>(
            
         <Option value={item.Id}>
           <Space align="center">
