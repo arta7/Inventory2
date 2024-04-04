@@ -38,6 +38,7 @@ URL:'https://api.docshafa.ir/api',
         AddProductDocuments:'/AddProductDocuments',
         AddSetsDocuments:'/AddSetsDocuments',
         AddGroupOfSets:'/AddGroupOfSets',
+        AddMovesWareHouse:'/AddMovesWareHouse',
         AddUsers:'/AddUsers',
         AddFiscalYear:'/AddFiscalYears',
         AddSets:'/AddSets',
@@ -62,7 +63,8 @@ URL:'https://api.docshafa.ir/api',
         DeleteDocumentControlsSets:'/DeleteDocumentControlsSets',
         DeleteDocumentControlsProduct:'/DeleteDocumentControlsProduct',
         DeleteDocumentControls:"/DeleteDocumentControls",
-        DeleteHtmlData:"/DeleteHtmlData"
+        DeleteHtmlData:"/DeleteHtmlData",
+        DeleteMovesWareHouse:"/DeleteMovesWareHouse"
     }
   
 

@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Config } from './../../Database/Config';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-
+import UserContext from './../UserContext';
 interface DefinePostData {
   Title: string;
   Code: string;
@@ -41,12 +41,18 @@ type DataIndex = keyof DataType;
   const [CollectionItemSelected, setCollectionItemSelected] = useState('');
   const [AllData, setAllData] = useState([]);
   const [SecondItems,setSecondItems] = useState([{Id:3,value:'تجهیزات پزشکی'},{Id:4,value:'تجهیزات CSR'}])
-  const [SecondValue,setSecondValue] = useState(4)
+  const [SecondValue,setSecondValue] = useState(0)
+  const [FirstValue,setFirstValue] = useState(0)
+  const [setsValue,setsetsValue] = useState(0)
+  const [AmountValue,setAmountValue] = useState(0)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const { t } = useTranslation();
   const [form] = BaseForm.useForm();
+
+  const { userData, setUserData } = React.useContext(UserContext);
+
   const handleSubmit = (values: DefinePostData) => {
 
   };
@@ -247,6 +253,53 @@ type DataIndex = keyof DataType;
 
   }
 
+
+  let GetKardex = (_sets, _fiscal,_collectionRef) => {
+    setLoading(true)
+    var data = {
+      "SetsRef": _sets,
+      "FiscalYearRef": _fiscal,
+      "CollectionId":_collectionRef
+    }
+
+    axios.post(Config.URL +
+      Config.Defination.GetKardexSets, data)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        var data1 = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+          data1.push({
+            InsertValue: response.data.data[i].InsertValue,
+            ExitValue: response.data.data[i].ExitValue
+          })
+        }
+
+        let insertvalue=0;
+        let exitvalue=0;
+
+          for(let k=0;k<data1.length;k++)
+          {
+            console.log('insertvalue 2',insertvalue)
+              insertvalue += data1[k].InsertValue;
+              exitvalue += data1[k].ExitValue;
+
+              console.log('insertvalue 3',insertvalue)
+          }
+
+          setAmountValue(insertvalue-exitvalue)
+          form.setFieldsValue({Amount: insertvalue-exitvalue})
+        console.log('data1 : ', data1)
+       // setAllData(data1)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+        setLoading(false)
+      })
+
+
+  }
+
   let GetSets = () => {
 
  
@@ -268,32 +321,64 @@ type DataIndex = keyof DataType;
   }
 
 
-  let AddGroupOfSets = () => {
+  // let AddGroupOfSets = () => {
 
-    for(let i =0;i<DataProduct.length;i++)
-    {
-      if(selectedRowKeys.filter(a=>a == DataProduct[i].SetsRef).length == 0)
-      {
-        DataProduct = DataProduct.filter(item => item.SetsRef != DataProduct[i].SetsRef && item.CollectionId !=DataProduct[i].CollectionId );
-      }
-    }
+  //   for(let i =0;i<DataProduct.length;i++)
+  //   {
+  //     if(selectedRowKeys.filter(a=>a == DataProduct[i].SetsRef).length == 0)
+  //     {
+  //       DataProduct = DataProduct.filter(item => item.SetsRef != DataProduct[i].SetsRef && item.CollectionId !=DataProduct[i].CollectionId );
+  //     }
+  //   }
 
-    console.log('DataProduct', JSON.stringify(DataProduct))
+  //   console.log('DataProduct', JSON.stringify(DataProduct))
+  //   var data = {
+  //     'jsonData': JSON.stringify(DataProduct)
+  //   }
+  //   axios.post(Config.URL +
+  //     Config.Defination.AddGroupOfSets, data)
+  //     .then((response) => {
+  //       console.log('response data product : ', response.data.data)
+  //       setLoading(false)
+  //       form.setFieldsValue({
+  //         Groups: ''
+  //       })
+  //       setGroupsSelectedItem('')
+  //       setSelectedRowKeys([])
+  //       DataProduct = [];
+  //       alert(' اطلاعات با موفقیت ثبت شد')
+  //     })
+  //     .catch((error) => {
+  //       console.log('Error : ', error)
+  //       setLoading(false)
+  //     })
+  // }
+
+
+
+  let AddMovesWareHouses = (_firstwarehouseId,_secondwarehouseId,_setsId,_amount) => {
+
     var data = {
-      'jsonData': JSON.stringify(DataProduct)
+      'FirstWareHouseId': _firstwarehouseId,
+      "SecondWareHouseId":_secondwarehouseId,
+      "SetsId": _setsId,
+      "Amount":_amount
     }
-    // console.log('@jsonData : ',data)
     axios.post(Config.URL +
-      Config.Defination.AddGroupOfSets, data)
+      Config.Defination.AddMovesWareHouse, data)
       .then((response) => {
         console.log('response data product : ', response.data.data)
         setLoading(false)
         form.setFieldsValue({
-          Groups: ''
+          Amount: 0,
+          FirstWareHouse:'',
+          SecondWarehouse : '',
+          Sets:''
         })
-        setGroupsSelectedItem('')
-        setSelectedRowKeys([])
-        DataProduct = [];
+        setAmountValue(0)
+       setFirstValue(0)
+       setSecondValue(0)
+       
         alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
@@ -312,7 +397,7 @@ type DataIndex = keyof DataType;
       Config.Defination.DeleteGroupOfSetsCollection, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
-        AddGroupOfSets()
+        // AddGroupOfSets()
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -369,14 +454,16 @@ type DataIndex = keyof DataType;
       <BaseForm layout="vertical" onFinish={handleSubmit}  form={form} >
         <S.Title>گروه  جراحی</S.Title>
       
-        <BaseButtonsForm.Item name="Collection" label="نام انبار جاری"
+        <BaseButtonsForm.Item name="FirstWareHouse" label="نام انبار جاری"
            rules={[{ required: true}]}
         >
       <Select
        onChange={(v) => {
          console.log('v',v)
+         setFirstValue(v)
          if(v == 1)
          {
+
           setSecondValue(4)
           form.setFieldsValue({SecondWarehouse: 4})
          }
@@ -413,13 +500,6 @@ type DataIndex = keyof DataType;
    <Select
        onChange={(v) => {
         console.log('v2',v)
-        // setSelectedRowKeys([])
-        // setCollectionItemSelected(v)
-        // console.log('')
-        // if(GroupsSelectedItem !='')
-        // {
-        //  GetGroupOfS(GroupsSelectedItem,v)
-        // }
       }}
         disabled={true}
        value ={SecondValue}
@@ -448,7 +528,9 @@ type DataIndex = keyof DataType;
         >
       <Select
        onChange={(v) => {
-       
+        setsetsValue(v)
+        console.log('sets v',v)
+        GetKardex(v,userData[0].FiscalYearId.toString(),FirstValue)
       }}
       
       >
@@ -467,13 +549,26 @@ type DataIndex = keyof DataType;
     </BaseButtonsForm.Item>
 
 
+    <Auth.FormItem
+              name="Amount"
+              label="تعداد ست های جاری"
+              rules={[{ required: true, message: t('common.requiredField') }]}
+             
+            >
+              <Auth.FormInput placeholder="تعداد ست" min={0}  value={AmountValue} defaultValue={AmountValue} onChange={(e) => { setAmountValue(e.target.value) }} type='number'/>
+            </Auth.FormItem>
+
+
     <BaseForm.Item noStyle>
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}
           
           onClick={() => {
             console.log('test')
-            if (GroupsSelectedItem != '') {
-              DeleteGroupOfSets()
+            if (FirstValue != 0 && SecondValue!=0 && setsValue!=0) {
+              if(AmountValue>0)
+              AddMovesWareHouses(FirstValue,SecondValue,setsValue,AmountValue)
+            else
+       alert('میزان ست جاری منفی می باشد،لطفا ابتدا نوع سندها را چک کنید.')
             }
 
             else {
@@ -488,11 +583,11 @@ type DataIndex = keyof DataType;
       </BaseForm>
     </Auth.FormWrapper>
     </div>
-     <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
+     {/* <CheckBoxTables DataSource={AllData} columns={columns.filter(item => !item.hidden)}
      rowSelections={rowSelection}  
      
      
-      />
+      /> */}
 
      
      </div>
