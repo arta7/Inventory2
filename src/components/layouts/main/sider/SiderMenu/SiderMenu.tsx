@@ -121,6 +121,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefinePost',
         showItem:false
       },
+      {
+        title: 'جابجایی انبار',
+        key: 'MovesWarehouse',
+        url: '/MovesWarehouse',
+        showItem:false
+      },
     
       {
         title: 'تعریف دسترسی کاربران',

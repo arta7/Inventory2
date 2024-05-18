@@ -254,6 +254,67 @@ type DataIndex = keyof DataType;
   }
 
 
+  let AddDocumentControls = (_code, _type, _userRef, _fiscalYearRef,_collectionRef,_stateRef,_setsRef,_amount) => {
+    setLoading(true)
+  var data = {
+    "Code": _code,
+    "Type": _type,
+    "UserRef": _userRef,
+    "SecondUserRef": '22',
+    "FiscalYearRef": _fiscalYearRef,
+    "StatesRef": _stateRef,
+    "CurrentState": 1,
+    "RegisterDate":
+      new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
+      "Date":  new Date().toJSON().slice(0, 10).replace(/-/g, '/').toString(),
+      "CollectionId":_collectionRef
+  }
+  axios.post(Config.URL +
+    Config.Defination.AddDocumentControlsCollection, data)
+    .then((response) => {
+      console.log('response data : ', response.data.data)
+      console.log('result Id : ', response.data.data)
+      AddSetsDocuments(response.data.data[0].Id,_setsRef,_amount)
+
+    })
+    .catch((error) => {
+      console.log('Error : ', error)
+      setLoading(false)
+    })
+}
+
+
+
+
+
+let AddSetsDocuments = (_id,_setsRef,_amount) => {
+
+  setLoading(true)
+  var dataPush = [];
+    dataPush.push({ "SetsRef": _setsRef, "Counts": _amount, "Details": "", "DocumentsRef": _id.toString() })
+  
+
+  var data = {
+    "jsonData": JSON.stringify(dataPush)
+  }
+  console.log('data push for add database : ', data)
+  axios.post(Config.URL +
+    Config.Defination.AddSetsDocuments, data)
+    .then((response) => {
+      console.log('response data : ', response.data.data)
+
+      console.log('result Id : ', response.data)
+      setLoading(false)
+      // alert(' اطلاعات با موفقیت ثبت شد')
+    })
+    .catch((error) => {
+      setLoading(false)
+      console.log('Error : ', error)
+    })
+}
+
+
+
   let GetKardex = (_sets, _fiscal,_collectionRef) => {
     setLoading(true)
     var data = {
@@ -375,10 +436,24 @@ type DataIndex = keyof DataType;
           SecondWarehouse : '',
           Sets:''
         })
-        setAmountValue(0)
-       setFirstValue(0)
-       setSecondValue(0)
        
+       if(FirstValue == 1)
+       {
+        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),1,"16",setsValue,AmountValue)
+        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),2,"15",setsValue,AmountValue)
+        setAmountValue(0)
+        setFirstValue(0)
+        setSecondValue(0)
+       }
+       else if(FirstValue ==2)
+       {
+        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),2,"16",setsValue,AmountValue)
+        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),1,"15",setsValue,AmountValue)
+        setAmountValue(0)
+        setFirstValue(0)
+        setSecondValue(0)
+       }
+
         alert(' اطلاعات با موفقیت ثبت شد')
       })
       .catch((error) => {
