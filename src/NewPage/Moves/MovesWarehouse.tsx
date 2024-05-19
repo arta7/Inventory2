@@ -241,7 +241,7 @@ type DataIndex = keyof DataType;
   let GetGroups = () => {
 
     axios.post(Config.URL +
-      Config.Defination.GetSets)
+      Config.Defination.GetProducts)
       .then((response) => {
         console.log('response data : ', response.data.data)
         setSetsData(response.data.data)
@@ -315,16 +315,16 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
 
 
 
-  let GetKardex = (_sets, _fiscal,_collectionRef) => {
+  let GetKardex = (_productRef, _fiscal,_collectionRef) => {
     setLoading(true)
     var data = {
-      "SetsRef": _sets,
+      "ProductRef": _productRef,
       "FiscalYearRef": _fiscal,
       "CollectionId":_collectionRef
     }
 
     axios.post(Config.URL +
-      Config.Defination.GetKardexSets, data)
+      Config.Defination.GetKardex, data)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
@@ -365,7 +365,7 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
 
  
     axios.post(Config.URL +
-      Config.Defination.GetSets)
+      Config.Defination.GetProducts)
       .then((response) => {
         console.log('response data : ', response.data.data)
         var data1 = [];
@@ -598,7 +598,7 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
     </BaseButtonsForm.Item>
 
 
-    <BaseButtonsForm.Item name="Sets" label="نام ست"
+    <BaseButtonsForm.Item name="Sets" label="نام محصول"
            rules={[{ required: true}]}
         >
       <Select
