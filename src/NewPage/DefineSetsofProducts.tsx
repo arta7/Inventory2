@@ -44,11 +44,11 @@ const DefineSetsofProducts: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-
+  const [GroupsData, setGroupsData] = useState([]);
   const [DataPrint,setDataPrint] = useState({})
   const [RowDataPrint,setRowDataPrint] = useState([])
   const [SumCounts,setSumCounts] = useState(0)
-
+  const [CollectionItemSelected, setCollectionItemSelected] = useState('2');
 
   const { t } = useTranslation();
   const [form] = BaseForm.useForm();
@@ -364,6 +364,21 @@ const DefineSetsofProducts: React.FC = () => {
       })
   }
 
+  let GetGroups = () => {
+
+    axios.post(Config.URL +
+      Config.Defination.GetGroups)
+      .then((response) => {
+        console.log('response data : ', response.data.data)
+        setGroupsData(response.data.data)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+      })
+
+
+  }
+
 
 
 
@@ -481,6 +496,11 @@ const DefineSetsofProducts: React.FC = () => {
   useEffect(() => {
     GetProducts()
     GetSets()
+    // GetGroups()
+    // setCollectionItemSelected('2')
+    form.setFieldsValue({
+      Collection: 'تجهیزات CSR'
+    })
 
   }, [Counter])
 
@@ -494,6 +514,39 @@ const DefineSetsofProducts: React.FC = () => {
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
             <S.Title>ابزار هر سِت </S.Title>
+
+            <BaseButtonsForm.Item name="Collection" label="نام مجموعه"
+           rules={[{ required: true}]}
+        >
+      <Select
+      disabled={true}
+      value ={CollectionItemSelected}
+       onChange={(v) => {
+        // setSelectedRowKeys([])
+        // setCollectionItemSelected(v)
+        // console.log('')
+        // if(GroupsSelectedItem !='')
+        // {
+        //  GetGroupOfS(GroupsSelectedItem,v)
+        // }
+      }}
+      >
+        
+        <Option value={1}>
+          <Space align="center">
+          تجهیزات پزشکی
+          </Space>
+        </Option>
+           
+        <Option value={2}>
+          <Space align="center">
+          تجهیزات CSR
+          </Space>
+        </Option>
+          
+        
+      </Select>
+    </BaseButtonsForm.Item>
 
             <BaseButtonsForm.Item name="Sets" label="نام ست"
               rules={[{ required: true }]}
@@ -524,6 +577,31 @@ const DefineSetsofProducts: React.FC = () => {
 
 
             </BaseButtonsForm.Item>
+
+              
+        {/* <BaseButtonsForm.Item name="Groups" label="نام گروه"
+           rules={[{ required: true}]}
+        >
+      <Select
+       onChange={(v) => {
+        console.log('v : ', v)
+        // setGroupsSelectedItem(v)
+        //  GetGroupOfS(v,CollectionItemSelected)
+      }}
+      >
+        {
+          GroupsData.map((item,index)=>(
+           
+        <Option value={item.Id}>
+          <Space align="center">
+            {item.Title}
+          </Space>
+        </Option>
+            
+          ))
+        }
+      </Select>
+    </BaseButtonsForm.Item> */}
 
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>

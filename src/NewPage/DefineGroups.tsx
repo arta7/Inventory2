@@ -538,7 +538,7 @@ const DefineGroups: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <S.Title>تعریف گروه جراحی</S.Title>
+            <S.Title>تعریف  درخواست کننده</S.Title>
             <Auth.FormItem
               name="Title"
               label="عنوان"

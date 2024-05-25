@@ -85,7 +85,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف گروه جراحی',
+        title: 'تعریف  درخواست کننده',
         key: 'DefineGroups',
         url: '/DefineGroups',
         showItem:false
@@ -96,12 +96,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefineSetsofProducts',
         showItem:false
       },
-      {
-        title: 'ایجاد گروه جراحی',
-        key: 'DefineGroupsofSets',
-        url: '/DefineGroupsofSets',
-        showItem:false
-      },
+      // {
+      //   title: 'ایجاد گروه جراحی',
+      //   key: 'DefineGroupsofSets',
+      //   url: '/DefineGroupsofSets',
+      //   showItem:false
+      // },
      
       {
         title: 'تعریف نوع سند',
@@ -155,12 +155,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetProduceList',
         showItem:false
       },
-      {
-        title: 'لیست ست ابزار',
-        key: 'SetsetsGroupsList',
-        url: '/SetsetsGroupsList',
-        showItem:false
-      },
+      // {
+      //   title: 'لیست ست ابزار',
+      //   key: 'SetsetsGroupsList',
+      //   url: '/SetsetsGroupsList',
+      //   showItem:false
+      // },
   
       {
         title: 'نمودار',
@@ -183,12 +183,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetProduceList2',
         showItem:false
       },
-      {
-        title: 'لیست ست ابزار',
-        key: 'SetsetsGroupsList2',
-        url: '/SetsetsGroupsList2',
-        showItem:false
-      },
+      // {
+      //   title: 'لیست ست ابزار',
+      //   key: 'SetsetsGroupsList2',
+      //   url: '/SetsetsGroupsList2',
+      //   showItem:false
+      // },
    
       {
         title: 'نمودار',

@@ -291,7 +291,7 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
 
   setLoading(true)
   var dataPush = [];
-    dataPush.push({ "SetsRef": _setsRef, "Counts": _amount, "Details": "", "DocumentsRef": _id.toString() })
+    dataPush.push({ "ProductRef": _setsRef, "Counts": _amount, "Details": "", "DocumentsRef": _id.toString() })
   
 
   var data = {
@@ -299,7 +299,7 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
   }
   console.log('data push for add database : ', data)
   axios.post(Config.URL +
-    Config.Defination.AddSetsDocuments, data)
+    Config.Defination.AddProductDocuments, data)
     .then((response) => {
       console.log('response data : ', response.data.data)
 
@@ -439,16 +439,16 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
        
        if(FirstValue == 1)
        {
-        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),1,"16",setsValue,AmountValue)
-        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),2,"15",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"16",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"15",setsValue,AmountValue)
         setAmountValue(0)
         setFirstValue(0)
         setSecondValue(0)
        }
        else if(FirstValue ==2)
        {
-        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),2,"16",setsValue,AmountValue)
-        AddDocumentControls("","2","5",userData[0].FiscalYearId.toString(),1,"15",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"16",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"15",setsValue,AmountValue)
         setAmountValue(0)
         setFirstValue(0)
         setSecondValue(0)
@@ -643,7 +643,7 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
               if(AmountValue>0)
               AddMovesWareHouses(FirstValue,SecondValue,setsValue,AmountValue)
             else
-       alert('میزان ست جاری منفی می باشد،لطفا ابتدا نوع سندها را چک کنید.')
+       alert('میزان محصول جاری منفی می باشد،لطفا ابتدا نوع سندها را چک کنید.')
             }
 
             else {
