@@ -207,15 +207,15 @@ const SetProduceList: React.FC = () => {
       hidden: true,
       disaplay:0
     },
-    {
-      title: 'درخواست کننده',
-      dataIndex: 'SecondUsername',
-      key: 'SecondUsername',
-      width: '20%',
-      hidden: false,
-      ...getColumnSearchProps('SecondUsername'),
-      disaplay:1
-    },
+    // {
+    //   title: 'درخواست کننده',
+    //   dataIndex: 'SecondUsername',
+    //   key: 'SecondUsername',
+    //   width: '20%',
+    //   hidden: false,
+    //   ...getColumnSearchProps('SecondUsername'),
+    //   disaplay:1
+    // },
     {
       title: 'SecondUserRef ',
       dataIndex: 'SecondUserRef',
@@ -314,7 +314,9 @@ const SetProduceList: React.FC = () => {
           style={{ marginRight: 20, backgroundColor: 'Yellow', color: 'black' }}
           onClick={e=>{
            
-            setDataPrint({"Id":record.Id,"StatesTitle":record.StatesTitle,"SecondUsername":record.SecondUsername,"Date":record.Date })
+            setDataPrint({"Id":record.Id,"StatesTitle":record.StatesTitle
+            //,"SecondUsername":record.SecondUsername
+            ,"Date":record.Date })
            GetProductDocumentData(record.Id)
           }
         }
@@ -415,7 +417,7 @@ const SetProduceList: React.FC = () => {
             , UserRef: response.data.data[i].UserRef,
             Username: response.data.data[i].Username
             , SecondUserRef: response.data.data[i].SecondUserRef,
-            SecondUsername: response.data.data[i].SecondUsername,
+            // SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
             Datevalue: response.data.data[i].Date
           })
@@ -531,10 +533,10 @@ const SetProduceList: React.FC = () => {
         </div>
 
         <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex',margin:20}}>
-          <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
+          {/* <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
             <label > درخواست کننده  :  </label>
             <label >{DataPrint?.SecondUsername}</label>
-            </div>
+            </div> */}
 
             <div style={{flexDirection:'row',justifyContent:'space-between',display:'flex'}}>
             <label >تاریخ  :  </label>

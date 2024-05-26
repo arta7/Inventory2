@@ -183,12 +183,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetProduceList2',
         showItem:false
       },
-      // {
-      //   title: 'لیست ست ابزار',
-      //   key: 'SetsetsGroupsList2',
-      //   url: '/SetsetsGroupsList2',
-      //   showItem:false
-      // },
+      {
+        title: 'لیست ست ابزار',
+        key: 'SetsetsGroupsList2',
+        url: '/SetsetsGroupsList2',
+        showItem:false
+      },
    
       {
         title: 'نمودار',

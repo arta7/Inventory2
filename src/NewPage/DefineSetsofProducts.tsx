@@ -45,9 +45,9 @@ const DefineSetsofProducts: React.FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [GroupsData, setGroupsData] = useState([]);
-  const [DataPrint,setDataPrint] = useState({})
-  const [RowDataPrint,setRowDataPrint] = useState([])
-  const [SumCounts,setSumCounts] = useState(0)
+  const [DataPrint, setDataPrint] = useState({})
+  const [RowDataPrint, setRowDataPrint] = useState([])
+  const [SumCounts, setSumCounts] = useState(0)
   const [CollectionItemSelected, setCollectionItemSelected] = useState('2');
 
   const { t } = useTranslation();
@@ -200,7 +200,7 @@ const DefineSetsofProducts: React.FC = () => {
 
           onChange={(v) => {
 
-            
+
             const myNextList = [...AllData];
             const artwork = myNextList.find(
               a => a.Id == record.Id.toString()
@@ -211,9 +211,9 @@ const DefineSetsofProducts: React.FC = () => {
 
 
             if (DataProduct.filter(item1 => item1.SetsRef == SetsSelectedItem && item1.ProductRef == record.Id).length == 0) {
-              console.log('selectedRowKeys',selectedRowKeys)
-              if(selectedRowKeys.filter(a=>a == record.Id).length>0)
-              DataProduct.push({ "SetsRef": SetsSelectedItem, "ProductRef": record.Id, "Counts": v.target.value.toString() })
+              console.log('selectedRowKeys', selectedRowKeys)
+              if (selectedRowKeys.filter(a => a == record.Id).length > 0)
+                DataProduct.push({ "SetsRef": SetsSelectedItem, "ProductRef": record.Id, "Counts": v.target.value.toString() })
               console.log('text : ', DataProduct)
             }
 
@@ -224,7 +224,7 @@ const DefineSetsofProducts: React.FC = () => {
                 }
                 return item1;
               })
-              
+
 
               console.log('text : ', DataProduct)
 
@@ -284,15 +284,14 @@ const DefineSetsofProducts: React.FC = () => {
 
   let GetSetsofP = (_v) => {
     const myNextList = [...AllData];
-      for(let j=0;j<AllData.length;j++)
-      {
-      
-        const artwork = myNextList[j];
-        console.log('artwork : ', artwork)
-        artwork.Counts = "";
-       
-      }
-      setAllData(myNextList);
+    for (let j = 0; j < AllData.length; j++) {
+
+      const artwork = myNextList[j];
+      console.log('artwork : ', artwork)
+      artwork.Counts = "";
+
+    }
+    setAllData(myNextList);
 
     var data = {
       "SetsRef": _v
@@ -401,19 +400,19 @@ const DefineSetsofProducts: React.FC = () => {
             "SetsRef": response.data.data[i].SetsRef,
             "ProductRef": response.data.data[i].ProductRef,
             "ProductTitle": response.data.data[i].ProductTitle,
-            "Code":response.data.data[i].Code.toString(), "Counts": response.data.data[i].Counts,"UnitTitle" : response.data.data[i].UnitTitle
+            "Code": response.data.data[i].Code.toString(), "Counts": response.data.data[i].Counts, "UnitTitle": response.data.data[i].UnitTitle
           })
 
           Counters = Counters + response.data.data[i].Counts
-     
+
         }
         setSumCounts(Counters)
         setRowDataPrint(x)
         setTimeout(() => {
           printdiv("printItem2")
           window.location.reload();
-         }, 200);
-       
+        }, 200);
+
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -425,16 +424,14 @@ const DefineSetsofProducts: React.FC = () => {
 
   let AddSetsOfProduct = () => {
 
-    
 
-      for(let i =0;i<DataProduct.length;i++)
-      {
-        if(selectedRowKeys.filter(a=>a == DataProduct[i].ProductRef).length == 0)
-        {
-          DataProduct = DataProduct.filter(item => item.ProductRef != DataProduct[i].ProductRef);
-        }
+
+    for (let i = 0; i < DataProduct.length; i++) {
+      if (selectedRowKeys.filter(a => a == DataProduct[i].ProductRef).length == 0) {
+        DataProduct = DataProduct.filter(item => item.ProductRef != DataProduct[i].ProductRef);
       }
-      console.log('DataProduct', JSON.stringify(DataProduct))
+    }
+    console.log('DataProduct', JSON.stringify(DataProduct))
     var data = {
       'jsonData': JSON.stringify(DataProduct)
     }
@@ -448,7 +445,7 @@ const DefineSetsofProducts: React.FC = () => {
         })
         setSetsSelectedItem('')
         setLoading(false)
-        setCounter(Counter+1)
+        setCounter(Counter + 1)
         setSelectedRowKeys([])
         DataProduct = [];
         alert(' اطلاعات با موفقیت ثبت شد')
@@ -460,6 +457,32 @@ const DefineSetsofProducts: React.FC = () => {
       })
 
 
+  }
+
+
+
+  let UpdateSetsOfProduct = (SetsSelected,Details) => {
+    console.log('SetsSelectedItem',SetsSelected)
+    setLoading(true)
+    var data = {
+    
+      "Details":Details,
+      'Ids': SetsSelected,
+    }
+    axios.post(Config.URL +
+      Config.Defination.UpdateSetsOfProduct, data)
+      .then((response) => {
+        console.log('response data : ', response.data?.data[0]['LAST_INSERT_ID()'])
+        Object.keys(DataProduct).forEach(key => {
+          DataProduct[key].SetsRef = response.data?.data[0]['LAST_INSERT_ID()']
+      });
+      console.log('DataProduct',DataProduct)
+        AddSetsOfProduct()
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+        setLoading(false)
+      })
   }
 
 
@@ -516,37 +539,37 @@ const DefineSetsofProducts: React.FC = () => {
             <S.Title>ابزار هر سِت </S.Title>
 
             <BaseButtonsForm.Item name="Collection" label="نام مجموعه"
-           rules={[{ required: true}]}
-        >
-      <Select
-      disabled={true}
-      value ={CollectionItemSelected}
-       onChange={(v) => {
-        // setSelectedRowKeys([])
-        // setCollectionItemSelected(v)
-        // console.log('')
-        // if(GroupsSelectedItem !='')
-        // {
-        //  GetGroupOfS(GroupsSelectedItem,v)
-        // }
-      }}
-      >
-        
-        <Option value={1}>
-          <Space align="center">
-          تجهیزات پزشکی
-          </Space>
-        </Option>
-           
-        <Option value={2}>
-          <Space align="center">
-          تجهیزات CSR
-          </Space>
-        </Option>
-          
-        
-      </Select>
-    </BaseButtonsForm.Item>
+              rules={[{ required: true }]}
+            >
+              <Select
+                disabled={true}
+                value={CollectionItemSelected}
+                onChange={(v) => {
+                  // setSelectedRowKeys([])
+                  // setCollectionItemSelected(v)
+                  // console.log('')
+                  // if(GroupsSelectedItem !='')
+                  // {
+                  //  GetGroupOfS(GroupsSelectedItem,v)
+                  // }
+                }}
+              >
+
+                <Option value={1}>
+                  <Space align="center">
+                    تجهیزات پزشکی
+                  </Space>
+                </Option>
+
+                <Option value={2}>
+                  <Space align="center">
+                    تجهیزات CSR
+                  </Space>
+                </Option>
+
+
+              </Select>
+            </BaseButtonsForm.Item>
 
             <BaseButtonsForm.Item name="Sets" label="نام ست"
               rules={[{ required: true }]}
@@ -555,7 +578,7 @@ const DefineSetsofProducts: React.FC = () => {
                 onChange={(v) => {
                   setSelectedRowKeys([])
                   setSetsSelectedItem(v)
-                
+
 
                   GetSetsofP(v)
                 }}
@@ -578,8 +601,8 @@ const DefineSetsofProducts: React.FC = () => {
 
             </BaseButtonsForm.Item>
 
-              
-        {/* <BaseButtonsForm.Item name="Groups" label="نام گروه"
+
+            {/* <BaseButtonsForm.Item name="Groups" label="نام گروه"
            rules={[{ required: true}]}
         >
       <Select
@@ -621,16 +644,36 @@ const DefineSetsofProducts: React.FC = () => {
                 ثبت
               </Auth.SubmitButton>
 
-              <Auth.SubmitButton type="default"  loading={isLoading}
+              <Auth.SubmitButton type="default" loading={isLoading} style={{ marginLeft: 10 }}
 
-onClick={() => {
-  console.log('test',SetsSelectedItem)
-  GetPrint(SetsSelectedItem)
- 
-}}
->
-چاپ
-</Auth.SubmitButton>
+                onClick={() => {
+                  console.log('test',SetsSelectedItem)
+               
+                  if (SetsSelectedItem != '') {
+                    UpdateSetsOfProduct(SetsSelectedItem,"")
+                    // DeleteSetsOfProduct()
+                  }
+
+                  else {
+                    alert('لطفا اطلاعات را کامل پر کنید.')
+                  }
+                }}
+              >
+                ویرایش
+              </Auth.SubmitButton>
+
+              <Auth.SubmitButton type="default" loading={isLoading}
+
+                onClick={() => {
+                  console.log('test', SetsSelectedItem)
+                  GetPrint(SetsSelectedItem)
+
+                }}
+              >
+                چاپ
+              </Auth.SubmitButton>
+
+
             </div>
 
           </BaseForm>
@@ -641,49 +684,49 @@ onClick={() => {
 
       />
 
-{
-      <div style={{display:'none'}}  id='printItem2'>
-        <div style={{borderWidth:1,width:'85vw',justifyContent:'center',alignItems:'center',height:70,borderRadius:5,padding:5,marginTop:20,marginRight:20}}>
-        
-          <div style={{justifyContent:'center',alignItems:'center',display:'flex'}}>
-           
-            <label style={{fontSize:25}}>{SetsData.filter(items=>items.Id == SetsSelectedItem).length > 0 ? SetsData.filter(items=>items.Id == SetsSelectedItem)[0].Title : ''}</label>
+      {
+        <div style={{ display: 'none' }} id='printItem2'>
+          <div style={{ borderWidth: 1, width: '85vw', justifyContent: 'center', alignItems: 'center', height: 70, borderRadius: 5, padding: 5, marginTop: 20, marginRight: 20 }}>
+
+            <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+
+              <label style={{ fontSize: 25 }}>{SetsData.filter(items => items.Id == SetsSelectedItem).length > 0 ? SetsData.filter(items => items.Id == SetsSelectedItem)[0].Title : ''}</label>
             </div>
 
-      </div>
-      <table style={{borderWidth:1,borderStyle:'solid',width:'90vw',marginTop:20,justifyContent:'center',alignItems:'center',borderRadius:5}}>
-        <thead style={{height:70}}>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>ردیف</th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>عنوان </th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>کد</th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>واحد </th>
-          <th style={{borderWidth:1,borderStyle:'solid'}}>تعداد</th>
-        </thead>
-        <tbody>
-{RowDataPrint.map((item,index)=>
-   <tr style={{textAlign:'center',height:70}}>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'10vw'}}>{index+1}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.ProductTitle}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Code}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>{item.UnitTitle}</td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'20vw'}}>{item.Counts}</td>
- </tr>
-)
-       
-}
-<tr style={{textAlign:'center',height:70}}>
-<td ></td>
-   <td style={{borderWidth:1,borderStyle:'solid',width:'15vw'}}>جمع کل </td>
-   <td ></td> 
-   <td ></td>
-   <td style={{width:'20vw'}}>{SumCounts}</td>
- 
-</tr>
+          </div>
+          <table style={{ borderWidth: 1, borderStyle: 'solid', width: '90vw', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
+            <thead style={{ height: 70 }}>
+              <th style={{ borderWidth: 1, borderStyle: 'solid' }}>ردیف</th>
+              <th style={{ borderWidth: 1, borderStyle: 'solid' }}>عنوان </th>
+              <th style={{ borderWidth: 1, borderStyle: 'solid' }}>کد</th>
+              <th style={{ borderWidth: 1, borderStyle: 'solid' }}>واحد </th>
+              <th style={{ borderWidth: 1, borderStyle: 'solid' }}>تعداد</th>
+            </thead>
+            <tbody>
+              {RowDataPrint.map((item, index) =>
+                <tr style={{ textAlign: 'center', height: 70 }}>
+                  <td style={{ borderWidth: 1, borderStyle: 'solid', width: '10vw' }}>{index + 1}</td>
+                  <td style={{ borderWidth: 1, borderStyle: 'solid', width: '20vw' }}>{item.ProductTitle}</td>
+                  <td style={{ borderWidth: 1, borderStyle: 'solid', width: '20vw' }}>{item.Code}</td>
+                  <td style={{ borderWidth: 1, borderStyle: 'solid', width: '15vw' }}>{item.UnitTitle}</td>
+                  <td style={{ borderWidth: 1, borderStyle: 'solid', width: '20vw' }}>{item.Counts}</td>
+                </tr>
+              )
 
-        </tbody>
-      </table>
-</div>
-}
+              }
+              <tr style={{ textAlign: 'center', height: 70 }}>
+                <td ></td>
+                <td style={{ borderWidth: 1, borderStyle: 'solid', width: '15vw' }}>جمع کل </td>
+                <td ></td>
+                <td ></td>
+                <td style={{ width: '20vw' }}>{SumCounts}</td>
+
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      }
 
 
 
