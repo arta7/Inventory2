@@ -66,18 +66,8 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefineUnit',
         showItem:false
       },
-      {
-        title: 'تعریف تجهیزات پزشکی',
-        key: 'DefineProduct',
-        url: '/DefineProduct',
-        showItem:false
-      },
-      {
-        title: 'تعریف سِت ها',
-        key: 'DefineSets',
-        url: '/DefineSets',
-        showItem:false
-      },
+    
+     
       {
         title: 'تعریف بخش ها',
         key: 'DefineParts',
@@ -90,12 +80,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefineGroups',
         showItem:false
       },
-      {
-        title: 'تعریف دسترسی ست ابزار',
-        key: 'DefineSetsofProducts',
-        url: '/DefineSetsofProducts',
-        showItem:false
-      },
+     
       // {
       //   title: 'ایجاد گروه جراحی',
       //   key: 'DefineGroupsofSets',
@@ -150,11 +135,18 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     showItem:true,
     children: [
       {
+        title: 'تعریف تجهیزات پزشکی',
+        key: 'DefineProduct',
+        url: '/DefineProduct',
+        showItem:false
+      },
+      {
         title: 'لیست ابزار',
         key: 'SetProduceList',
         url: '/SetProduceList',
         showItem:false
       },
+      
       // {
       //   title: 'لیست ست ابزار',
       //   key: 'SetsetsGroupsList',
@@ -177,6 +169,18 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
     icon: <UserOutlined />,
     showItem:true,
     children: [
+      {
+        title: 'تعریف سِت ها',
+        key: 'DefineSets',
+        url: '/DefineSets',
+        showItem:false
+      },
+      {
+        title: '  تعریف  ست های CSR ',
+        key: 'DefineSetsofProducts',
+        url: '/DefineSetsofProducts',
+        showItem:false
+      },
       {
         title: 'لیست ابزار',
         key: 'SetProduceList2',
@@ -224,25 +228,25 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
        showItem:false
      },
      {
-      title: ' کاردکس ابزار  پزشکی' ,
+      title: ' کاردکس انبار تجهیزات پزشکی' ,
       key: 'kardex',
       url: '/kardex',
       showItem:false
     },
+    // {
+    //   title: 'کاردکس ست ابزار  پزشکی',
+    //   key: 'kardexSets',
+    //   url: '/kardexSets',
+    //   showItem:false
+    // },
     {
-      title: 'کاردکس ست ابزار  پزشکی',
-      key: 'kardexSets',
-      url: '/kardexSets',
-      showItem:false
-    },
-    {
-      title: 'کاردکس ابزار CSR ',
+      title: 'کاردکس انبار CSR ',
       key: 'kardex2',
       url: '/kardex2',
       showItem:false
     },
     {
-      title: 'کاردکس ست ابزار CSR',
+      title: 'موجودی ابزار ست های CSR',
       key: 'kardexSets2',
       url: '/kardexSets2',
       showItem:false

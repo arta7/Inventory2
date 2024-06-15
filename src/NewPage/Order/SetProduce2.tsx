@@ -428,7 +428,15 @@ const SetProduce2: React.FC = () => {
         console.log('response data : ', response.data.data)
 
         setGroupsData(response.data.data)
+      
         GetDataUser()
+        if(response.data.data.length >0)
+        {
+            setselectedGroups(response.data.data[0].Id)
+            form.setFieldsValue({
+              DocumentSecond:response.data.data[0].Title.toString()
+            })
+        }
       })
       .catch((error) => {
         console.log('Error : ', error)
@@ -650,6 +658,7 @@ const SetProduce2: React.FC = () => {
                   console.log('seleted value : ', value)
                   setselectedGroups(value)
                 }}
+                disabled={true}
               >
                 {
                   GroupsData.map((item, index) => (

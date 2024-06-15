@@ -439,16 +439,16 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
        
        if(FirstValue == 1)
        {
-        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"16",setsValue,AmountValue)
-        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"15",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"18",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"19",setsValue,AmountValue)
         setAmountValue(0)
         setFirstValue(0)
         setSecondValue(0)
        }
        else if(FirstValue ==2)
        {
-        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"16",setsValue,AmountValue)
-        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"15",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),2,"21",setsValue,AmountValue)
+        AddDocumentControls("","1","5",userData[0].FiscalYearId.toString(),1,"20",setsValue,AmountValue)
         setAmountValue(0)
         setFirstValue(0)
         setSecondValue(0)

@@ -377,6 +377,13 @@ const SetProduceEdit: React.FC = () => {
         console.log('response data : ', response.data.data)
 
         setGroupsData(response.data.data)
+        // if(response.data.data.length >0)
+        // {
+        //     setselectedGroups(response.data.data[0].Id)
+        //     form.setFieldsValue({
+        //       DocumentSecond:response.data.data[0].Title
+        //     })
+        // }
       })
       .catch((error) => {
         console.log('Error : ', error)
