@@ -146,6 +146,7 @@ const DefineStates: React.FC = () => {
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
   const [SelectedItem, setSelectedItem] = useState('');
+  const [UnitSelected, setUnitSelected] = useState('');
   const [Titles, setTitles] = useState('');
   const [Code, setCode] = useState('');
   const [form] = BaseForm.useForm();
@@ -271,11 +272,27 @@ const DefineStates: React.FC = () => {
       // ...getColumnSearchProps('StateType'),
     },
     {
-      title: 'ُنوع ',
+      title: 'نوع ',
       dataIndex: 'StateTypeValue',
       key: 'StateTypeValue',
       width: '0%',
       hidden: false,
+      // ...getColumnSearchProps('StateType'),
+    },
+    {
+      title: 'واحد ',
+      dataIndex: 'SelectUnit',
+      key: 'SelectUnit',
+      width: '15%',
+      hidden: false,
+      // ...getColumnSearchProps('StateType'),
+    },
+    {
+      title: 'واحد ',
+      dataIndex: 'UnitId',
+      key: 'UnitId',
+      width: '0%',
+      hidden: true,
       // ...getColumnSearchProps('StateType'),
     },
     {
@@ -290,7 +307,7 @@ const DefineStates: React.FC = () => {
       title: '',
       dataIndex: '',
       key: 'Action',
-      width: '40%',
+      width: '30%',
       hidden: false,
       render: (text, record, index) => < div className="btn-wrap"
         style={
@@ -304,7 +321,8 @@ const DefineStates: React.FC = () => {
               form.setFieldsValue({
                 Title: record.Title.toString(),
                 Code: record.Code.toString(),
-                State: record.StateType.toString()
+                State: record.StateType.toString(),
+                Unit: record.UnitId.toString()
 
               })
               setId(record.Id.toString())
@@ -312,6 +330,7 @@ const DefineStates: React.FC = () => {
               setCode(record.Code.toString())
               //  console.log('record.StateType : ',record.StateType)        
               setSelectedItem(record.StateType.toString())
+              setUnitSelected(record.UnitId.toString())
             }
           } > ویرایش
         </Button>
@@ -339,7 +358,8 @@ const DefineStates: React.FC = () => {
       "Id": Id,
       "Title": Titles,
       "Code": Code.toString(),
-      "StateType": SelectedItem.toString()
+      "StateType": SelectedItem.toString(),
+      "UnitsId": UnitSelected.toString()
 
     }
 
@@ -395,7 +415,10 @@ const DefineStates: React.FC = () => {
           data1.push({
             Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
             Code: response.data.data[i].Code, StateType: response.data.data[i].StateType,
-            StateTypeValue: response.data.data[i].StateType == 1 ? "افزایشی" : "کاهشی"
+            StateTypeValue: response.data.data[i].StateType == 1 ? "افزایشی" : "کاهشی",UnitId:response.data.data[i].UnitId,
+           SelectUnit: response.data.data[i].UnitId.toString() == "1" ? "تجهیزات پزشکی" : response.data.data[i].UnitId.toString() == "2" ? "CSR" : "هر دو"
+
+
           })
         }
         console.log('data1 : ', data1)
@@ -476,6 +499,38 @@ const DefineStates: React.FC = () => {
                   <Space align="center">
                     {/* <WomanOutlined /> */}
                     کاهشی
+                  </Space>
+                </Option>
+              </Select>
+
+
+            </BaseButtonsForm.Item>
+
+            <BaseButtonsForm.Item name="Unit" label="واحد"
+              rules={[{ required: true }]}>
+              <Select
+                title={UnitSelected}
+                onChange={(value) => {
+                  console.log('setUnitSelected : ', value)
+                  setUnitSelected(value)
+                }}
+              >
+                <Option value="1">
+                  <Space align="center">
+                    {/* <ManOutlined /> */}
+                    تجهیزات پزشکی
+                  </Space>
+                </Option>
+                <Option value="2">
+                  <Space align="center">
+                    {/* <WomanOutlined /> */}
+                     CSR
+                  </Space>
+                </Option>
+                <Option value="3">
+                  <Space align="center">
+                    {/* <WomanOutlined /> */}
+                     هر دو 
                   </Space>
                 </Option>
               </Select>

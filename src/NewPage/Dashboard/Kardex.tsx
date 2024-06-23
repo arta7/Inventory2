@@ -20,6 +20,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import UserContext from './../UserContext';
 import Searchinput from '../Searchinput';
 import SearchinputKardex from '../SearchinputKardex';
+import { DateInput } from 'react-hichestan-datetimepicker';
 var moment = require('jalali-moment');
 
 
@@ -47,13 +48,15 @@ const Kardex: React.FC = () => {
   const [Code, setCode] = useState('');
   const [form] = BaseForm.useForm();
   const { t } = useTranslation();
+  const [startDate, setstartDate] = useState(new Date());
+  const [endDate, setendDate] = useState(new Date());
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [ProductData, setProductData] = useState([]);
-    const[selectedProductId,setselectedProductId] = useState(0)
-    const[selectedProductTitle,setselectedProductTitle] = useState('')
-    const { userData,setUserData } = React.useContext(UserContext);
+  const [selectedProductId, setselectedProductId] = useState(0)
+  const [selectedProductTitle, setselectedProductTitle] = useState('')
+  const { userData, setUserData } = React.useContext(UserContext);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -289,12 +292,12 @@ const Kardex: React.FC = () => {
 
   let GetKardex = (_product, _fiscal) => {
 
-     setLoading(true)
+    setLoading(true)
     var data = {
-     
+
       "ProductRef": _product,
       "FiscalYearRef": _fiscal,
-      "CollectionId":1
+      "CollectionId": 1
 
     }
 
@@ -315,7 +318,7 @@ const Kardex: React.FC = () => {
             SecondUsername: response.data.data[i].SecondUsername,
             Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
             Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue,ProductTitle:response.data.data[i].ProductTitle
+            ExitValue: response.data.data[i].ExitValue, ProductTitle: response.data.data[i].ProductTitle
           })
         }
         console.log('data1 : ', data1)
@@ -332,7 +335,7 @@ const Kardex: React.FC = () => {
 
   useEffect(() => {
     GetProducts()
-    
+
 
   }, [Counter])
 
@@ -343,7 +346,7 @@ const Kardex: React.FC = () => {
 
   let handleInputChange = (events) => {
     console.log('Titles : ', events.target.value)
-   // setTitles(events.target.value);
+    // setTitles(events.target.value);
   }
 
   function printdiv(elem) {
@@ -351,40 +354,81 @@ const Kardex: React.FC = () => {
     var footer_str = '</body></html>';
     var new_str = document.getElementById(elem).innerHTML;
     var old_str = document.body.innerHTML;
-    document.body.innerHTML =  new_str + footer_str;
+    document.body.innerHTML = new_str + footer_str;
     window.print();
     document.body.innerHTML = old_str;
-    
+
     return false;
   }
 
   return (
     <div >
-    
 
 
-<div style={{
+
+      <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-          <SearchinputKardex list={ProductData} PlaceHolder="نام ابزار"
-      // onChange={(e)=>{setselectedProductTitle(e)}}
-      setvalue={setselectedProductTitle}
-      setId ={setselectedProductId}
-      value = {selectedProductTitle}
-      setAllData={setAllData}
-       
-      />
+            <SearchinputKardex list={ProductData} PlaceHolder="نام ابزار"
+              // onChange={(e)=>{setselectedProductTitle(e)}}
+              setvalue={setselectedProductTitle}
+              setId={setselectedProductId}
+              value={selectedProductTitle}
+              setAllData={setAllData}
+
+            />
+        <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+            <Auth.FormItem
+              label="از تاریخ"
+              name="StartDate"
+              // rules={[{ required: true, message: t('common.requiredField') }]}
+              style={{width:'40%'}}
+            >
+
+              <DateInput
+                value={startDate}
+                name={'datePicker'}
+                onChange={(event) => {
+                  console.log('date : ', new Date(event.target.value).toLocaleDateString('zh-Hans-CN'))
+                  setstartDate((event.target.value))
+                }}
+              />
+            </Auth.FormItem>
+
+            <Auth.FormItem
+              label="تا تاریخ"
+              name="EndDate"
+              // rules={[{ required: true, message: t('common.requiredField') }]}
+              style={{width:'40%'}}
+            >
+
+              <DateInput
+                value={endDate}
+                name={'datePicker'}
+                onChange={(event) => {
+                  console.log('end date : ', new Date(startDate).toLocaleDateString('zh-Hans-CN'))
+                  if( new Date(event.target.value).toLocaleDateString('zh-Hans-CN') >= new Date(startDate).toLocaleDateString('zh-Hans-CN'))
+                  setendDate((event.target.value))
+                else
+                  {
+                       alert('لطفا تاریخ بزرگ تر یا مساوی تاریخ شروع را انتخاب کنید') 
+                       setendDate(new Date())
+                  }
+                }}
+              />
+            </Auth.FormItem>
+            </div>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                  console.log('userData[0].FiscalYearId.toString()',userData[0].FiscalYearId.toString())
-               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
+                console.log('userData[0].FiscalYearId.toString()', userData[0].FiscalYearId.toString())
+                GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
               }}>
                 جستجو
               </Auth.SubmitButton>
@@ -422,12 +466,12 @@ const Kardex: React.FC = () => {
           </BaseForm>
         </Auth.FormWrapper>
       </div>
-      
-        <div id="printelement">
 
-      {columns.length > 0 &&
-        <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)}  />
-      }
+      <div id="printelement">
+
+        {columns.length > 0 &&
+          <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+        }
       </div>
 
 

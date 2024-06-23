@@ -409,9 +409,9 @@ const SetProduce: React.FC = () => {
     axios.post(Config.URL +
       Config.Defination.GetStates)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        // console.log('response data produce : ', response.data.data.filter(a=>a.UnitId == 1 || a.UnitId == 3))
 
-        setStatesData(response.data.data)
+        setStatesData(response.data.data.filter(a=>a.UnitId == 1 || a.UnitId==3))
       })
       .catch((error) => {
         console.log('Error : ', error)

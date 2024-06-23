@@ -409,7 +409,7 @@ const SetSetsGroups2: React.FC = () => {
       .then((response) => {
         console.log('response data : ', response.data.data)
 
-        setStatesData(response.data.data)
+        setStatesData(response.data.data.filter(a=>a.UnitId == 2 || a.UnitId==3))
       })
       .catch((error) => {
         console.log('Error : ', error)
