@@ -20,6 +20,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import UserContext from './../UserContext';
 import Searchinput from '../Searchinput';
 import SearchinputKardex from '../SearchinputKardex';
+import { DateInput } from 'react-hichestan-datetimepicker';
 var moment = require('jalali-moment');
 
 
@@ -54,6 +55,8 @@ const Kardex2: React.FC = () => {
     const[selectedProductId,setselectedProductId] = useState(0)
     const[selectedProductTitle,setselectedProductTitle] = useState('')
     const { userData,setUserData } = React.useContext(UserContext);
+    const [startDate, setstartDate] = useState(new Date());
+    const [endDate, setendDate] = useState(new Date());
 
   const handleSearch = (
     selectedKeys: string[],
@@ -319,7 +322,11 @@ const Kardex2: React.FC = () => {
           })
         }
         console.log('data1 : ', data1)
-        setAllData(data1)
+       setAllData(data1.filter(a=>a.Datevalue >= startDate && a.Datevalue <=endDate).sort(function(a, b) {
+          var c = new Date(a.Datevalue);
+          var d = new Date(b.Datevalue);
+          return c-d;
+      }))
         setLoading(false)
       })
       .catch((error) => {
@@ -378,6 +385,51 @@ const Kardex2: React.FC = () => {
       setAllData={setAllData}
        
       />
+
+<div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
+            <Auth.FormItem
+              label="از تاریخ"
+              name="StartDate"
+              // rules={[{ required: true, message: t('common.requiredField') }]}
+              style={{width:'40%'}}
+            >
+
+              <DateInput
+                value={startDate}
+                name={'datePicker'}
+                onChange={(event) => {
+                  console.log('date : ', new Date(event.target.value).toLocaleDateString('zh-Hans-CN'))
+                  setstartDate((event.target.value))
+                }}
+              />
+            </Auth.FormItem>
+
+            <Auth.FormItem
+              label="تا تاریخ"
+              name="EndDate"
+              // rules={[{ required: true, message: t('common.requiredField') }]}
+              style={{width:'40%'}}
+            >
+              
+              <DateInput
+                value={endDate}
+                name={'datePicker2'}
+                onChange={(event) => {
+                  console.log('end date : ', new Date(startDate).toLocaleDateString('zh-Hans-CN'))
+                  if( new Date(event.target.value).toLocaleDateString('zh-Hans-CN') >= new Date(startDate).toLocaleDateString('zh-Hans-CN'))
+                  setendDate((event.target.value))
+                else
+                  {
+                       alert('لطفا تاریخ بزرگ تر یا مساوی تاریخ شروع را انتخاب کنید') 
+                       form.setFieldsValue({
+                        EndDate:''
+                       })
+                     //  setendDate(new Date())
+                  }
+                }}
+              />
+            </Auth.FormItem>
+            </div>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 

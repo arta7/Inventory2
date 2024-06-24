@@ -322,7 +322,11 @@ const Kardex: React.FC = () => {
           })
         }
         console.log('data1 : ', data1)
-        setAllData(data1)
+        setAllData(data1.filter(a=>a.Datevalue >= startDate && a.Datevalue <=endDate).sort(function(a, b) {
+          var c = new Date(a.Datevalue);
+          var d = new Date(b.Datevalue);
+          return c-d;
+      }))
         setLoading(false)
       })
       .catch((error) => {
@@ -408,7 +412,7 @@ const Kardex: React.FC = () => {
 
               <DateInput
                 value={endDate}
-                name={'datePicker'}
+                name={'datePicker2'}
                 onChange={(event) => {
                   console.log('end date : ', new Date(startDate).toLocaleDateString('zh-Hans-CN'))
                   if( new Date(event.target.value).toLocaleDateString('zh-Hans-CN') >= new Date(startDate).toLocaleDateString('zh-Hans-CN'))
@@ -416,7 +420,10 @@ const Kardex: React.FC = () => {
                 else
                   {
                        alert('لطفا تاریخ بزرگ تر یا مساوی تاریخ شروع را انتخاب کنید') 
-                       setendDate(new Date())
+                       form.setFieldsValue({
+                        EndDate:''
+                       })
+                     //  setendDate(new Date())
                   }
                 }}
               />
