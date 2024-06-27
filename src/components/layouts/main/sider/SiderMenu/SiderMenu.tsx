@@ -106,12 +106,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/DefinePost',
         showItem:false
       },
-      {
-        title: 'جابجایی انبار',
-        key: 'MovesWarehouse',
-        url: '/MovesWarehouse',
-        showItem:false
-      },
+    
     
       {
         title: 'تعریف دسترسی کاربران',
@@ -144,6 +139,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'لیست ابزار',
         key: 'SetProduceList',
         url: '/SetProduceList',
+        showItem:false
+      },
+      {
+        title: 'جابجایی انبار',
+        key: 'MovesWarehouse',
+        url: '/MovesWarehouse',
         showItem:false
       },
       
@@ -191,6 +192,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'لیست ست ابزار',
         key: 'SetsetsGroupsList2',
         url: '/SetsetsGroupsList2',
+        showItem:false
+      },
+      {
+        title: 'جابجایی انبار',
+        key: 'MovesWarehouse',
+        url: '/MovesWarehouse',
         showItem:false
       },
    

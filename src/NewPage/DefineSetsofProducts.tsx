@@ -16,7 +16,7 @@ import axios from 'axios';
 import { Config } from './../Database/Config';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-
+import UserContext from './UserContext';
 interface DefinePostData {
   Title: string;
   Code: string;
@@ -49,6 +49,7 @@ const DefineSetsofProducts: React.FC = () => {
   const [RowDataPrint, setRowDataPrint] = useState([])
   const [SumCounts, setSumCounts] = useState(0)
   const [CollectionItemSelected, setCollectionItemSelected] = useState('2');
+  const { userData, setUserData } = React.useContext(UserContext);
 
   const { t } = useTranslation();
   const [form] = BaseForm.useForm();
@@ -169,7 +170,7 @@ const DefineSetsofProducts: React.FC = () => {
       title: 'واحد ابزار',
       dataIndex: 'UnitTitle',
       key: 'UnitTitle',
-      width: '20%',
+      width: '15%',
       hidden: false,
       // ...getColumnSearchProps('StateType'),
     },
@@ -195,6 +196,8 @@ const DefineSetsofProducts: React.FC = () => {
         } >
         <Auth.FormInput placeholder="عدد"
           type="number"
+          max={record.CurrentCounts}
+          min={0}
           value={record.Counts}
           style={{ textAlign: 'center' }}
 
@@ -235,7 +238,15 @@ const DefineSetsofProducts: React.FC = () => {
         />
 
       </div >
-    }
+    },
+    {
+      title: 'موجودی جاری',
+      dataIndex: 'CurrentCounts',
+      key: 'CurrentCounts',
+      width: '15%',
+      hidden: false
+      // ...getColumnSearchProps('age'),
+    },
   ];
 
 
@@ -310,6 +321,7 @@ const DefineSetsofProducts: React.FC = () => {
           DataProduct.push({
             "SetsRef": response.data.data[i].SetsRef.toString(),
             "ProductRef": response.data.data[i].ProductRef.toString(), "Counts": response.data.data[i].Counts.toString()
+            // "CurrentCounts":response.data.data[i].CurrentCounts.toString()
           })
           //  for(let j=0;j<AllData.length;j++)
           //  {
@@ -341,18 +353,21 @@ const DefineSetsofProducts: React.FC = () => {
   }
 
   let GetProducts = () => {
-
+    var data = {
+      "FiscalYearRefs": userData[0].FiscalYearId.toString(),
+    }
 
     axios.post(Config.URL +
-      Config.Defination.GetProducts)
+      Config.Defination.GetProductsWithCounts,data)
+
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        console.log('response data curent counts : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({
             KeySearch: response.data.data[i].Id.toString(), Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
             Code: response.data.data[i].Code, UnitRef: response.data.data[i].UnitRef,
-            UnitTitle: response.data.data[i].UnitTitle, Counts: ""
+            UnitTitle: response.data.data[i].UnitTitle, Counts: "",CurrentCounts:response.data.data[i].CurrentCounts
           })
         }
         console.log('data1 : ', data1)
