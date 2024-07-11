@@ -51,7 +51,7 @@ export const NewsCard: React.FC = (activeMobile:boolean) => {
    
   }, [])
   return (
-    <DashboardCard title='وبلاگ' style={{marginTop:30,marginRight:30}}>
+    <DashboardCard title='خبر روز' style={{marginTop:30,marginRight:30}}>
 
       <S.Wrapper >
         {active ? 

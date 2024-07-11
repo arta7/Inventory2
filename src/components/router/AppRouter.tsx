@@ -275,7 +275,7 @@ export const AppRouter: React.FC = () => {
           <Route path="DefineGroupsofSets" element={<DefineGroupsofSetsFallback />} />
           <Route path="DefineSetsofProducts" element={<DefineSetsofProductsFallback />} />
           
-          <Route path="MovesWarehouse" element={<MovesWarehouseFallback />} />
+          <Route path="MovesWarehouse" element={<MovesWarehouseFallback  />} />
 
           <Route path="DefineSetsofProductsReport" element={<DefineSetsofProductsReportFallback />} />
 

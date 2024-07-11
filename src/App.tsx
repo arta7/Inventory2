@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { ConfigProvider } from 'antd';
 import deDe from 'antd/lib/locale/de_DE';
 import { Link } from 'react-router-dom';
@@ -42,12 +42,14 @@ const App: React.FC = () => {
     var Username = await localStorage.getItem("Username")
     var FiscalYearIds = await localStorage.getItem("FiscalYearId")
     var FiscalYearTitles = await localStorage.getItem("FiscalYearTitle")
+    var CurrentItemId = await localStorage.getItem("CurrentItemId")
     console.log('UserId 1 and fiscal year : ', Username, FiscalYearIds?.toString())
     if (UserId1 != null && UserId1 != '') {
       setUserData([{
         UserId: UserId1.toString(),
         Username: Username, selectedProductId: '',
-        selectedSetsId: '', FiscalYearId:  FiscalYearIds != null ? FiscalYearIds.toString() : "",FiscalYearTitle:FiscalYearTitles != null ? FiscalYearTitles : ""
+        selectedSetsId: '', FiscalYearId:  FiscalYearIds != null ? FiscalYearIds.toString() : "",FiscalYearTitle:FiscalYearTitles != null ? FiscalYearTitles : "",
+        CurrentItemId:CurrentItemId != null ? CurrentItemId : "0"
       }])
     }
   

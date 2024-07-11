@@ -379,7 +379,6 @@ const KardexSets2: React.FC = () => {
               setId={setselectedProductId}
               value={selectedProductTitle}
               setAllData={setAllData}
-
             />
 
 <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>

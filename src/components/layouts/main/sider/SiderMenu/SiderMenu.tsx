@@ -35,6 +35,7 @@ export interface SidebarNavigationItem {
   children?: SidebarNavigationItem[];
   icon?: React.ReactNode;
   showItem:Boolean;
+  itemId:any,
 }
 
 const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
@@ -115,7 +116,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         showItem:false
       },
       {
-        title: 'تعریف وبلاگ',
+        title: 'تعریف خبر روز',
         key: 'NewsList',
         url: '/NewsList',
         showItem:false
@@ -145,6 +146,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'جابجایی انبار',
         key: 'MovesWarehouse',
         url: '/MovesWarehouse',
+        itemId:1,
         showItem:false
       },
       
@@ -188,16 +190,17 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         url: '/SetProduceList2',
         showItem:false
       },
-      {
-        title: 'لیست ست ابزار',
-        key: 'SetsetsGroupsList2',
-        url: '/SetsetsGroupsList2',
-        showItem:false
-      },
+      // {
+      //   title: 'لیست ست ابزار',
+      //   key: 'SetsetsGroupsList2',
+      //   url: '/SetsetsGroupsList2',
+      //   showItem:false
+      // },
       {
         title: 'جابجایی انبار',
         key: 'MovesWarehouse',
         url: '/MovesWarehouse',
+        itemId:2,
         showItem:false
       },
    
@@ -252,12 +255,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       url: '/kardex2',
       showItem:false
     },
-    {
-      title: 'موجودی ابزار ست های CSR',
-      key: 'kardexSets2',
-      url: '/kardexSets2',
-      showItem:false
-    },
+    // {
+    //   title: 'موجودی ابزار ست های CSR',
+    //   key: 'kardexSets2',
+    //   url: '/kardexSets2',
+    //   showItem:false
+    // },
    ],
  },
  {
@@ -267,7 +270,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
  showItem:true,
  children: [
    {
-     title: 'وبلاگ',
+     title: 'خبر روز',
      key: 'Weblog',
      url: '/Weblog',
      showItem:false
@@ -413,6 +416,12 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
                 console.log('artwork change selected product Id : ',artwork)
                 artwork[0].selectedProductId = '';
                 artwork[0].selectedSetsId = '';
+               
+                if(childNav.itemId != null)
+                {
+                  localStorage.setItem("CurrentItemId",childNav.itemId)
+                  artwork[0].CurrentItemId = childNav.itemId;
+                }
                 setUserData(myNextList);
               }}>
                 <Link to={childNav.url || ''}>{t(childNav.title)}</Link>

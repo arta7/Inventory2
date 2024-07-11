@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
     GetHtmlData()
   }, [])
   return (
-    <DashboardCard title='وبلاگ' style={{marginTop:30,marginRight:30}}>
+    <DashboardCard title='خبر روز' style={{marginTop:30,marginRight:30}}>
 
       <S.Wrapper >
       <Row justify="space-between" align="middle" wrap={true} >

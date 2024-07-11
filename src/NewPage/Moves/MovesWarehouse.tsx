@@ -516,6 +516,22 @@ let AddSetsDocuments = (_id,_setsRef,_amount) => {
   useEffect(()=>{
     GetSets()
     GetGroups()
+    console.log('userData[0].CurrentItemId.toString()',userData[0].CurrentItemId)
+    form.setFieldsValue({
+      FirstWareHouse:userData[0].CurrentItemId
+     })
+     if(userData[0].CurrentItemId == 1)
+      {
+
+       setSecondValue(4)
+       form.setFieldsValue({SecondWarehouse: 4})
+      }
+      else if(userData[0].CurrentItemId==2)
+      {
+       setSecondValue(3)
+       form.setFieldsValue({SecondWarehouse: 3})
+      }
+     setFirstValue(userData[0].CurrentItemId)
   },[])
 
   return (

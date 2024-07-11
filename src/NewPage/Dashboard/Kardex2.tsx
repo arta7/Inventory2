@@ -239,7 +239,7 @@ const Kardex2: React.FC = () => {
       dataIndex: 'Deposit',
       key: 'Deposit',
       width: '15%',
-      hidden: false,
+      hidden:  selectedProductTitle != "" ? false :true,
       render: (text, record, index) =>
 
         < div className="btn-wrap"
@@ -250,7 +250,7 @@ const Kardex2: React.FC = () => {
           } >
 
           {
-            index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
+        index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
           }
         </div >
       ,
@@ -436,7 +436,7 @@ const Kardex2: React.FC = () => {
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
                   console.log('userData[0].FiscalYearId.toString()',userData[0].FiscalYearId.toString())
-               GetKardex(selectedProductId, userData[0].FiscalYearId.toString())
+               GetKardex(selectedProductTitle != "" ? selectedProductId : 0, userData[0].FiscalYearId.toString())
               }}>
                 جستجو
               </Auth.SubmitButton>

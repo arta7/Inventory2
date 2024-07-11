@@ -249,7 +249,7 @@ const SetProduceList2: React.FC = () => {
       dataIndex: 'SecondUsername',
       key: 'SecondUsername',
       width: '20%',
-      hidden: false,
+      hidden: true,
       ...getColumnSearchProps('SecondUsername'),
       disaplay:1
     },
