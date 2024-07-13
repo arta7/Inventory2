@@ -17,6 +17,9 @@ import { Config } from './../Database/Config';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
 import UserContext from './UserContext';
+import { Modal } from '@app/components/common/Modal/Modal';
+
+
 interface DefinePostData {
   Title: string;
   Code: string;
@@ -42,6 +45,8 @@ const DefineSetsofProducts: React.FC = () => {
   const [AllData, setAllData] = useState([]);
   const [SetofProductData, setSetofProductData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [Details, setDetails] = useState('');
+
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
   const [GroupsData, setGroupsData] = useState([]);
@@ -50,6 +55,8 @@ const DefineSetsofProducts: React.FC = () => {
   const [SumCounts, setSumCounts] = useState(0)
   const [CollectionItemSelected, setCollectionItemSelected] = useState('2');
   const { userData, setUserData } = React.useContext(UserContext);
+  const [ShowModal,setShowModal] = useState(false)
+
 
   const { t } = useTranslation();
   const [form] = BaseForm.useForm();
@@ -480,9 +487,8 @@ const DefineSetsofProducts: React.FC = () => {
     console.log('SetsSelectedItem',SetsSelected)
     setLoading(true)
     var data = {
-    
       "Details":Details,
-      'Ids': SetsSelected,
+      'Ids': SetsSelected
     }
     axios.post(Config.URL +
       Config.Defination.UpdateSetsOfProduct, data)
@@ -560,13 +566,7 @@ const DefineSetsofProducts: React.FC = () => {
                 disabled={true}
                 value={CollectionItemSelected}
                 onChange={(v) => {
-                  // setSelectedRowKeys([])
-                  // setCollectionItemSelected(v)
-                  // console.log('')
-                  // if(GroupsSelectedItem !='')
-                  // {
-                  //  GetGroupOfS(GroupsSelectedItem,v)
-                  // }
+
                 }}
               >
 
@@ -617,30 +617,6 @@ const DefineSetsofProducts: React.FC = () => {
             </BaseButtonsForm.Item>
 
 
-            {/* <BaseButtonsForm.Item name="Groups" label="نام گروه"
-           rules={[{ required: true}]}
-        >
-      <Select
-       onChange={(v) => {
-        console.log('v : ', v)
-        // setGroupsSelectedItem(v)
-        //  GetGroupOfS(v,CollectionItemSelected)
-      }}
-      >
-        {
-          GroupsData.map((item,index)=>(
-           
-        <Option value={item.Id}>
-          <Space align="center">
-            {item.Title}
-          </Space>
-        </Option>
-            
-          ))
-        }
-      </Select>
-    </BaseButtonsForm.Item> */}
-
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
               <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading} style={{ marginLeft: 10 }}
@@ -662,20 +638,51 @@ const DefineSetsofProducts: React.FC = () => {
               <Auth.SubmitButton type="default" loading={isLoading} style={{ marginLeft: 10 }}
 
                 onClick={() => {
-                  console.log('test',SetsSelectedItem)
-               
-                  if (SetsSelectedItem != '') {
-                    UpdateSetsOfProduct(SetsSelectedItem,"")
-                    // DeleteSetsOfProduct()
-                  }
-
-                  else {
-                    alert('لطفا اطلاعات را کامل پر کنید.')
-                  }
+                  setShowModal(true)
                 }}
               >
                 ویرایش
               </Auth.SubmitButton>
+
+              <Modal
+            title={""}
+            centered
+            visible={ShowModal}
+            onOk={() => {
+               
+              if (SetsSelectedItem != '') {
+                UpdateSetsOfProduct(SetsSelectedItem,Details)
+              }
+
+              else {
+                alert('لطفا اطلاعات را کامل پر کنید.')
+              }
+              setShowModal(false)
+              setDetails('')
+              form.setFieldsValue({
+                Details:''
+               })
+            }}
+            onCancel={() => {
+              setShowModal(false)
+              setDetails('')
+              form.setFieldsValue({
+                Details:''
+               })
+            }}
+            size="small"
+          >
+                <Auth.FormItem
+              label="توضیحات"
+              name="Details"
+
+            rules={[{ required: true, message: t('common.requiredField') }]}
+            >
+              <Auth.FormInputTextArea  placeholder="توضیحات"
+                value={Details} onChange={(e) => {  setDetails(e.target.value)}}
+                />
+            </Auth.FormItem>
+          </Modal>
 
               <Auth.SubmitButton type="default" loading={isLoading}
 

@@ -621,10 +621,8 @@ const SetSetsGroups: React.FC = () => {
               label="شماره سند "
               name="Code"
             // rules={[{ required: true, message: t('common.requiredField') }]}
-
             >
-
-              <Auth.FormInput placeholder="شمار سند " readOnly={true}
+              <Auth.FormInput placeholder="شماره سند " readOnly={true}
                 value={Code}
                 onChange={(e) => {
                   setCode(e.target.value)

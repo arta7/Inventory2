@@ -410,7 +410,6 @@ const DefineGroups: React.FC = () => {
               form.setFieldsValue({
                 Title: record.Title.toString(),
                 Code: record.Code.toString()
-
               })
               console.log('Code : ',record.Code.toString())
               setTitles(record.Title.toString())

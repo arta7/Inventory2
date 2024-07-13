@@ -81,6 +81,8 @@ const DefineGroupsofSets = React.lazy(() => import('@app/NewPage/DefineGroupsofS
 const FirstScreen = React.lazy(() => import('@app/NewPage/FirstScreen'));
 
 
+const KardexUpdateSets = React.lazy(() => import('@app/NewPage/Dashboard/KardexUpdateSets'));
+
 const SetProduce = React.lazy(() => import('@app/NewPage/Order/SetProduce'));
 const Kardex = React.lazy(() => import('@app/NewPage/Dashboard/Kardex'));
 const KardexSets = React.lazy(() => import('@app/NewPage/Dashboard/KardexSets'));
@@ -149,6 +151,8 @@ const Results = withLoading(ResultsPage);
 const Alerts = withLoading(AlertsPage);
 const NotificationsUI = withLoading(NotificationsUIPage);
 const Skeletons = withLoading(SkeletonsPage);
+
+const KardexUpdateSetsFallBack = withLoading(KardexUpdateSets);
 
 const DataTables = withLoading(DataTablesPage);
 const ChartsFallBack = withLoading(Charts);
@@ -255,7 +259,7 @@ export const AppRouter: React.FC = () => {
 
           <Route path="Weblog" element={<WeblogFallBack />} />
           <Route path="ShowNews" element={<ShowNewsFallback />} />
-
+          <Route path="KardexUpdateSets" element={<KardexUpdateSetsFallBack />} />
 
           <Route path="SetProduceList" element={<SetProduceListFallback />} />
           <Route path="SetsetsGroupsList" element={<SetsetsGroupsListFallback />} />

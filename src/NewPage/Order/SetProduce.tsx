@@ -685,21 +685,6 @@ const SetProduce: React.FC = () => {
               name="Dates"
               rules={[{ required: true, message: t('common.requiredField') }]}
             >
-              {/* <DatePicker
-
-                placeholder="انتخاب تاریخ"
-                format="jYYYY/jMM/jDD"
-                onChange={(v, formatValue) => {
-                  console.log('date : ', v)
-                  console.log('date 2 : ', formatValue)
-                  setDate(formatValue)
-                }}
-                id="datePicker"
-                preSelected={date}
-                 controlValue={true}
-                inputTextAlign='center'
-              />
-               */}
 
               <DateInput
                 value={date}

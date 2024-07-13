@@ -6,23 +6,23 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
-import * as S from './../SForm.styles';
+import * as S from '../SForm.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
-import Tables from './../Tables';
+import Tables from '../Tables';
 import axios from 'axios';
-import { Config } from './../../Database/Config';
+import { Config } from '../../Database/Config';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Input, Space, Table, InputRef, Popconfirm } from 'antd';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-import UserContext from './../UserContext';
+import UserContext from '../UserContext';
 import Searchinput from '../Searchinput';
 import SearchinputKardex from '../SearchinputKardex';
 import { DateInput } from 'react-hichestan-datetimepicker';
 var moment = require('jalali-moment');
-
+import { Modal } from '@app/components/common/Modal/Modal';
 
 interface DefinePostData {
   Id: string;
@@ -36,11 +36,12 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 
-const Kardex: React.FC = () => {
+const KardexUpdateSets: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
   const [AllData, setAllData] = useState([]);
+  const [ModalData, setModalData] = useState([]);
   const [Counter, setCounter] = useState(0);
   const [Id, setId] = useState(0);
   const [SelectedItem, setSelectedItem] = useState(1);
@@ -57,7 +58,8 @@ const Kardex: React.FC = () => {
   const [selectedProductId, setselectedProductId] = useState(0)
   const [selectedProductTitle, setselectedProductTitle] = useState('')
   const { userData, setUserData } = React.useContext(UserContext);
-
+  const [ShowModal, setShowModal] = useState(false)
+  const [Prints, setPrints] = useState(false)
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -134,12 +136,6 @@ const Kardex: React.FC = () => {
     },
     render: (text) =>
       searchedColumn === dataIndex ? (
-        // <Highlighter
-        //   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        //   searchWords={[searchText]}
-        //   autoEscape
-        //   textToHighlight={text ? text.toString() : ''}
-        // />
         text
       ) : (
         text
@@ -152,181 +148,109 @@ const Kardex: React.FC = () => {
       dataIndex: 'Id',
       key: 'Id',
       width: '10%',
-      hidden: false
+      hidden: true,
+      disaplay: 1
     },
     {
-      title: 'نوع سند',
-      dataIndex: 'StatesTitle',
-      key: 'StatesTitle',
+      title: 'نام سِت',
+      dataIndex: 'Title',
+      key: 'Title',
       width: '15%',
       hidden: false,
 
-      ...getColumnSearchProps('StatesTitle'),
+      ...getColumnSearchProps('Title'),
+      disaplay: 1
     },
     {
-      title: 'StatesRef ',
-      dataIndex: 'StatesRef',
-      key: 'StatesRef',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'درخواست کننده',
-      dataIndex: 'SecondUsername',
-      key: 'SecondUsername',
-      width: '15%',
+      title: 'کد',
+      dataIndex: 'Code',
+      key: 'Code',
+      width: '10%',
       hidden: false,
-    },
-    {
-      title: 'SecondUserRef ',
-      dataIndex: 'SecondUserRef',
-      key: 'SecondUserRef',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'سال مالی',
-      dataIndex: 'FiscalTitle',
-      key: 'FiscalTitle',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'FiscalYearRef ',
-      dataIndex: 'FiscalYearRef',
-      key: 'FiscalYearRef',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'نام ابزار ',
-      dataIndex: 'ProductTitle',
-      key: 'ProductTitle',
-      width: '15%',
-      hidden: false,
-    },
-    {
-      title: 'تاریخ سند',
-      dataIndex: 'Date',
-      key: 'Date',
-      width: '15%',
-      hidden: false,
-    },
-    {
-      title: 'تاریخ سند',
-      dataIndex: 'Datevalue',
-      key: 'Datevalue',
-      width: '0%',
-      hidden: true,
-    },
-    {
-      title: 'سند ورودی',
-      dataIndex: 'InsertValue',
-      key: 'InsertValue',
-      width: '15%',
-      hidden: false,
-    },
-    {
-      title: 'سند خروجی',
-      dataIndex: 'ExitValue',
-      key: 'ExitValue',
-      width: '15%',
-      hidden: false,
+      disaplay: 1
     },
 
     {
-      title: 'مانده موجودی',
-      dataIndex: 'Deposit',
-      key: 'Deposit',
-      width: '15%',
-      hidden: selectedProductTitle != "" ? false :true,
+      title: 'توضیحات',
+      dataIndex: 'LastText',
+      key: 'LastText',
+      width: '10%',
+      hidden: false,
+    },
+    {
+      title: 'جزییات',
+      dataIndex: '',
+      key: '',
+      width: '25%',
+      hidden: false,
+      disaplay: 0,
       render: (text, record, index) =>
-
-        < div className="btn-wrap"
-          style={
-            {
-              width: "100px",
+        < Button
+          style={{ backgroundColor: 'green', color: 'white' }}
+          onClick={
+            (e) => {
+              setShowModal(true)
             }
-          } >
+          } > نمایش جزییات
+        </Button>
 
-          {
-           index > 0 ? record.InsertValue - record.ExitValue + SumData(index, AllData) : record.InsertValue - record.ExitValue
-          }
-        </div >
-      ,
+    }
 
-    },
 
 
   ];
 
-
-  let SumData = (index, Data) => {
-    var datasum = 0;
-    for (let i = 0; i < index; i++) {
-      datasum += Data[i].InsertValue - Data[i].ExitValue
-    }
-    return datasum;
-  }
-
-  let DeleteParts = (_id) => {
-
-
-
-
-  }
-
-  let GetProducts = () => {
-
-    axios.post(Config.URL +
-      Config.Defination.GetProducts)
-      .then((response) => {
-        console.log('response data : ', response.data.data)
-        setProductData(response.data.data)
-      })
-      .catch((error) => {
-        console.log('Error : ', error)
-      })
-  }
-
-
-  let GetKardex = (_product, _fiscal) => {
+  let GetUpdateSets = () => {
 
     setLoading(true)
-    var data = {
-
-      "ProductRef": _product,
-      "FiscalYearRef": _fiscal,
-      "CollectionId": 1
-
-    }
 
     axios.post(Config.URL +
-      Config.Defination.GetKardex, data)
+      Config.Defination.GetUpdateSets)
       .then((response) => {
-        console.log('response data : ', response.data.data)
+        console.log('response data update sets : ', response.data.data)
         var data1 = [];
         for (let i = 0; i < response.data.data.length; i++) {
           data1.push({
-            Id: response.data.data[i].Id.toString(), StatesTitle: response.data.data[i].StatesTitle,
-            StatesRef: response.data.data[i].StatesRef
-            , FiscalYearRef: response.data.data[i].FiscalYearRef,
-            FiscalTitle: response.data.data[i].FiscalTitle
-            , UserRef: response.data.data[i].UserRef,
-            Username: response.data.data[i].Username
-            , SecondUserRef: response.data.data[i].SecondUserRef,
-            SecondUsername: response.data.data[i].SecondUsername,
-            Date: moment(response.data.data[i].Date, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
-            Datevalue: response.data.data[i].Date, InsertValue: response.data.data[i].InsertValue,
-            ExitValue: response.data.data[i].ExitValue, ProductTitle: response.data.data[i].ProductTitle
+            Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code
+            , LastText: response.data.data[i].LastText
+
           })
         }
         console.log('data1 : ', data1)
-        setAllData(data1.filter(a=>a.Datevalue >= startDate && a.Datevalue <=endDate).sort(function(a, b) {
-          var c = new Date(a.Datevalue);
-          var d = new Date(b.Datevalue);
-          return c-d;
-      }))
+        setAllData(data1)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log('Error : ', error)
+        setLoading(false)
+      })
+
+
+  }
+
+
+  let GetUpdateSetsListId = (_Id) => {
+
+    setLoading(true)
+   var data = {
+     "Ids":_Id
+   }
+    axios.post(Config.URL +
+      Config.Defination.GetUpdateSetsListId,data)
+      .then((response) => {
+        console.log('response data update sets : ', response.data.data)
+        var data1 = [];
+        for (let i = 0; i < response.data.data.length; i++) {
+          data1.push({
+            Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
+            Code: response.data.data[i].Code
+            , LastText: response.data.data[i].LastText,PTitle:response.data.data[i].PTitle,Counts:response.data.data[i].Counts
+
+          })
+        }
+        console.log('data1 : ', data1)
+        setAllData(data1)
         setLoading(false)
       })
       .catch((error) => {
@@ -338,8 +262,7 @@ const Kardex: React.FC = () => {
   }
 
   useEffect(() => {
-    GetProducts()
-
+    GetUpdateSets()
 
   }, [Counter])
 
@@ -365,6 +288,9 @@ const Kardex: React.FC = () => {
     return false;
   }
 
+
+
+
   return (
     <div >
 
@@ -377,64 +303,12 @@ const Kardex: React.FC = () => {
       }}>
         <Auth.FormWrapper >
           <BaseForm layout="vertical" onFinish={handleSubmit} form={form}>
-            <SearchinputKardex list={ProductData} PlaceHolder="نام ابزار"
-              // onChange={(e)=>{setselectedProductTitle(e)}}
-              setvalue={setselectedProductTitle}
-              setId={setselectedProductId}
-              value={selectedProductTitle}
-              setAllData={setAllData}
-
-            />
-        <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
-            <Auth.FormItem
-              label="از تاریخ"
-              name="StartDate"
-              // rules={[{ required: true, message: t('common.requiredField') }]}
-              style={{width:'40%'}}
-            >
-
-              <DateInput
-                value={startDate}
-                name={'datePicker'}
-                onChange={(event) => {
-                  console.log('date : ', new Date(event.target.value).toLocaleDateString('zh-Hans-CN'))
-                  setstartDate((event.target.value))
-                }}
-              />
-            </Auth.FormItem>
-
-            <Auth.FormItem
-              label="تا تاریخ"
-              name="EndDate"
-              // rules={[{ required: true, message: t('common.requiredField') }]}
-              style={{width:'40%'}}
-            >
-
-              <DateInput
-                value={endDate}
-                name={'datePicker2'}
-                onChange={(event) => {
-                  console.log('end date : ', new Date(startDate).toLocaleDateString('zh-Hans-CN'))
-                  if( new Date(event.target.value).toLocaleDateString('zh-Hans-CN') >= new Date(startDate).toLocaleDateString('zh-Hans-CN'))
-                  setendDate((event.target.value))
-                else
-                  {
-                       alert('لطفا تاریخ بزرگ تر یا مساوی تاریخ شروع را انتخاب کنید') 
-                       form.setFieldsValue({
-                        EndDate:''
-                       })
-                  }
-                }}
-              />
-            </Auth.FormItem>
-            </div>
 
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
               <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
-                console.log('userData[0].FiscalYearId.toString()', userData[0].FiscalYearId.toString())
-                GetKardex(selectedProductTitle != "" ? selectedProductId : 0 , userData[0].FiscalYearId.toString())
+                GetUpdateSets()
               }}>
                 جستجو
               </Auth.SubmitButton>
@@ -447,8 +321,6 @@ const Kardex: React.FC = () => {
                 () => {
 
                   setAllData([])
-                  setselectedProductTitle('')
-                  setselectedProductId('')
                 }
               }>
                 بازیابی
@@ -457,8 +329,11 @@ const Kardex: React.FC = () => {
               <Auth.SubmitButton type="default" loading={isLoading} style={{ marginRight: 10 }} onClick={
                 () => {
 
-                  printdiv("printelement")
-                  window.location.reload();
+                  setPrints(true)
+                  setTimeout(() => {
+                    printdiv("printelement")
+                    window.location.reload();
+                  }, 500);
                 }
               }>
                 چاپ
@@ -466,7 +341,21 @@ const Kardex: React.FC = () => {
 
             </div>
 
+            <Modal
+              title={"لیست جزییات سِت"}
+              centered
+              visible={ShowModal}
+              onCancel={() => {
+                setShowModal(false)
+              }}
+              onOk={() => {
+                setShowModal(false)
+              }}
 
+              size="large"
+            >
+
+            </Modal>
 
 
           </BaseForm>
@@ -476,7 +365,7 @@ const Kardex: React.FC = () => {
       <div id="printelement">
 
         {columns.length > 0 &&
-          <Tables DataSource={AllData} columns={columns.filter(item => !item.hidden)} />
+          <Tables DataSource={AllData} columns={Prints == false ? columns.filter(item => !item.hidden) : columns.filter(item => !item.hidden && item.disaplay != 0)} />
         }
       </div>
 
@@ -488,6 +377,6 @@ const Kardex: React.FC = () => {
   );
 };
 
-export default Kardex;
+export default KardexUpdateSets;
 
 

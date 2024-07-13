@@ -243,17 +243,18 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       url: '/kardex',
       showItem:false
     },
-    // {
-    //   title: 'کاردکس ست ابزار  پزشکی',
-    //   key: 'kardexSets',
-    //   url: '/kardexSets',
-    //   showItem:false
-    // },
+
     {
       title: 'کاردکس انبار CSR ',
       key: 'kardex2',
       url: '/kardex2',
       showItem:false
+    },
+    {
+      title: 'کاردکس ست های غیرفعال',
+      key: 'KardexUpdateSets',
+      url: '/KardexUpdateSets',
+      showItem:true
     },
     // {
     //   title: 'موجودی ابزار ست های CSR',
