@@ -225,10 +225,7 @@ const FiscalYears: React.FC = () => {
       key: 'Title',
       width: '30%',
       hidden: false,
-      
       ...getColumnSearchProps('Title'),
-
-
     },
     {
       title: 'کد ',

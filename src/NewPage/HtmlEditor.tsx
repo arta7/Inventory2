@@ -70,7 +70,7 @@ const HtmlEditor: React.FC = () => {
       Config.Defination.GetHtmlDataWithId, data)
       .then((response) => {
         console.log('datahtml response.data.data : ', response.data.data)
-        setFile(blobToBase64(response.data.data[0].ImageLocation))
+         setFile(response.data.data[0].ImageLocation != null ?  blobToBase64(response.data.data[0].ImageLocation) : null)
         SetTitle(response.data.data[0].Title)
         console.log('htmltoText', htmltoText(response.data.data[0].Context))
         htmltoText(response.data.data[0].Context);

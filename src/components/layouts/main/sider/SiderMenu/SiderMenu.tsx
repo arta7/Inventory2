@@ -73,7 +73,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
         title: 'تعریف بخش ها',
         key: 'DefineParts',
         url: '/DefineParts',
-        showItem:false
+        showItem:true
       },
       {
         title: 'تعریف  درخواست کننده',
@@ -254,7 +254,7 @@ const SiderMenu: React.FC<SiderContentProps> = ({ setCollapsed }) => {
       title: 'کاردکس ست های غیرفعال',
       key: 'KardexUpdateSets',
       url: '/KardexUpdateSets',
-      showItem:true
+      showItem:false
     },
     // {
     //   title: 'موجودی ابزار ست های CSR',

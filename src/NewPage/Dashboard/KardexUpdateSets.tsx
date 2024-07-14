@@ -190,6 +190,8 @@ const KardexUpdateSets: React.FC = () => {
           onClick={
             (e) => {
               setShowModal(true)
+              // console.log('record.Id',record.Id)
+              GetUpdateSetsListId(record.Id)
             }
           } > نمایش جزییات
         </Button>
@@ -233,11 +235,11 @@ const KardexUpdateSets: React.FC = () => {
   let GetUpdateSetsListId = (_Id) => {
 
     setLoading(true)
-   var data = {
-     "Ids":_Id
-   }
+    var data = {
+      "Ids": _Id
+    }
     axios.post(Config.URL +
-      Config.Defination.GetUpdateSetsListId,data)
+      Config.Defination.GetUpdateSetsListId, data)
       .then((response) => {
         console.log('response data update sets : ', response.data.data)
         var data1 = [];
@@ -245,12 +247,13 @@ const KardexUpdateSets: React.FC = () => {
           data1.push({
             Id: response.data.data[i].Id.toString(), Title: response.data.data[i].Title,
             Code: response.data.data[i].Code
-            , LastText: response.data.data[i].LastText,PTitle:response.data.data[i].PTitle,Counts:response.data.data[i].Counts
+            , LastText: response.data.data[i].LastText,
+            PTitle: response.data.data[i].PTitle, Counts: response.data.data[i].Counts
 
           })
         }
         console.log('data1 : ', data1)
-        setAllData(data1)
+        setModalData(data1)
         setLoading(false)
       })
       .catch((error) => {
@@ -307,11 +310,11 @@ const KardexUpdateSets: React.FC = () => {
             <div style={{ flexDirection: 'row', justifyContent: 'space-between', display: 'flex' }}>
 
 
-              <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
+              {/* <Auth.SubmitButton type="primary" loading={isLoading} style={{ marginRight: 10 }} onClick={() => {
                 GetUpdateSets()
               }}>
                 جستجو
-              </Auth.SubmitButton>
+              </Auth.SubmitButton> */}
 
 
 
@@ -321,6 +324,7 @@ const KardexUpdateSets: React.FC = () => {
                 () => {
 
                   setAllData([])
+                  GetUpdateSets ()
                 }
               }>
                 بازیابی
@@ -349,11 +353,40 @@ const KardexUpdateSets: React.FC = () => {
                 setShowModal(false)
               }}
               onOk={() => {
-                setShowModal(false)
+                
+                printdiv("printelement2")
+                window.location.reload();
               }}
-
+              okText="چاپ"
+              cancelText="لغو"
               size="large"
             >
+              <div id="printelement2">
+                <table style={{ borderWidth: 1, borderStyle: 'solid', width: '90%', marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
+                  <thead style={{ height: 70 }}>
+                    <th style={{ borderWidth: 1, borderStyle: 'solid' }}>ردیف</th>
+                    <th style={{ borderWidth: 1, borderStyle: 'solid' }}>نام سِت </th>
+                    <th style={{ borderWidth: 1, borderStyle: 'solid' }}>نام محصول</th>
+                    <th style={{ borderWidth: 1, borderStyle: 'solid' }}>تعداد</th>
+                    <th style={{ borderWidth: 1, borderStyle: 'solid' }}>توضیحات</th>
+                  </thead>
+                  <tbody>
+                    {ModalData.map((item, index) =>
+                      <tr style={{ textAlign: 'center', height: 70 }}>
+                        <td style={{ borderWidth: 1, borderStyle: 'solid', width: '10vw' }}>{index + 1}</td>
+                        <td style={{ borderWidth: 1, borderStyle: 'solid', width: '20vw' }}>{item.Title}</td>
+                        <td style={{ borderWidth: 1, borderStyle: 'solid', width: '20vw' }}>{item.PTitle}</td>
+                        <td style={{ borderWidth: 1, borderStyle: 'solid', width: '30vw' }}>{item.Counts}</td>
+                        <td style={{ borderWidth: 1, borderStyle: 'solid', width: '30vw' }}>{item.LastText}</td>
+                      </tr>
+                    )
+
+                    }
+
+                  </tbody>
+                </table>
+              </div>
+
 
             </Modal>
 
@@ -366,7 +399,11 @@ const KardexUpdateSets: React.FC = () => {
 
         {columns.length > 0 &&
           <Tables DataSource={AllData} columns={Prints == false ? columns.filter(item => !item.hidden) : columns.filter(item => !item.hidden && item.disaplay != 0)} />
-        }
+        }     <div style={{ display: 'none' }} id='printItem2'>
+
+
+
+        </div>
       </div>
 
 
